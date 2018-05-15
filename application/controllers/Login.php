@@ -97,7 +97,7 @@ class Login extends CI_Controller {
                 }else{
                     $hrms_id = $this->input->post('username');
                     //$password = $this->input->post('password');
-                    $password = $pwd;
+                    $password = md5($pwd);
 
                     //$auth_response = call_external_url(HRMS_API_URL_AUTH.'?username='.$user_id.'?password='.$password);
                     //$auth_response = call_external_url(HRMS_API_URL_AUTH.'username='.$hrms_id.'?password='.$password);
@@ -106,7 +106,10 @@ class Login extends CI_Controller {
                     $auth = json_decode($auth_response);
                     */
                     $where = array('hrms_id' => $hrms_id, 'password' => $password);
-                    $auth_response = $this->master->check_login($where);
+                    $auth_response = $this->master->check_login($where,Tbl_emp_dump);
+
+                    //pe($auth_response);die;
+
                     if ($auth_response != null) {
 
                         // $records_response = call_external_url(HRMS_API_URL_GET_RECORD.$result->DBK_LMS_AUTH->username);
@@ -182,11 +185,11 @@ die;
                             'district_id' =>$auth_response[0]['district_id'],
                             'state_id' => $auth_response[0]['state_id'],
                             'zone_id' => $auth_response[0]['zone_id'],
-                            'full_name' => $auth_response[0]['full_name'],
+                            'full_name' => $auth_response[0]['name'],
                             'supervisor_id' =>$auth_response[0]['supervisor_id'],
                             'designation_id' => $auth_response[0]['designation_id'],
-                            'designation_name' => $auth_response[0]['designation_name'],
-                            'mobile' => $auth_response[0]['mobile'],
+                            'designation_name' => $auth_response[0]['designation'],
+                            'mobile' => $auth_response[0]['contact_no'],
                             'email_id' => $auth_response[0]['email_id'],
                             'dept_type_id' => $auth_response[0]['dept_type_id'],
                             'dept_type_name' => $auth_response[0]['dept_type_name']

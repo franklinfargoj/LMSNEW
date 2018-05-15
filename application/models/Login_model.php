@@ -36,9 +36,9 @@ class Login_model extends CI_Model{
 	 * @param $where
 	 * @return array
 	 */
-	public function check_login($where){
+	public function check_login($where,$table = Tbl_Admin){
 		return $this->db->select('*')
-					->from(Tbl_Admin)
+					->from($table)
 					->where($where)
 					->get()
 					->result_array();

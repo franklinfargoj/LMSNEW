@@ -482,32 +482,35 @@ function get_notification_count(){
 }
 
 function get_details($hrms_id = ''){
+    $CI =& get_instance();
+    $CI->load->model('Login_model');
     if(!empty($hrms_id)){
         //$records_response = call_external_url(HRMS_API_URL_GET_RECORD.$result->DBK_LMS_AUTH->username);
         //$records_response = call_external_url(HRMS_API_URL_GET_RECORD.'emplid='.$hrms_id);
+        /*$records_response = call_external_url(HRMS_API_URL_GET_RECORD.'hrms_id='.$hrms_id);*/
 
-        $records_response = call_external_url(HRMS_API_URL_GET_RECORD.'hrms_id='.$hrms_id);
-
+        $where = array('hrms_id' => $hrms_id);
+        $records_response = $CI->Login_model->check_login($where,Tbl_emp_dump);
 
         $records = json_decode($records_response);
 
-
         $result['basic_info'] = array(
-            'hrms_id' => $records->dbk_lms_emp_record1->EMPLID,
-            'dept_id' => $records->dbk_lms_emp_record1->deptid,
-            'dept_type_id' => $records->dbk_lms_emp_record1->dbk_dept_type,
-            'dept_type_name' => $records->dbk_lms_emp_record1->dept_discription,
-            'branch_id' => $records->dbk_lms_emp_record1->deptid,
-            'district_id' => $records->dbk_lms_emp_record1->district,
-            'state_id' => $records->dbk_lms_emp_record1->state,
-            'zone_id' => $records->dbk_lms_emp_record1->dbk_state_id,
-            'full_name' => $records->dbk_lms_emp_record1->name,
-            'supervisor_id' => $records->dbk_lms_emp_record1->supervisor,
-            'designation_id' => $records->dbk_lms_emp_record1->designation_id,
-            'designation_name' => $records->dbk_lms_emp_record1->designation_descr,
-            'mobile' => $records->dbk_lms_emp_record1->phone,
-            'email_id' => $records->dbk_lms_emp_record1->email,
+            'hrms_id' => $records[0]['hrms_id'],
+            // 'dept_id' => $records->dbk_lms_emp_record1->deptid,
+            'dept_type_id' => $records[0]['dept_type_id'],
+            'dept_type_name' => $records[0]['dept_type_name'],
+            'branch_id' =>  $records[0]['branch_id'],
+            'district_id' =>$records[0]['district_id'],
+            'state_id' => $records[0]['state_id'],
+            'zone_id' => $records[0]['zone_id'],
+            'full_name' =>  $records[0]['full_name'],
+            'supervisor_id' => $records[0]['supervisor_id'],
+            'designation_id' => $records[0]['designation_id'],
+            'designation_name' => $records[0] ['designation_name'],
+            'mobile' => $records[0]['mobile'],
+            'email_id' => $records[0]['email_id']
         );
+
         $result['list']=$records->dbk_lms_emp_record1->DBK_LMS_COLL;
     }else{
         $CI =& get_instance();

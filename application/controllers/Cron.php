@@ -869,6 +869,7 @@ $pending_days = 2;
         $result = call_external_url($url);
         $result = json_decode($result,true);
         $final_zone = array();$final_state = array();$final_dist = array();$final_branch = array();
+
         if(!empty($result)){
             foreach ($result['branch_details']['zone'] as $key=> $val){
                 $state1 = array();$dist1 = array();
@@ -992,18 +993,16 @@ $pending_days = 2;
     }
 
 
-    public function employee_dump(){
+        public function employee_dump(){
+         //employee_dump
 
         $url = HRMS_EMP_DUMP;
         $result = call_external_url($url);
         $result = json_decode($result,true);
-
-        echo "hello";
-        pe($result);die;
-
         $columns = ['hrms_id', 'name', 'designation_id','designation', 'email_id','contact_no', 'branch_id', 'branch_name',
             'zone_id', 'zone_name','district_id', 'state_id', 'supervisor_id'];
         $insert = array();
+
         if(!empty($result)){
             $hrms_keys = ['hrms_id','Name','Designation_Id','designation','Email','Contact_No','Branch_Id',
                 'Branch_Name','Zone_Id','Zone_Name','District','State','Supervisor_HRMS_Id'];
