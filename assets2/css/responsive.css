@@ -1,0 +1,199 @@
+
+@media only screen and (min-width:1023px) and (max-width:1370px){
+	.header .logo{
+		width: 25%;
+	}
+	.header .top-navigation{
+		width: 100% ;
+	}
+	.header .right-nav{
+		width: 18%;
+	}
+	.main-content .lead-section{
+		padding: 0 45px;
+	}
+
+    .lead-form .lead-form-right{
+        width: 47%;
+    }
+    .emi-content{width: 95%;}
+      .header .right-nav{
+        position: absolute;
+        width: 39%;
+        right: 15px;
+        top: 15px;
+    }
+       .bg-top{width: 100%;}
+    .bg-bottom{width: 100%;}
+    .inner-content{width: 99.4%;}
+    #r-width{
+        width: 44%;
+    }
+}
+
+@media only screen and (min-width:768px) and (max-width:1023px) {
+    .login-wrapper .login-form{
+    	padding: 180px 30px;
+    }
+    .header .right-nav{
+    	position: absolute;
+	    width: 39%;
+	    right: 15px;
+	    top: 15px;
+    }
+    .logged-in .name{
+    	display: inline-block;
+    }
+    .header .right-nav .notification{
+    	width: 10%;
+    }
+    .header .top-navigation{
+    	width: 68%;
+    }
+    .header{
+    	padding: 25px 0 0 0;
+    }
+    .main-content .lead-section{
+    	padding: 0 20px;
+    }
+
+    .lead-count{
+        width: 155px;
+    }
+    .top-navigation ul li a{
+        padding: 27px 4px;
+        font-size: 11px;
+    }
+
+    .top-navigation ul li.active a,.top-navigation ul li:hover a {
+    padding: 27px 4px;
+    }
+    .top-navigation ul li .cal-drop1 li >a{
+        right: 111px;
+        position: relative;
+    }
+
+    .header .top-navigation{
+        margin: 15px 0 0 0;
+        width: 100%;
+    }
+
+    .lead-count span.big{
+        font-size: 70px;
+    }
+
+    .header .right-nav .logged-in{
+        width: 213px;
+    }
+
+      .lead-form .lead-form-left{
+        width: 48%;
+    }
+    .lead-form .lead-form-right{
+        padding-left: 20px;
+        width: 48%;
+    }
+     .emi-content{width: 100%;}
+    .dataTables_wrapper{overflow-x: auto;}
+    table.dataTable{overflow: hidden;}
+    .bg-top{width: 100%;}
+    .bg-bottom{width: 100%;}
+    .inner-content{width: 99.4%;}
+    /*ravish---*/
+    .lead-count.ravisha{
+        width: 143px;
+    }
+    .ravishbtn{
+        margin: 60px auto 0;
+    }
+    .float-right {
+        margin-bottom: 20px;
+    }
+    .upload-form .form-control label {
+    width: 114px;}
+    select.error {
+    margin-bottom: 0!important;
+    }
+    .dataTables_wrapper{
+        padding-bottom: 18px;
+    }
+    span.left-toggle {
+        opacity: 0;
+        -ms-filter: "alpha(opacity=0)";
+    }
+    span.right-toggle {
+    opacity: 1;
+    -ms-filter: "alpha(opacity=100)";
+    }
+    .cal-drop2, .cal-drop3, .cal-drop4{
+        right: 190px;
+    }
+    label#ticket_range-error {
+     float: none; 
+     margin-right: 0px; 
+    vertical-align: top;
+    padding-top: 0;
+    margin-top: 0;
+    clear: both;
+    margin-top: 5px;
+    }
+    input#ticket_range{
+        width: 100px;
+    }
+    img#rs {
+    margin: -1px 0 0px 10px;
+    }
+    label#ticket_range-error{
+        width: 198px;
+    }
+ 
+    
+}
+     @media only screen and (min-width:768px) and (max-width:1400px){
+        span.left-toggle {
+        opacity: 0;
+        -ms-filter: "alpha(opacity=0)";
+        }
+        span.right-toggle {
+        opacity: 1;
+        -ms-filter: "alpha(opacity=100)";
+        }
+        .cal-drop2, .cal-drop3, .cal-drop4{
+            right: 190px;
+        }
+        #chartdiv{
+            width: 60%!important
+        }
+        div#container {
+            width: 96%!important;
+        }
+       
+    }
+ /*@media only screen and (min-width:768px) and (max-width:1200px){
+          #ui-datepicker-div {
+        
+    top:58%!important;
+    position: fixed!important;
+}
+}
+ @media only screen and (min-width:1200px) and (max-width:1400px){
+          #ui-datepicker-div {   
+    top:49%!important;
+    position: fixed!important;
+}
+}*/
+@media only screen and (min-width:1200px) and (max-width:1370px) {
+    .header .logo{width: 18%;}
+    .header .top-navigation{width: 69%;}
+    .logged-in .name.responsive-login{display:block;position: relative;top: -25px;left: 45px;top: -47px;
+    left: -24px;}
+    .logged-in .name.responsive-login1{display: none;}
+    .logged-in img{float: none;}
+    .header .right-nav .notification{float: right;    position: relative;    top: 5px;
+    right: 11px;}
+    .logged-in >img{display: none;}
+    .logged-in a{position: absolute;right: 15px;top: 35px;}
+    .header .right-nav{
+        width: 166px;
+    }
+}
