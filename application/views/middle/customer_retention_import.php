@@ -9,11 +9,11 @@
 <body>
 <div class="page-title">
     <div class="container clearfix">
-        <h3 class="text-center">Upload Uesrs</h3>
+        <h3 class="text-center">Upload Customer Retention</h3>
     </div>
 </div>
 
-<form action="<?php echo base_url().'csvimport/import';?>" method="post" enctype="multipart/form-data" name="form1" id="form1"> 
+<form action="<?php echo base_url().'customerretentionimport/import';?>" method="post" enctype="multipart/form-data" name="form1" id="form1"> 
 	<input type="hidden" name="<?php echo $this->security->get_csrf_token_name();?>" value="<?php echo $this->security->get_csrf_hash();?>">
 <table>
 <tr>
