@@ -569,6 +569,7 @@ span.count {
 .logged-in img{
 	float: left;
 	width: 35px;
+	margin-right: 10px;
 }
 .logged-in .name{
 	display: block;
@@ -784,13 +785,14 @@ img#rs {
 }
 .form-style {
 	text-decoration: none;
-	border: 3px solid #01559d;
+	border: 3px solid #007b5d;
 	padding: 3px 12px;
-	color: #01559d;
+	color: #007b5d;
 	margin-right: 0;
 }
 .form-style:hover{
-	background: #01559d;
+	background: #0fa07d;
+	border: 3px solid #0fa07d;
 	color: #fff;
 }
 
@@ -836,7 +838,7 @@ img#rs {
 	display: inline!important;
 	position: relative;
 	top: 12px;
-	right: 180px;
+	right: 290px;
 	padding-bottom: 10px;
 }
 #btn-r{
@@ -945,7 +947,7 @@ a.btn-Download{
 }
 
 .top-navigation ul li .cal-drop li >a,.top-navigation ul li .cal-drop1 li >a,.top-navigation ul li .cal-drop2 li >a,.top-navigation ul li .cal-drop3 li >a,.top-navigation ul li .cal-drop4 li >a,.top-navigation ul li .per-drop li >a{
-	width:103px;
+	width:100%;
 	padding: 15px 18px;
 	border-bottom: 1px solid #fff;
 	text-align: left;
@@ -2040,4 +2042,17 @@ tr.even-dash {
 .ui-widget-header {
 	background-color: #007b5d;
 	color: #fff;
+}
+
+.timeline .timeline-items .timeline-item.inverted:nth-of-type(2n+1) {
+	background-color: #007b5d !important;
+}
+.timeline .timeline-items .timeline-item.inverted:nth-of-type(2n+1)::before {
+	border-top: 1em solid #007b5d !important;
+}
+.timeline .timeline-items .timeline-item:nth-of-type(2n+1) {
+	background-color: #017c5e !important;
+}
+.timeline .timeline-items .timeline-item:nth-of-type(2n+1)::before {
+	border-top: 1em solid #017c5e !important;
 }
