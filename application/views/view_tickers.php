@@ -5,7 +5,7 @@
 	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 	    <meta name="viewport" content="width=device-width, initial-scale=1">
 	    <link rel="icon" href="<?php echo base_url().ASSETS;?>images/favicon.png" type="image/x-icon">
-		<title>Dena Bank</title>
+		<title>BCG</title>
 		<link href="<?php echo base_url().ASSETS;?>css/Lato.css" rel="stylesheet">
 		<link href="<?php echo base_url().ASSETS;?>css/Montserrat.css" rel="stylesheet"> 
 		<link href="<?php echo base_url().ASSETS;?>css/style.css" rel="stylesheet">
@@ -61,7 +61,7 @@
 		<div class="footer">
 			<div class="container">
 				<div class="copyright">
-					Copyright &copy; Dena Sampark. <?php echo date("Y")?>
+					Copyright &copy; BCG. <?php echo date("Y")?>
 				</div>
 			</div>
 		</div>

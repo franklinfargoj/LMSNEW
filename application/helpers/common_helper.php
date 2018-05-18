@@ -379,7 +379,7 @@ function dropdown($data,$select_option){
     return $result;
 }
 
-if(!function_exists('send_sms')){
+/*if(!function_exists('send_sms')){
     function send_sms($mobile = '',$message='') {
 
         if($mobile!='') {
@@ -405,7 +405,7 @@ if(!function_exists('send_sms')){
 
         }
     }
-}
+}*/
 
 function sendPushNotification($emp_id,$message,$title)
 {
@@ -482,36 +482,64 @@ function get_notification_count(){
 }
 
 function get_details($hrms_id = ''){
+
     $CI =& get_instance();
+    $CI->load->model('Master_model');
     $CI->load->model('Login_model');
+
     if(!empty($hrms_id)){
-        //$records_response = call_external_url(HRMS_API_URL_GET_RECORD.$result->DBK_LMS_AUTH->username);
-        //$records_response = call_external_url(HRMS_API_URL_GET_RECORD.'emplid='.$hrms_id);
-        /*$records_response = call_external_url(HRMS_API_URL_GET_RECORD.'hrms_id='.$hrms_id);*/
 
         $where = array('hrms_id' => $hrms_id);
-        $records_response = $CI->Login_model->check_login($where,Tbl_emp_dump);
+        $login_details = $CI->Login_model->check_login($where,Tbl_emp_dump);
+        $login_id = $login_details[0]['hrms_id'];
 
-        $records = json_decode($records_response);
+//        $select = array('hrms_id','dept_type_id','dept_type_name','branch_id','district_id','state_id','zone_id',
+//            'name','supervisor_id','designation_id','designation','contact_no','email_id','branch_name','zone_name');
+        $select = array('hrms_id as DESCR10','name as DESCR30');
+        $where = array('supervisor_id' => $login_id);
+        $records_response = $CI->Master_model->employees_with_supervisor($select,$where);
 
         $result['basic_info'] = array(
-            'hrms_id' => $records[0]['hrms_id'],
-            // 'dept_id' => $records->dbk_lms_emp_record1->deptid,
-            'dept_type_id' => $records[0]['dept_type_id'],
-            'dept_type_name' => $records[0]['dept_type_name'],
-            'branch_id' =>  $records[0]['branch_id'],
-            'district_id' =>$records[0]['district_id'],
-            'state_id' => $records[0]['state_id'],
-            'zone_id' => $records[0]['zone_id'],
-            'full_name' =>  $records[0]['full_name'],
-            'supervisor_id' => $records[0]['supervisor_id'],
-            'designation_id' => $records[0]['designation_id'],
-            'designation_name' => $records[0] ['designation_name'],
-            'mobile' => $records[0]['mobile'],
-            'email_id' => $records[0]['email_id']
+            'hrms_id' => $login_details[0]['hrms_id'],
+            //'dept_id' => $login_details[0][''],
+            'dept_type_id' => $login_details[0]['dept_type_id'],
+            'dept_type_name' => $login_details[0]['dept_type_name'],
+            'branch_id' => $login_details[0]['branch_id'],
+            'district_id' => $login_details[0]['district_id'],
+            'state_id' => $login_details[0]['state_id'],
+            'zone_id' => $login_details[0]['zone_id'],
+            'full_name' => $login_details[0]['name'],
+            'supervisor_id' => $login_details[0]['supervisor_id'],
+            'designation_id' => $login_details[0]['designation_id'],
+            'designation_name' => $login_details[0]['designation'],
+            'mobile' => $login_details[0]['contact_no'],
+            'email_id' => $login_details[0]['email_id']
         );
+        $result['list'] = $records_response;
+        //$records_response = call_external_url(HRMS_API_URL_GET_RECORD.$result->DBK_LMS_AUTH->username);
+        //$records_response = call_external_url(HRMS_API_URL_GET_RECORD.'emplid='.$hrms_id);
+        //$records_response = call_external_url(HRMS_API_URL_GET_RECORD.'hrms_id='.$hrms_id);
 
-        $result['list']=$records->dbk_lms_emp_record1->DBK_LMS_COLL;
+//        $records_response = call_external_url(HRMS_API_URL_GET_RECORD.'hrms_id='.$hrms_id);
+//        $records = json_decode($records_response);
+//        $result['basic_info'] = array(
+//            'hrms_id' => $records->dbk_lms_emp_record1->EMPLID,
+//            'dept_id' => $records->dbk_lms_emp_record1->deptid,
+//            'dept_type_id' => $records->dbk_lms_emp_record1->dbk_dept_type,
+//            'dept_type_name' => $records->dbk_lms_emp_record1->dept_discription,
+//            'branch_id' => $records->dbk_lms_emp_record1->deptid,
+//            'district_id' => $records->dbk_lms_emp_record1->district,
+//            'state_id' => $records->dbk_lms_emp_record1->state,
+//            'zone_id' => $records->dbk_lms_emp_record1->dbk_state_id,
+//            'full_name' => $records->dbk_lms_emp_record1->name,
+//            'supervisor_id' => $records->dbk_lms_emp_record1->supervisor,
+//            'designation_id' => $records->dbk_lms_emp_record1->designation_id,
+//            'designation_name' => $records->dbk_lms_emp_record1->designation_descr,
+//            'mobile' => $records->dbk_lms_emp_record1->phone,
+//            'email_id' => $records->dbk_lms_emp_record1->email,
+//        );
+//        $result['list']=$records->dbk_lms_emp_record1->DBK_LMS_COLL;
+
     }else{
         $CI =& get_instance();
         $result['list']=$CI->session->userdata('list');
@@ -820,114 +848,114 @@ function fix_keys($array) {
     return $array;
 }
 
-function sendMail($to = array(),$subject,$message,$attachment_file,$cc){
-    $CI=& get_instance();
-    $CI->load->database();
-    $CI->load->model('Ccemail_model');
-    $active_mail = $CI->Ccemail_model->active_cc_mail();
-    $config = $CI->db->from(Tbl_Mail)->get()->result();
-    $mail = new PHPMailer; //Create a new PHPMailer instance
-    $mail->isSMTP(); //Tell PHPMailer to use SMTP
-
-    //Enable SMTP debugging
-    // 0 = off (for production use)
-    // 1 = client messages
-    // 2 = client and server messages
-    $mail->SMTPDebug = 0;
-
-    //Ask for HTML-friendly debug output
-    $mail->Debugoutput = 'html';
-
-    //Set the hostname of the mail server
-    $mail->Host = $config[0]->host;
-    // use
-    // $mail->Host = gethostbyname('smtp.gmail.com');
-    // if your network does not support SMTP over IPv6
-
-    //Set the SMTP port number - 587 for authenticated TLS, a.k.a. RFC4409 SMTP submission
-    $mail->Port = 25;
-
-    //Set the encryption system to use - ssl (deprecated) or tls
-    ////$mail->SMTPSecure = 'ssl';
-
-    //Whether to use SMTP authentication
-    $mail->SMTPAuth = false;
-
-    //Username to use for SMTP authentication - use full email address for gmail
-    $mail->Username = $config[0]->username;
-
-    //Password to use for SMTP authentication
-    $mail->Password = '';
-
-    $mail->SMTPOptions = array(
-      'ssl' => array(
-        'verify_peer' => false,
-        'verify_peer_name' => false,
-        'allow_self_signed' => true
-      )
-    );
-
-    //Set who the message is to be sent from
-    $mail->setFrom($config[0]->fromemail, $config[0]->from);
-
-    //Set an alternative reply-to address
-    $mail->addReplyTo($config[0]->fromemail, $config[0]->from);
-
-    //Set who the message is to be sent to
-    $mail->addAddress('franklin.fargoj@neosofttech.com','Mukesh Kurmi');
-    //$mail->addAddress($to['email'],$to['name']);
-    // $mail->addAddress('pragati@denabank.co.in','Pragati Dena Bank');
-    // $mail->addAddress('rahul.choubey@denabank.co.in','Pragati Dena Bank');
-    //$mail->addAddress('jeet.gupta@denabank.co.in','Pragati Dena Bank');
-   // $mail->addCC('sunmit@denabank.co.in','Pragati Dena Bank');
-
-
-    /*if(count($attachment_file) > 0) {
-        for ($i = 0; $i < count($attachment_file); $i++) {
-            $mail->addAttachment('uploads/excel_list/' . $attachment_file[$i], rand() . '.xls');
-            //$mail->addAttachment('uploads/excel_list/'.$attachment_file[$i]);
-        }
-    }*/
-
-   /* if($cc == 1){
-        $mail->addCC('rahul.choubey@denabank.co.in','Rahul Choubey');
-*/
-    if($cc == 1) {
-        if (count($active_mail) > 0) {
-            foreach ($active_mail as $key => $value) {
-                $mail->addCC($value['email'], $value['name']);
-            }
-        }
-    }
-    //Set the subject line
-    $mail->Subject = $subject;
-
-    //Read an HTML message body from an external file, convert referenced images to embedded,
-    //convert HTML into a basic plain-text alternative body
-    //$mail->msgHTML('Your New password for MLS Auto Dealers is'.$pwd['password']);
-    $mail->msgHTML($message);
-
-    //Attach an image file
-     if(count($attachment_file) > 0){
-         for($i=0;$i<count($attachment_file);$i++){
-            // $mail->addAttachment('uploads/excel_list/'.$attachment_file[$i], rand().'.xls');
-             $mail->addAttachment('uploads/excel_list/'.$attachment_file[$i]);
-         }
-     }
-
-    //Attach an image file
-    /*if(!empty($attachment_file)){
-        $mail->addAttachment('uploads/excel_list/'.$attachment_file);
-    }*/
-    //send the message, check for errors
-    if (!$mail->send()) {
-        echo "Mailer Error: " . $mail->ErrorInfo;
-        //exit;
-    } else {
-//       echo "sent";
-        unlink('uploads/excel_list/'.$attachment_file);
-    }
-}
+//function sendMail($to = array(),$subject,$message,$attachment_file,$cc){
+//    $CI=& get_instance();
+//    $CI->load->database();
+//    $CI->load->model('Ccemail_model');
+//    $active_mail = $CI->Ccemail_model->active_cc_mail();
+//    $config = $CI->db->from(Tbl_Mail)->get()->result();
+//    $mail = new PHPMailer; //Create a new PHPMailer instance
+//    $mail->isSMTP(); //Tell PHPMailer to use SMTP
+//
+//    //Enable SMTP debugging
+//    // 0 = off (for production use)
+//    // 1 = client messages
+//    // 2 = client and server messages
+//    $mail->SMTPDebug = 0;
+//
+//    //Ask for HTML-friendly debug output
+//    $mail->Debugoutput = 'html';
+//
+//    //Set the hostname of the mail server
+//    $mail->Host = $config[0]->host;
+//    // use
+//    // $mail->Host = gethostbyname('smtp.gmail.com');
+//    // if your network does not support SMTP over IPv6
+//
+//    //Set the SMTP port number - 587 for authenticated TLS, a.k.a. RFC4409 SMTP submission
+//    $mail->Port = 25;
+//
+//    //Set the encryption system to use - ssl (deprecated) or tls
+//    ////$mail->SMTPSecure = 'ssl';
+//
+//    //Whether to use SMTP authentication
+//    $mail->SMTPAuth = false;
+//
+//    //Username to use for SMTP authentication - use full email address for gmail
+//    $mail->Username = $config[0]->username;
+//
+//    //Password to use for SMTP authentication
+//    $mail->Password = '';
+//
+//    $mail->SMTPOptions = array(
+//      'ssl' => array(
+//        'verify_peer' => false,
+//        'verify_peer_name' => false,
+//        'allow_self_signed' => true
+//      )
+//    );
+//
+//    //Set who the message is to be sent from
+//    $mail->setFrom($config[0]->fromemail, $config[0]->from);
+//
+//    //Set an alternative reply-to address
+//    $mail->addReplyTo($config[0]->fromemail, $config[0]->from);
+//
+//    //Set who the message is to be sent to
+//    $mail->addAddress('franklin.fargoj@neosofttech.com','Mukesh Kurmi');
+//    //$mail->addAddress($to['email'],$to['name']);
+//    // $mail->addAddress('pragati@denabank.co.in','Pragati Dena Bank');
+//    // $mail->addAddress('rahul.choubey@denabank.co.in','Pragati Dena Bank');
+//    //$mail->addAddress('jeet.gupta@denabank.co.in','Pragati Dena Bank');
+//   // $mail->addCC('sunmit@denabank.co.in','Pragati Dena Bank');
+//
+//
+//    /*if(count($attachment_file) > 0) {
+//        for ($i = 0; $i < count($attachment_file); $i++) {
+//            $mail->addAttachment('uploads/excel_list/' . $attachment_file[$i], rand() . '.xls');
+//            //$mail->addAttachment('uploads/excel_list/'.$attachment_file[$i]);
+//        }
+//    }*/
+//
+//   /* if($cc == 1){
+//        $mail->addCC('rahul.choubey@denabank.co.in','Rahul Choubey');
+//*/
+//    if($cc == 1) {
+//        if (count($active_mail) > 0) {
+//            foreach ($active_mail as $key => $value) {
+//                $mail->addCC($value['email'], $value['name']);
+//            }
+//        }
+//    }
+//    //Set the subject line
+//    $mail->Subject = $subject;
+//
+//    //Read an HTML message body from an external file, convert referenced images to embedded,
+//    //convert HTML into a basic plain-text alternative body
+//    //$mail->msgHTML('Your New password for MLS Auto Dealers is'.$pwd['password']);
+//    $mail->msgHTML($message);
+//
+//    //Attach an image file
+//     if(count($attachment_file) > 0){
+//         for($i=0;$i<count($attachment_file);$i++){
+//            // $mail->addAttachment('uploads/excel_list/'.$attachment_file[$i], rand().'.xls');
+//             $mail->addAttachment('uploads/excel_list/'.$attachment_file[$i]);
+//         }
+//     }
+//
+//    //Attach an image file
+//    /*if(!empty($attachment_file)){
+//        $mail->addAttachment('uploads/excel_list/'.$attachment_file);
+//    }*/
+//    //send the message, check for errors
+//    if (!$mail->send()) {
+//        echo "Mailer Error: " . $mail->ErrorInfo;
+//        //exit;
+//    } else {
+////       echo "sent";
+//        unlink('uploads/excel_list/'.$attachment_file);
+//    }
+//}
 
 
 

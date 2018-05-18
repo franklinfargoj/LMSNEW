@@ -32,6 +32,7 @@ class Login extends CI_Controller {
 	public function index()
 	{
         $isLoggedIn = $this->session->userdata('isLoggedIn');
+
         if (!empty($isLoggedIn)) { redirect('dashboard'); }
         //Get tickers title
             $this->load->model('Ticker_model','ticker');
@@ -40,7 +41,7 @@ class Login extends CI_Controller {
             $arrData['tickers'] = $this->ticker->view($select,$where,Tbl_Ticker,array(),array(),$limit = 2);
         //Get tickers title    
         if($this->input->post()){
-//echo"hi";
+//            echo"hi";
 //            pe($this->session->all_userdata());die;
             $this->form_validation->set_rules('username','Username', 'trim|required');
             $this->form_validation->set_rules('password','Password', 'trim|required');
@@ -95,60 +96,31 @@ class Login extends CI_Controller {
                         redirect('login');
                     }
                 }else{
-                    $hrms_id = $this->input->post('username');
-                    //$password = $this->input->post('password');
-                    $password = md5($pwd);
-
-                    //$auth_response = call_external_url(HRMS_API_URL_AUTH.'?username='.$user_id.'?password='.$password);
+                    $this->load->model('Master_model');
                     //$auth_response = call_external_url(HRMS_API_URL_AUTH.'username='.$hrms_id.'?password='.$password);
-                    /*
+/*                    $hrms_id = $this->input->post('username');
+                    $password = $this->input->post('password');
+                    $password = $pwd;
                     $auth_response = call_external_url(HRMS_API_URL_AUTH.'username='.$hrms_id.'&password='.$password);
-                    $auth = json_decode($auth_response);
-                    */
-                    $where = array('hrms_id' => $hrms_id, 'password' => $password);
-                    $auth_response = $this->master->check_login($where,Tbl_emp_dump);
+                    $auth = json_decode($auth_response);*/
 
-                    //pe($auth_response);die;
+                    $checkInput = array('hrms_id' => $this->input->post('username'), 'password' => md5($pwd));
+                    $auth_response = $this->master->check_login($checkInput,Tbl_emp_dump);
+                    $login_id = $auth_response[0]['hrms_id'];
 
-                    if ($auth_response != null) {
+                    $select = array('hrms_id as DESCR10','name as DESCR30');
+                    $where = array('supervisor_id' => $login_id);
+                    $records_response = $this->Master_model->employees_with_supervisor($select,$where);
 
+                   // pe($records_response);die;
+
+                    if (!empty($auth_response)) {
                         // $records_response = call_external_url(HRMS_API_URL_GET_RECORD.$result->DBK_LMS_AUTH->username);
                         //$records_response = call_external_url(HRMS_API_URL_GET_RECORD.'emplid='.$auth->DBK_LMS_AUTH->username);
-                        /*$records_response = call_external_url(HRMS_API_URL_GET_RECORD.'hrms_id='.$auth->DBK_LMS_AUTH->username);
-                        $records = json_decode($records_response);*/
-                     /* if($auth->DBK_LMS_AUTH->username == '0004236'){
-                        echo  $records_response;
-                        echo "<br>Unable to Decode due to ";
- $records = json_decode($records_response);
-                        switch(json_last_error()){
-case JSON_ERROR_NONE:
-echo 'NONE';
-break;
-case JSON_ERROR_DEPTH:
-echo '-max';
-break;
-case JSON_ERROR_STATE_MISMATCH:
-echo 'JSON_ERROR_STATE_MISMATCH';
-break;
-case JSON_ERROR_CTRL_CHAR:
-echo 'JSON_ERROR_CTRL_CHAR';
-break;
-case JSON_ERROR_CTRL_CHAR:
-echo 'JSON_ERROR_CTRL_CHAR';
-break;
-case JSON_ERROR_SYNTAX:
-echo 'Syntax error,malformed JSON';
-break;
-case JSON_ERROR_UTF8:
-echo '- Malformed UTF-8 Character, possibly incorrectly encoded'; break;
-default:
-echo 'def';
-break;
-}
-die;
-}
-*/
-                        // echo "<pre>";print_r($records);die;
+                        /*
+                        $records_response = call_external_url(HRMS_API_URL_GET_RECORD.'hrms_id='.$auth->DBK_LMS_AUTH->username);
+                        $records = json_decode($records_response);
+                        */
                         $authorisation_key= random_number();
                         $data = array(
                             'device_token' => NULL,
@@ -177,7 +149,6 @@ die;
                             'authorisation_key' => $authorisation_key,
                             'list'=>$records->dbk_lms_emp_record1->DBK_LMS_COLL
                         );*/
-
                         $result = array(
                             'hrms_id' =>$auth_response[0]['hrms_id'],
                             'authorisation_key' => $authorisation_key,
@@ -192,12 +163,13 @@ die;
                             'mobile' => $auth_response[0]['contact_no'],
                             'email_id' => $auth_response[0]['email_id'],
                             'dept_type_id' => $auth_response[0]['dept_type_id'],
-                            'dept_type_name' => $auth_response[0]['dept_type_name']
+                            'dept_type_name' => $auth_response[0]['dept_type_name'],
                             //'dept_id' => $records->dbk_lms_emp_record1->deptid,
-                            //'list'=>$records->dbk_lms_emp_record1->DBK_LMS_COLL
-                        );
+                            'list'=>$records_response
+                        ); //pe($result);die;
 
                         $this->set_session($result);
+
                         if(!empty($this->input->post('remember_me'))) {
                             setcookie ("member_login",$this->input->post('username'),time()+ (10 * 365 * 24 * 60 * 60));
                             setcookie ("member_password",$this->input->post('password'),time()+ (10 * 365 * 24 * 60 * 60));
@@ -255,7 +227,7 @@ die;
 
 
      private function set_session($data){
-            //echo "<pre>";print_r($data);die;
+             //echo "<pre>";print_r($data);die;
              $login_user = array(
                  'admin_id' => $data['hrms_id'],
                  'dept_type_id' => $data['dept_type_id'],

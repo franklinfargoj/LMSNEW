@@ -432,4 +432,19 @@ class Master_model extends CI_Model{
         $order_by = array();
         return $this->view($select,$where,$table,$join,$order_by);
     }
+
+    /**
+     * employees_with_supervisor
+     * @author Franklin Fargoj
+     * @access public
+     * @param $select,$where
+     * @return array
+     */
+    public function employees_with_supervisor($select,$where){
+        return $this->db->select($select)
+            ->from(Tbl_emp_dump)
+            ->where($where)
+            ->get()
+            ->result_array();
+    }
 }

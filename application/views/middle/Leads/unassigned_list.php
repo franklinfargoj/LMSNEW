@@ -59,9 +59,13 @@ $source = $this->config->item('lead_source');
                                         <option value="">Select Employee</option>
                                     <?php $result = get_details($this->session->userdata('admin_id'));?>
                                         <option value="<?php echo $this->session->userdata('admin_id').'-'.ucwords(strtolower($this->session->userdata('admin_name'))); ?>"><?php echo ucwords(strtolower($this->session->userdata('admin_name')));?></option>
+
                                         <?php foreach ($result['list'] as $key =>$value){?>
-                                        <option value="<?php echo $value->DESCR10.'-'.$value->DESCR30;?>"><?php echo ucwords($value->DESCR30);?></option>
+                                            <option value="<?php echo $value['DESCR10'].'-'.$value['DESCR30'];?>"><?php echo ucwords($value['DESCR30']);?></option>
                                         <?php }?>
+<!--                                        --><?php //foreach ($result['list'] as $key =>$value){?>
+<!--                                        <option value="--><?php //echo $value->DESCR10.'-'.$value->DESCR30;?><!--">--><?php //echo ucwords($value->DESCR30);?><!--</option>-->
+<!--                                        --><?php //}?>
                                     </select>
                                     <?php 
                                         /*foreach ($unassigned_leads as $key => $value) {
