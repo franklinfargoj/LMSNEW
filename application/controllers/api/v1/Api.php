@@ -1687,7 +1687,7 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
 
              $this->Login_model->insert_login_log($data); // login log
 
-             $fullname = array_map('trim', explode('.', $records['full_name']));
+             $fullname = array_map('trim', explode('.', $records['name']));
 
             if($fullname[0] == ''){
                 $fullname1 = ucwords(strtolower(trim($fullname[1])));
