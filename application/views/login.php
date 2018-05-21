@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="<?php echo base_url().ASSETS;?>images/favicon.png" type="image/x-icon">
-	<title>Dena Bank</title>
+	<title>BCG</title>
 	<link href="<?php echo base_url().ASSETS;?>css/Lato.css" rel="stylesheet">
 	<link href="<?php echo base_url().ASSETS;?>css/Montserrat.css" rel="stylesheet"> 
 	<link href="<?php echo base_url().ASSETS;?>css/style.css" rel="stylesheet">
@@ -14,6 +14,14 @@
 </head>
 <body class="login-page">
 	<div class="login-wrapper">
+		<div class="bank-logo">
+			<div class="logo-area"><img src="<?php echo base_url().ASSETS;?>images/bcc-logo.png" alt="login-logo"></div>
+			<div class="bottom-content">
+				<p>Future Perspective</p>
+				<h2>Shaping the Future. <br/>Together.</h2>
+			</div>
+		</div>
+
 		<div class="login-form">
 			<!-- <form class="form"> -->
 			<?php 
@@ -26,7 +34,8 @@
 					);
 					echo form_open(site_url().'login', $attributes);
 				?>
-				<h3>LOGIN</h3>
+				<h3>Log In</h3>
+				<p>Login with your HRMS ID and password</p>
 				<?php echo $this->load->view('common/message',array(),TRUE);?>
 				<div class="form-control user-details">
 					<?php 
@@ -83,7 +92,7 @@
 					//Assuming that the 'password' field value was incorrect:
 					echo form_error('password', '<span class="help-block">', '</span>');
 				?>
-<p class="pswd-note">* Please Use HRMS Password</p>
+<!-- <p class="pswd-note">* Please Use HRMS Password</p> -->
 				<?php echo $this->load->view('common/captcha',array(),TRUE);?>
 				<div class="form-control form-submit clearfix">
 					<!-- <input type="submit" name="submit" value="LOGIN" class="submit-btn"> -->
@@ -110,25 +119,12 @@
 				<?php echo form_close();?>
 			<!-- </form> -->
 		</div>
-		<div class="bank-logo">
-			<img src="<?php echo base_url().ASSETS;?>images/login-logo.png" alt="login-logo">
-		</div>
 	</div>
 	
 			<?php 
 				if($tickers){
 			?>
-			<div class="footer-login">
-				<marquee onmouseover="this.stop();" onmouseout="this.start();">
-				<?php 
-					foreach ($tickers as $key => $value) {
-				?>
-					<img src="<?php echo base_url().ASSETS;?>images/small-circle.png" alt="small circle"><a href="<?php echo site_url('login/view_tickers/'.encode_id($value['id']));?>"><?php echo $value['title'];?></a>
-				<?php 		
-					}
-				?>
-				</marquee>
-		</div>
+			
 			<?php
 				}
 			?>

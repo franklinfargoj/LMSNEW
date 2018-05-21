@@ -161,10 +161,14 @@ $remark_extra = 'style="rows:4 ; cols:80"';
 
                 <div class="lead-form-right">
                     <div class="form-control">
-
                         <?php
+
+//                        pe($this->session->userdata('admin_type'));
+//                        pe($this->session->userdata('dept_type_id'));
+//                        die;
+
                         if(in_array($this->session->userdata('admin_type'),array('GM','ZM')) ||
-                            ($this->session->userdata('dept_type_id') != 'BR' &&
+                            ($this->session->userdata('dept_type_id') == 'BR' &&
                                 in_array($this->session->userdata('admin_type'),array('EM','BM')))){
                             $checked = TRUE;
                             $style = "style='display:none'";
@@ -188,6 +192,7 @@ $remark_extra = 'style="rows:4 ; cols:80"';
                         </div>
                         <?php echo form_error('is_own_branch'); ?>
                     </div>
+
                     <div id="state" class="form-control">
                         <?php echo form_error('state_id'); ?>
                     </div>
@@ -204,6 +209,9 @@ $remark_extra = 'style="rows:4 ; cols:80"';
                         <?php echo form_error('remark'); ?>
                     </div>
                 </div>
+
+
+
                 <div class="form-control form-submit clearfix">
 
                     <button type="submit" name="Submit" value="Submit" class="full-btn float-right">

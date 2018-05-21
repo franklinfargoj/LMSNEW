@@ -11,10 +11,30 @@
 	<div class="container">
 		<div class="logo">
             <a href="<?php echo site_url('dashboard')?>">
-			    <img src="<?php echo base_url().ASSETS;?>images/logo.png" alt="logo">
+			    <img src="<?php echo base_url().ASSETS;?>images/bcc-internal-logo.png" alt="logo">
             </a>
 		</div>
-		<div class="top-navigation">
+		
+		<div class="right-nav">
+				<div class="notification">
+					<a href="<?php echo site_url('notification');?>">
+						<?php if(get_notification_count() > 0){?>
+						<span class="count"><?php echo get_notification_count();?></span>
+						<?php }?>
+						<img src="<?php echo base_url().ASSETS;?>images/bell.png" alt="bell">
+					</a>
+				</div>
+				<div class="logged-in">
+					<img src="<?php echo base_url().ASSETS;?>images/username.png" alt="pic" class="man-login">
+					<div>
+					<span class="name  responsive-login">Hi, <?php echo ucwords(strtolower($this->session->userdata('admin_name')));?> !!</span>
+<!--						<span class="name responsive-login1">(--><?php //echo $this->session->userdata('admin_type');?><!--)</span>-->
+					<a href="<?php echo site_url('login/logOut');?>">Logout</a>
+					</div>
+				</div>
+        </div>
+
+        <div class="top-navigation">
 			<ul>
 				<li class="<?php echo ((($controller == 'dashboard') && (in_array($method,array('index','leads_performance'))))) ? 'active' : ''?>">
 					<a href="<?php echo site_url('dashboard')?>">
@@ -78,7 +98,20 @@
 						</a>
 					</li>
 				<?php }?>
-
+				<?php if(in_array($this->session->userdata('admin_type'),array('Super admin'))) {?>
+				<li class="<?php echo ($controller == 'csvimport' && $method == 'import') ? 'active' : ''?>">
+					<a href="<?php echo site_url('csvimport')?>">
+						User Upload
+					</a>
+				</li>
+				<?php }?>
+				<?php if(in_array($this->session->userdata('admin_type'),array('Super admin'))) {?>
+				<li class="<?php echo ($controller == 'customerretentionimport' && $method == 'import') ? 'active' : ''?>">
+					<a href="<?php echo site_url('customerretentionimport')?>">
+						Customer Retention Upload
+					</a>
+				</li>
+				<?php }?>
 <!--                --><?php //if(in_array($this->session->userdata('admin_type'),array('Super admin'))) {?>
 <!--				<li class="--><?php //echo ($controller == 'leads' && $method == 'upload_employee') ? 'active' : ''?><!--">-->
 <!--					<a href="--><?php //echo site_url('leads/upload_employee')?><!--">-->
@@ -299,24 +332,6 @@
 
 			</ul>
 		</div>
-		<div class="right-nav">
-				<div class="notification">
-					<a href="<?php echo site_url('notification');?>">
-						<?php if(get_notification_count() > 0){?>
-						<span class="count"><?php echo get_notification_count();?></span>
-						<?php }?>
-						<img src="<?php echo base_url().ASSETS;?>images/bell.png" alt="bell">
-					</a>
-				</div>
-				<div class="logged-in">
-					<img src="<?php echo base_url().ASSETS;?>images/username.png" alt="pic" class="man-login">
-					<div>
-					<span class="name  responsive-login">Hi, <?php echo ucwords(strtolower($this->session->userdata('admin_name')));?> !!</span>
-<!--						<span class="name responsive-login1">(--><?php //echo $this->session->userdata('admin_type');?><!--)</span>-->
-					<a href="<?php echo site_url('login/logOut');?>">Logout</a>
-					</div>
-				</div>
-        </div>
 	</div>
 </div>
 <script type="text/javascript">

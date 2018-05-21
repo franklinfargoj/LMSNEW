@@ -94,6 +94,7 @@ class Leads extends CI_Controller
 //                return load_view($middle, $arrData);
                 redirect(base_url('leads/add'), 'refresh');
             }else{
+
                  // check for duplicate entry
                  $whereEx = array(
                      'customer_name'=>ucwords(strtolower($this->input->post('customer_name'))),
@@ -101,7 +102,9 @@ class Leads extends CI_Controller
                      'product_id'=> $this->input->post('product_id'),
                      'DATEDIFF(CURDATE(),created_on) <=' => 180
                  );
+
                  $is_exsits = $this->Lead->is_exsits($whereEx);
+
                  if($is_exsits){
                      $this->session->set_flashdata('error', "Lead Already Added");
                      redirect(base_url('leads/add'), 'refresh');
@@ -114,6 +117,7 @@ class Leads extends CI_Controller
                 $lead_data['zone_id'] = $lead_data['created_by_zone_id'] = $login_user['zone_id'];
                 $branch_id = $login_user['branch_id'];
 
+
                 if($this->input->post('is_own_branch') == '0'){
                     $lead_data['state_id'] = $this->input->post('state_id');
                     $lead_data['branch_id'] = $this->input->post('branch_id');
@@ -121,7 +125,7 @@ class Leads extends CI_Controller
                     $lead_data['district_id'] = $this->input->post('district_id');
                     $branch_id = $this->input->post('branch_id');
                 }
-                
+
                 $lead_data['created_on'] = date('Y-m-d H:i:s');
                 $lead_data['created_by'] = $login_user['hrms_id'];
                 $lead_data['created_by_name'] = $login_user['full_name'];
@@ -135,6 +139,7 @@ class Leads extends CI_Controller
                         $lead_data[$value] = $this->input->post($value);
                     }
                 }
+
                 $action = 'list';
                 $select = array('map_with','title');
                 $table = Tbl_Products;
@@ -153,14 +158,16 @@ class Leads extends CI_Controller
 //                }
                 $lead_data['lead_name'] = $this->input->post('customer_name');
                 //chk lead source other
-                $other_source = $this->input->post('other_source');
-                if($other_source != 'BR'){
-                    $lead_data['lead_source'] = 'tie_ups';
-                }
-                $lead_data['other_source'] = $other_source;
-                //
-                $lead_id = $this->Lead->add_leads($lead_data);
+                //    $other_source = $this->input->post('other_source');
 
+               /* if($other_source != 'BR'){
+                    $lead_data['lead_source'] = 'tie_ups';
+                }*/
+            //   $lead_data['other_source'] = $other_source;
+
+                //pe($lead_data);die;
+                $lead_id = $this->Lead->add_leads($lead_data);
+               // pe($lead_id);die;
                 if($lead_id != false){
                     //send sms
                     $sms = 'Thanks for showing interest in '.ucwords($product_name).' with Dena Bank. We will contact you shortly.';
@@ -490,19 +497,23 @@ class Leads extends CI_Controller
 
 
     public function unassigned_leads_list($lead_source=''){
+       // echo "hell";die;
         $lead_source = decode_id($lead_source);
         $source = $this->config->item('lead_source');
+
         /*Create Breadcumb*/
           $this->make_bread->add('Unassigned Leads', 'leads/unassigned_leads', 0);
           $this->make_bread->add(ucwords($source[$lead_source]),'', 0);
           $arrData['breadcrumb'] = $this->make_bread->output();
         /*Create Breadcumb*/
         $unassigned_leads = $this->Lead->unassigned_leads($lead_source,'');
+        //pe($unassigned_leads);die;
+
         $arrData['unassigned_leads'] = $unassigned_leads;
         $arrData['lead_source'] = $lead_source;
         $arrData['type'] = 'unassigned';
         $middle = "Leads/unassigned_list";
-        //pe($arrData['unassigned_leads']);die;
+        //pe($source);die;
         load_view($middle,$arrData);
     }
 

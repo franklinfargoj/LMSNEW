@@ -1637,6 +1637,7 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
     //franklin fargoj
     public function authenticationnew_post()
     {
+
         $params = $this->input->post();
 
         if (!isset($params['user_id']) || !isset($params['password']) || !isset($params['device_token']) ||
@@ -1656,11 +1657,10 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
         //$auth_response = call_external_url(HRMS_API_URL_AUTH.'username='.$user_id.'?password='.$password);
         //$auth_response = call_external_url(HRMS_API_URL_AUTH.'username='.$user_id.'&password='.$password);
 
-        $where = array('hrms_id' => $user_id, 'password' => $password);
-        $auth_response = $this->Login_model->check_login($where);
+        $where = array('hrms_id' => $user_id, 'password' => md5($password));
+        $auth_response = $this->Login_model->check_login($where,Tbl_emp_dump);
 
         $auth = $auth_response;
-
         if(!empty($auth_response)) {
            // if ($auth->DBK_LMS_AUTH->password == 'True') {
             // $records_response = call_external_url(HRMS_API_URL_GET_RECORD.$result->DBK_LMS_AUTH->username);

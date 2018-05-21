@@ -26,6 +26,7 @@ class Lead  extends CI_Model
             $this->db->db_debug = FALSE;
             $this->db->insert($this->_tbl_db_leads, $lead_data);
             $errors = $this->db->error();
+            // echo $this->db->last_query();die;
             if($errors['code']){
                 $response['status'] = 'error';
                 $response['code'] = $errors['code'];
@@ -120,6 +121,8 @@ class Lead  extends CI_Model
             $this->db->where('db_leads.id',$id);
         }
         $result = $this->db->get();
+
+        //echo $this->db->last_query();die;
         return $result->result_array();
         
     }
@@ -550,6 +553,9 @@ class Lead  extends CI_Model
          $this->db->from('db_leads');
          $this->db->where($whereEx);
          $resultArray = $this->db->get()->result_array();
+/*      echo $this->db->last_query();
+       die;
+       */
          if (count($resultArray) > 0) {
              return $resultArray[0]['id'];
          }
@@ -583,6 +589,7 @@ class Lead  extends CI_Model
      * @return value
      */
     public function lead_details($lead_id){
+        //echo $lead_id;die();
         $this->db->select('Ld.id,Ld.lead_identification,Ld.lead_ticket_range,Ld.opened_account_no,Ld.created_by_branch_id,Ld.customer_name,Ld.contact_no,Ld.remark,La.employee_name,La.status,La.is_deleted,La.is_updated,db_master_products.title,r.remind_on,r.reminder_text')
                 ->from('db_leads AS Ld')
                 ->join('db_lead_assign AS La', 'La.lead_id = Ld.id', 'left')
@@ -590,6 +597,7 @@ class Lead  extends CI_Model
                 ->join('db_reminder_scheduler AS r','r.lead_id=Ld.id','left')
                 ->where('La.is_updated',1)
                 ->where('La.is_deleted',0)
+                ->order_by("La.modified_by","desc")
                 ->where('Ld.id',$lead_id);
         $result = $this->db->get()->result_array();
         return $result;
