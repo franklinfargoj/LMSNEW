@@ -1724,10 +1724,10 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
                 'supervisor_id' => $records['supervisor_id'],
                 'designation_id' => $records['designation_id'],
                 'designation_name' => $records['designation'],
-                'mobile' => $records['mobile'],
+                'mobile' => $records['contact_no'],
                 'email_id' => $records['email_id'],
                 'designation' => get_designation($records['designation_id']),
-                'dept_id' => $records['dept_id']
+                //'dept_id' => $records['dept_id']
             );
 
             $hrms_id = $records['hrms_id'];
