@@ -1637,7 +1637,6 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
     //franklin fargoj
     public function authenticationnew_post()
     {
-
         $params = $this->input->post();
 
         if (!isset($params['user_id']) || !isset($params['password']) || !isset($params['device_token']) ||
@@ -1648,14 +1647,14 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
             returnJson($err);
         }
 
-        $user_id = $params['user_id'];
         //$password = $params['password'];//$password = base64_decode($params['password']);
+        $user_id = $params['user_id'];
         $password = aes_decode($params['password']);
         $device_token = $params['device_token'];
         $device_type = $params['device_type'];
 
         //$auth_response = call_external_url(HRMS_API_URL_AUTH.'username='.$user_id.'?password='.$password);
-        //$auth_response = call_external_url(HRMS_API_URL_AUTH.'username='.$user_id.'&password='.$password);
+       // $auth_response = call_external_url(HRMS_API_URL_AUTH.'username='.$user_id.'&password='.$password);
 
         $where = array('hrms_id' => $user_id, 'password' => md5($password));
         $auth_response = $this->Login_model->check_login($where,Tbl_emp_dump);
@@ -1667,7 +1666,7 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
             //$records_response = call_external_url(HRMS_API_URL_GET_RECORD.'emplid='.$auth->DBK_LMS_AUTH->username);
             //$records_response = call_external_url(HRMS_API_URL_GET_RECORD.'hrms_id='.$auth->DBK_LMS_AUTH->username);
             //$records = json_decode($records_response);
-            $records = $auth;
+            $records = $auth[0];
             $authorisation_key = random_number();
 /*            $data = array(
                 'device_token' => $device_token,
@@ -1727,8 +1726,8 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
                 'designation_name' => $records['designation_name'],
                 'mobile' => $records['mobile'],
                 'email_id' => $records['email_id'],
-                'designation' => get_designation($records['designation_id'])
-               // 'dept_id' => $records[''],
+                'designation' => get_designation($records['designation_id']),
+                'dept_id' => $records['dept_id']
             );
 
             $hrms_id = $records['hrms_id'];
