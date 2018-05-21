@@ -227,7 +227,7 @@ class Login extends CI_Controller {
 
 
      private function set_session($data){
-             //echo "<pre>";print_r($data);die;
+           //  echo "<pre>";print_r($data);die;
              $login_user = array(
                  'admin_id' => $data['hrms_id'],
                  'dept_type_id' => $data['dept_type_id'],

@@ -168,7 +168,7 @@ $remark_extra = 'style="rows:4 ; cols:80"';
 //                        die;
 
                         if(in_array($this->session->userdata('admin_type'),array('GM','ZM')) ||
-                            ($this->session->userdata('dept_type_id') != 'BR' &&
+                            ($this->session->userdata('dept_type_id') == 'BR' &&
                                 in_array($this->session->userdata('admin_type'),array('EM','BM')))){
                             $checked = TRUE;
                             $style = "style='display:none'";

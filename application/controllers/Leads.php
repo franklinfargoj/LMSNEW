@@ -781,7 +781,7 @@ class Leads extends CI_Controller
     public function details_generated($lead_id){
         $lead_id = decode_id($lead_id);
         $arrData['leads'] = $this->Lead->lead_details($lead_id);
-        //pe($arrData['leads']);die;
+        //pe($lead_id);die;
         $all_status = $this->config->item('lead_status');
 
         if($arrData['leads'][0]['status'] == 'NC'){
