@@ -106,13 +106,15 @@ class Login extends CI_Controller {
 
                     $checkInput = array('hrms_id' => $this->input->post('username'), 'password' => md5($pwd));
                     $auth_response = $this->master->check_login($checkInput,Tbl_emp_dump);
+
+                    //pe($auth_response);die;
                     $login_id = $auth_response[0]['hrms_id'];
 
                     $select = array('hrms_id as DESCR10','name as DESCR30');
                     $where = array('supervisor_id' => $login_id);
                     $records_response = $this->Master_model->employees_with_supervisor($select,$where);
 
-                   // pe($records_response);die;
+                   // pe($auth_response);die;
 
                     if (!empty($auth_response)) {
                         // $records_response = call_external_url(HRMS_API_URL_GET_RECORD.$result->DBK_LMS_AUTH->username);
@@ -164,7 +166,7 @@ class Login extends CI_Controller {
                             'email_id' => $auth_response[0]['email_id'],
                             'dept_type_id' => $auth_response[0]['dept_type_id'],
                             'dept_type_name' => $auth_response[0]['dept_type_name'],
-                            //'dept_id' => $records->dbk_lms_emp_record1->deptid,
+                            'dept_id' => $auth_response[0]['dept_id'],
                             'list'=>$records_response
                         ); //pe($result);die;
 
@@ -227,7 +229,7 @@ class Login extends CI_Controller {
 
 
      private function set_session($data){
-           //  echo "<pre>";print_r($data);die;
+            //echo "<pre>";print_r($data);die;
              $login_user = array(
                  'admin_id' => $data['hrms_id'],
                  'dept_type_id' => $data['dept_type_id'],
@@ -246,7 +248,7 @@ class Login extends CI_Controller {
                  'authorisation_key' => $data['authorisation_key'],
                  'list'=>$data['list']
              );
-
+          //pe($login_user);die;
           $this->session->set_userdata($login_user);
      }
 
