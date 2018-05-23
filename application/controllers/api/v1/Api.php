@@ -34,6 +34,7 @@ class Api extends REST_Controller
         $this->load->model('Master_model');
         $this->load->model('Faq_model', 'faq');
         $this->load->model('Notification_model', 'notification');
+        $this->load->model('customer_import_model');
         $method = $this->router->method;
         $authorised_methods = $this->config->item('authorised_methods');
         /*if(in_array($method,$authorised_methods)){
@@ -1649,13 +1650,13 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
 
         //$password = $params['password'];//$password = base64_decode($params['password']);
         $user_id = $params['user_id'];
-        //$password = aes_decode($params['password']);
-        $password = $params['password'];
+        $password = aes_decode($params['password']);
         $device_token = $params['device_token'];
         $device_type = $params['device_type'];
 
         //$auth_response = call_external_url(HRMS_API_URL_AUTH.'username='.$user_id.'?password='.$password);
-        // $auth_response = call_external_url(HRMS_API_URL_AUTH.'username='.$user_id.'&password='.$password);
+       // $auth_response = call_external_url(HRMS_API_URL_AUTH.'username='.$user_id.'&password='.$password);
+
         $where = array('hrms_id' => $user_id, 'password' => md5($password));
         $auth_response = $this->Login_model->check_login($where,Tbl_emp_dump);
 
@@ -1667,7 +1668,6 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
             //$records_response = call_external_url(HRMS_API_URL_GET_RECORD.'hrms_id='.$auth->DBK_LMS_AUTH->username);
             //$records = json_decode($records_response);
             $records = $auth[0];
-
             $authorisation_key = random_number();
 /*            $data = array(
                 'device_token' => $device_token,
@@ -1686,14 +1686,16 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
                 'authorisation_key'=>$authorisation_key
             );
 
-            $this->Login_model->insert_login_log($data); // login log
-            $fullname = array_map('trim', explode('.', $records['name']));
+             $this->Login_model->insert_login_log($data); // login log
+
+             $fullname = array_map('trim', explode('.', $records['name']));
 
             if($fullname[0] == ''){
                 $fullname1 = ucwords(strtolower(trim($fullname[1])));
             }else{
                 $fullname1 = ucwords(strtolower(trim($fullname[0])));
             }
+
 //            $result['basic_info'] = array(
 //                'hrms_id' => $records->dbk_lms_emp_record1->EMPLID,
 //                'dept_id' => $records->dbk_lms_emp_record1->deptid,
@@ -1711,7 +1713,6 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
 //                'email_id' => $records->dbk_lms_emp_record1->email,
 //                'designation' => get_designation($records->dbk_lms_emp_record1->designation_id)
 //            );
-
             $result['basic_info'] = array(
                 'hrms_id' => $records['hrms_id'],
                 'dept_type_id' => $records['dept_type_id'],
@@ -1727,7 +1728,7 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
                 'mobile' => $records['contact_no'],
                 'email_id' => $records['email_id'],
                 'designation' => get_designation($records['designation_id']),
-                'dept_id' => $records['dept_id']
+                //'dept_id' => $records['dept_id']
             );
 
             $hrms_id = $records['hrms_id'];
@@ -1740,7 +1741,6 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
 
             $read_where = array('n.notification_to' => $hrms_id, 'n.is_read' => 1);
             $leads['read_notification'] = $this->notification->get_notifications($action, $select, $read_where, $table, $join = array(), $order_by='');
-
 
             // employee
             if ($result['basic_info']['designation'] == 'EM') {
@@ -1904,22 +1904,21 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
                 foreach ($generated['yearly_generated_leads'] as $k => $v) {
                     $generated_key_value_year[$v['created_by']] = $v['total'];
                 }
-
                 foreach ($result as $key => $val) {
-                    if (!array_key_exists($val['DESCR10'], $generated_key_value_year)) {
+                    if (!array_key_exists($val->DESCR10, $generated_key_value_year)) {
                         $push_generated = array(
-                            'created_by' => $val['DESCR10'],
-                            'created_by_name' => ucwords(strtolower($val['DESCR30'])),
+                            'created_by' => $val->DESCR10,
+                            'created_by_name' => ucwords(strtolower($val->DESCR30)),
                             'total_generated_mtd' => 0,
                             'total_generated_ytd' => 0);
                     } else {
                         $push_generated = array(
-                            'created_by' => $val['DESCR10'],
-                            'created_by_name' => ucwords(strtolower($val['DESCR30'])),
-                            'total_generated_mtd' => ($generated_key_value[$val['DESCR10']])?$generated_key_value[$val['DESCR10']]:0,
-                            'total_generated_ytd' => ($generated_key_value_year[$val['DESCR10']])?$generated_key_value_year[$val['DESCR10']]:0);
+                            'created_by' => $val->DESCR10,
+                            'created_by_name' => ucwords(strtolower($val->DESCR30)),
+                            'total_generated_mtd' => ($generated_key_value[$val->DESCR10])?$generated_key_value[$val->DESCR10]:0,
+                            'total_generated_ytd' => ($generated_key_value_year[$val->DESCR10])?$generated_key_value_year[$val->DESCR10]:0);
                     }
-                    $final[$val['DESCR10']] = $push_generated;
+                    $final[$val->DESCR10] = $push_generated;
                 }
                 foreach ($final as $id => $value) {
 
@@ -1980,20 +1979,20 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
                     $generated_key_value_year[$v['created_by_branch_id']] = $v['total'];
                 }
                 foreach ($result as $key => $val) {
-                    if (!array_key_exists($val['DESCR10'], $generated_key_value_year)) {
+                    if (!array_key_exists($val->DESCR10, $generated_key_value_year)) {
                         $push_generated = array(
-                            'created_by' => $val['DESCR10'],
-                            'created_by_name' => ucwords(strtolower($val['DESCR30'])),
+                            'created_by' => $val->DESCR10,
+                            'created_by_name' => ucwords(strtolower($val->DESCR30)),
                             'total_generated_mtd' => 0,
                             'total_generated_ytd' => 0);
                     } else {
                         $push_generated = array(
-                            'created_by' => $val['DESCR10'],
-                            'created_by_name' => ucwords(strtolower($val['DESCR30'])),
-                            'total_generated_mtd' => ($generated_key_value[$val['DESCR10']])?$generated_key_value[$val['DESCR10']]:0,
-                            'total_generated_ytd' => ($generated_key_value_year[$val['DESCR10']])?$generated_key_value_year[$val['DESCR10']]:0);
+                            'created_by' => $val->DESCR10,
+                            'created_by_name' => ucwords(strtolower($val->DESCR30)),
+                            'total_generated_mtd' => ($generated_key_value[$val->DESCR10])?$generated_key_value[$val->DESCR10]:0,
+                            'total_generated_ytd' => ($generated_key_value_year[$val->DESCR10])?$generated_key_value_year[$val->DESCR10]:0);
                     }
-                    $final[$val['DESCR10']] = $push_generated;
+                    $final[$val->DESCR10] = $push_generated;
                 }
                 //for converted
                 foreach ($final as $id => $value) {
@@ -2052,20 +2051,20 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
                     $generated_key_value_year[$v['created_by_zone_id']] = $v['total'];
                 }
                 foreach ($result as $key => $val) {
-                    if (!array_key_exists($val['DESCR10'], $generated_key_value_year)) {
+                    if (!array_key_exists($val->DESCR10, $generated_key_value_year)) {
                         $push_generated = array(
-                            'created_by' => $val['DESCR10'],
-                            'created_by_name' => ucwords(strtolower($val['DESCR30'])),
+                            'created_by' => $val->DESCR10,
+                            'created_by_name' => ucwords(strtolower($val->DESCR30)),
                             'total_generated_mtd' => 0,
                             'total_generated_ytd' => 0);
                     } else {
                         $push_generated = array(
-                            'created_by' => $val['DESCR10'],
-                            'created_by_name' => ucwords(strtolower($val['DESCR30'])),
-                            'total_generated_mtd' => ($generated_key_value[$val['DESCR10']])?$generated_key_value[$val['DESCR10']]:0,
-                            'total_generated_ytd' => ($generated_key_value_year[$val['DESCR10']])?$generated_key_value_year[$val['DESCR10']]:0);
+                            'created_by' => $val->DESCR10,
+                            'created_by_name' => ucwords(strtolower($val->DESCR30)),
+                            'total_generated_mtd' => ($generated_key_value[$val->DESCR10])?$generated_key_value[$val->DESCR10]:0,
+                            'total_generated_ytd' => ($generated_key_value_year[$val->DESCR10])?$generated_key_value_year[$val->DESCR10]:0);
                     }
-                    $final[$val['DESCR10']] = $push_generated;
+                    $final[$val->DESCR10] = $push_generated;
                 }
                 //for converted
                 foreach ($final as $id => $value) {
@@ -2223,13 +2222,14 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
             // $records_response = call_external_url(HRMS_API_URL_GET_RECORD.$result->DBK_LMS_AUTH->username);
             //$records_response = call_external_url(HRMS_API_URL_GET_RECORD.'emplid='.$params['hrms_id']);
 
-            /*  $records_response = call_external_url(HRMS_API_URL_GET_RECORD.'hrms_id='.$params['hrms_id']);*/
+          /*  $records_response = call_external_url(HRMS_API_URL_GET_RECORD.'hrms_id='.$params['hrms_id']);*/
             $where = array('hrms_id' => $params['hrms_id']);
-            $records_response = $this->Login_model->check_login($where,Tbl_emp_dump);
-            // $records = json_decode($records_response);
+            $records_response = $this->Login_model->check_login($where);
+
+            $records = json_decode($records_response);
             /*$fullname = array_map('trim', explode('.', $records->dbk_lms_emp_record1->name));*/
 
-            $fullname = array_map('trim', explode('.', $records_response[0]['name']));
+            $fullname = array_map('trim', explode('.', $records[0]['full_name']));
 
             if($fullname[0] == ''){
                 $fullname1 = ucwords(strtolower(trim($fullname[1])));
@@ -2237,54 +2237,44 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
                 $fullname1 = ucwords(strtolower(trim($fullname[0])));
             }
 
-            /*            $result['basic_info'] = array(
-                            'hrms_id' => $records->dbk_lms_emp_record1->EMPLID,
-                            'dept_id' => $records->dbk_lms_emp_record1->deptid,
-                            'dept_type_id' => $records->dbk_lms_emp_record1->dbk_dept_type,
-                            'dept_type_name' => $records->dbk_lms_emp_record1->dept_discription,
-                            'branch_id' => $records->dbk_lms_emp_record1->deptid,
-                            'district_id' => $records->dbk_lms_emp_record1->district,
-                            'state_id' => $records->dbk_lms_emp_record1->state,
-                            'zone_id' => $records->dbk_lms_emp_record1->dbk_state_id,
-                            'full_name' => $fullname1,
-                            'supervisor_id' => $records->dbk_lms_emp_record1->supervisor,
-                            'designation_id' => $records->dbk_lms_emp_record1->designation_id,
-                            'designation_name' => $records->dbk_lms_emp_record1->designation_descr,
-                            'mobile' => $records->dbk_lms_emp_record1->phone,
-                            'email_id' => $records->dbk_lms_emp_record1->email,
-                            'designation' => get_designation($records->dbk_lms_emp_record1->designation_id)
-                        );*/
-            //$records_response = $this->Master_model->employees_with_supervisor($select,$where);
-            // pe($records);die;
+/*            $result['basic_info'] = array(
+                'hrms_id' => $records->dbk_lms_emp_record1->EMPLID,
+                'dept_id' => $records->dbk_lms_emp_record1->deptid,
+                'dept_type_id' => $records->dbk_lms_emp_record1->dbk_dept_type,
+                'dept_type_name' => $records->dbk_lms_emp_record1->dept_discription,
+                'branch_id' => $records->dbk_lms_emp_record1->deptid,
+                'district_id' => $records->dbk_lms_emp_record1->district,
+                'state_id' => $records->dbk_lms_emp_record1->state,
+                'zone_id' => $records->dbk_lms_emp_record1->dbk_state_id,
+                'full_name' => $fullname1,
+                'supervisor_id' => $records->dbk_lms_emp_record1->supervisor,
+                'designation_id' => $records->dbk_lms_emp_record1->designation_id,
+                'designation_name' => $records->dbk_lms_emp_record1->designation_descr,
+                'mobile' => $records->dbk_lms_emp_record1->phone,
+                'email_id' => $records->dbk_lms_emp_record1->email,
+                'designation' => get_designation($records->dbk_lms_emp_record1->designation_id)
+            );*/
 
-            $records = $records_response[0];
 
             $result['basic_info'] = array(
-                'hrms_id' => $records['hrms_id'],
-                'dept_id' => $records['dept_id'],
-                'dept_type_id' => $records['dept_type_id'],
-                'dept_type_name' => $records['dept_type_name'],
-                'branch_id' => $records['branch_id'],
-                'district_id' => $records['district_id'],
-                'state_id' => $records['state_id'],
-                'zone_id' => $records['zone_id'],
+                'hrms_id' => $records[0]['hrms_id'],
+                //'dept_id' => $records->dbk_lms_emp_record1->deptid,
+                'dept_type_id' => $records[0]['dept_type_id'],
+                'dept_type_name' => $records[0]['dept_type_name'],
+                'branch_id' => $records[0]['branch_id'],
+                'district_id' => $records[0]['district_id'],
+                'state_id' => $records[0]['state_id'],
+                'zone_id' => $records[0]['zone_id'],
                 'full_name' => $fullname1,
-                'supervisor_id' => $records['supervisor_id'],
-                'designation_id' => $records['designation_id'],
-                'designation_name' => $records['designation'],
-                'mobile' => $records['contact_no'],
-                'email_id' => $records['email_id'],
-                'designation' => get_designation($records['designation_id'])
+                'supervisor_id' => $records[0]['supervisor_id'],
+                'designation_id' => $records[0]['designation_id'],
+                'designation_name' => $records[0]['designation_name'],
+                'mobile' => $records[0]['mobile'],
+                'email_id' => $records[0]['email_id'],
+                'designation' => get_designation($records[0]['designation_id'])
             );
 
-
-            $select = array('hrms_id as DESCR10','name as DESCR30');
-            $where = array('supervisor_id' => $records['hrms_id']);
-            $result['employees'] = $this->Master_model->employees_with_supervisor($select,$where);
-
-
-
-            $hrms_id = $records['hrms_id'];
+            $hrms_id = $records[0]['hrms_id'];
             $action = 'count';
             $table = Tbl_Notification . ' as n';
             $select = array('n.*');
@@ -2294,8 +2284,6 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
 
             $read_where = array('n.notification_to' => $hrms_id, 'n.is_read' => 1);
             $leads['read_notification'] = $this->notification->get_notifications($action, $select, $read_where, $table, $join = array(), $order_by='');
-
-
 
             // employee
             if ($result['basic_info']['designation'] == 'EM') {
@@ -2380,9 +2368,7 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
                 if (isset($result['basic_info']['branch_id']) && $result['basic_info']['branch_id'] != '') {
                     $branch_id = $result['basic_info']['branch_id'];
                     $type = 'BM';
-
-                    $final = $this->countnew($type, $branch_id,$result['employees']);
-                    //$final = $this->countnew($type, $branch_id, $records->dbk_lms_emp_record1->DBK_LMS_COLL);
+                    $final = $this->countnew($type, $branch_id, $records->dbk_lms_emp_record1->DBK_LMS_COLL);
 
                     $leads['generated_converted'] = $final;
                     $action = 'count';
@@ -2429,15 +2415,14 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
                 if (isset($result['basic_info']['zone_id']) && $result['basic_info']['zone_id'] != '') {
                     $zone_id = $result['basic_info']['zone_id'];
                     $type = 'ZM';
-
-                    $final = $this->countnew($type, $zone_id,$result['employees']);
+                    $final = $this->countnew($type, $zone_id, $records->dbk_lms_emp_record1->DBK_LMS_COLL);
                     $leads['generated_converted'] = $final;
                 }
             }
             // GM
             if ($result['basic_info']['designation'] == 'GM') {
                 $type = 'GM';
-                $final = $this->countnew($type, '', $result['employees']);
+                $final = $this->countnew($type, '', $records->dbk_lms_emp_record1->DBK_LMS_COLL);
                 $leads['generated_converted'] = $final;
             }
             $result = array(
@@ -3371,8 +3356,76 @@ private function verify_cbs_account($acc_no)
         );
         returnJson($error);
     }
+//count total lead and pending
 
+/**
+* @api {get} customer_retention_lead Count for the Total Lead and pending calls
+* @apiDescription count total lead and pending
+* @apiName getCustomerLead
+* @apiParam {String} hrms_id hrms id of the customer
+* @apiSuccess {int} total count  
+* @apiSuccess {int} pending count 
+* @apiGroup Customer Retention
+*/
 
+function customer_retention_lead_post()
+{
+        $params = $this->input->post();
+        if (!empty($params) && isset($params['hrms_id']) && !empty($params['hrms_id']))
+        {
+            $hrms_id = array(
+                'hrms_id' => $params['hrms_id'],
+                
+            );
+            $result=$this->customer_import_model->get_hrms_id($hrms_id );
+            $res = array('result' => True,
+            'data' => $result);
+            returnJson($res);
+        }
+         $error = array(
+            "result" => False,
+            "data" => array("Missing Parameters.")
+        );
+        returnJson($error);
 
-
+}
+//list customer retention depend on the page number and list(pending or called)
+/**
+* @api {get} customer_retention_list Customer retention Called and Pending list.
+* @apiDescription list customer retention depend on the page number and list(pending or called)
+* @apiName getCustomerList
+* @apiParam {String} list Either called or pending
+* @apiParam {int} page  current page number
+* @apiSuccess {string} customer  customer name
+* @apiSuccess {Number} BalanceDrop current_balance
+* @apiGroup  Customer Retention
+*/
+function customer_retention_list_post()
+{
+    $params = $this->input->post();
+    if (!empty($params) && isset($params['list']))
+    {
+      $current_page=$params['page'];
+      $per_page = 14;
+      $current_index = ($current_page - 1) * $per_page;
+      
+  
+        $para = array(
+        'list' => $params['list'],
+             
+        );
+        $result=$this->customer_import_model->get_customer_retention_list($para);
+        $item_list = array_slice($result, $current_index, $per_page);
+        $config['total_rows'] = count($result);
+        $this->load->library('pagination', $config);
+        $res = array('result' => True,
+                'data' => $item_list);
+        returnJson($res);
+    }
+     $error = array(
+            "result" => False,
+            "data" => array("Missing Parameters.")
+        );
+        returnJson($error);
+    }
 }
