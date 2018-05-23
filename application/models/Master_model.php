@@ -447,4 +447,40 @@ class Master_model extends CI_Model{
             ->get()
             ->result_array();
     }
+
+    /**
+     * view_product_category
+     * @author Sumit Desai
+     * @access public
+     * @param $id
+     * @return array
+     */
+    public function view_crm(){
+        $this->db->select('id,title,content,slug');
+        $this->db->from('db_crm');
+        $query =  $this->db->get();
+        return $query->result_array();
+    }
+    /**
+     * edit_product_category
+     * @author Sumit Desai
+     * @access public
+     * @param $data
+     * @return int
+     */
+    public function add_crm($data){
+        return $this->insert('db_crm',$data);
+    }
+
+    /**
+     * edit_product_category
+     * @author Sumit Desai
+     * @access public
+     * @param $id,$data
+     * @return int
+     */
+    public function edit_crm($id,$data){
+        $where['id'] = $id;
+        return $this->update($where,'db_crm',$data);
+    }
 }
