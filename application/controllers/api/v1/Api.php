@@ -3359,7 +3359,7 @@ private function verify_cbs_account($acc_no)
 //count total lead and pending
 
 /**
-* @api {get} customer_retention_lead Count for the Total Lead and pending calls
+* @api {post} customer_retention_lead Count for the Total Lead and pending calls
 * @apiDescription count total lead and pending
 * @apiName getCustomerLead
 * @apiParam {String} hrms_id hrms id of the customer
@@ -3391,13 +3391,15 @@ function customer_retention_lead_post()
 }
 //list customer retention depend on the page number and list(pending or called)
 /**
-* @api {get} customer_retention_list Customer retention Called and Pending list.
+* @api {post} customer_retention_list Customer retention Called and Pending list.
 * @apiDescription list customer retention depend on the page number and list(pending or called)
 * @apiName getCustomerList
 * @apiParam {String} list Either called or pending
 * @apiParam {int} page  current page number
+* @apiSuccess {string} id  Customer ID
 * @apiSuccess {string} customer  customer name
 * @apiSuccess {Number} BalanceDrop current_balance
+* @apiSuccess {Number} PhoneNumber Contact Number
 * @apiGroup  Customer Retention
 */
 function customer_retention_list_post()
@@ -3427,5 +3429,84 @@ function customer_retention_list_post()
             "data" => array("Missing Parameters.")
         );
         returnJson($error);
+}
+//list customer retention depend on the page number and list(pending or called)
+/**
+* @api {post} customer_retention_detail Customer retention Details.
+* @apiDescription Display the customer retention information of given customer id
+* @apiName getCustomerRetentionDetail
+* @apiParam {int} customer_id  Customer ID
+* @apiSuccess {string} customer_name  customer name
+* @apiSuccess {int} contact_no Phone Number
+* @apiSuccess {int} id Customer Retention Id
+* @apiSuccess {int} customer_id Customer ID
+* @apiSuccess {string} internet_banking Yes/No
+* @apiSuccess {string} mobile_banking Yes/No
+* @apiSuccess {string} debit_card Yes/No
+* @apiSuccess {string} neft_rtgs Yes/No
+* @apiSuccess {string} moving_money_dena_to_non_dena Yes/No
+* @apiSuccess {string} remarks Customer Remark
+* @apiSuccess {int} three_months_internet_transaction Internet Transactions
+* @apiSuccess {int} three_months_mobile_transaction Mobile Transactions
+* @apiSuccess {int} transaction_debit_card_POS Debit Card Transactions
+* @apiGroup  Customer Retention
+*/
+function customer_retention_detail_post()
+{
+    $params=$this->input->post();
+    if (!empty($params) && isset($params['customer_id']))
+    {
+        $customer_id=$params['customer_id'];
+        $result=$this->customer_import_model->get_customer_retention_detail($params);
+        
+        $res = array('result' => True,
+                'data' => $result);
+        returnJson($res);
     }
+     $error = array(
+            "result" => False,
+            "data" => array("Missing Parameters.")
+        );
+        returnJson($error);
+
+}
+/**
+* @api {post} customer_retention_remark_update Customer retention Remark Update.
+* @apiDescription Update the remark for the given customer id
+* @apiName updateRemark
+* @apiParam {int} customer_id  Customer ID
+* @apiParam {string} remark  contents
+* @apiSuccess {int} contact_no Phone Number
+* @apiSuccess {int} id Customer Retention Id
+* @apiSuccess {int} customer_id Customer ID
+* @apiSuccess {string} internet_banking Yes/No
+* @apiSuccess {string} mobile_banking Yes/No
+* @apiSuccess {string} debit_card Yes/No
+* @apiSuccess {string} neft_rtgs Yes/No
+* @apiSuccess {string} moving_money_dena_to_non_dena Yes/No
+* @apiSuccess {string} remarks Customer Remark
+* @apiSuccess {int} three_months_internet_transaction Internet Transactions
+* @apiSuccess {int} three_months_mobile_transaction Mobile Transactions
+* @apiSuccess {int} transaction_debit_card_POS Debit Card Transactions
+* @apiGroup  Customer Retention
+*/
+function customer_retention_remark_update_post()
+{
+    $params=$this->input->post();
+    if (!empty($params) && isset($params['customer_id']) && isset($params['remark']))
+    {
+        // $customer_id=$params['customer_id'];
+        $result=$this->customer_import_model->update_customer_retention_remark($params);
+        
+        $res = array('result' => True,
+                'data' => $result);
+        returnJson($res);
+    }
+     $error = array(
+            "result" => False,
+            "data" => array("Missing Parameters.")
+        );
+        returnJson($error);
+
+}
 }
