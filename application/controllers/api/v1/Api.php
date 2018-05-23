@@ -34,6 +34,7 @@ class Api extends REST_Controller
         $this->load->model('Master_model');
         $this->load->model('Faq_model', 'faq');
         $this->load->model('Notification_model', 'notification');
+        $this->load->model('customer_import_model');
         $method = $this->router->method;
         $authorised_methods = $this->config->item('authorised_methods');
         /*if(in_array($method,$authorised_methods)){
@@ -1650,7 +1651,6 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
         //$password = $params['password'];//$password = base64_decode($params['password']);
         $user_id = $params['user_id'];
         $password = aes_decode($params['password']);
-        //$password = $params['password'];
         $device_token = $params['device_token'];
         $device_type = $params['device_type'];
 
@@ -1716,7 +1716,6 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
 
             $result['basic_info'] = array(
                 'hrms_id' => $records['hrms_id'],
-                'dept_id' => $records['dept_id'],
                 'dept_type_id' => $records['dept_type_id'],
                 'dept_type_name' => $records['dept_type_name'],
                 'branch_id' => $records['branch_id'],
@@ -1730,6 +1729,7 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
                 'mobile' => $records['contact_no'],
                 'email_id' => $records['email_id'],
                 'designation' => get_designation($records['designation_id']),
+                'dept_id' => $records['dept_id']
             );
 
             $select = array('hrms_id as DESCR10','name as DESCR30');
@@ -1746,6 +1746,7 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
 
             $read_where = array('n.notification_to' => $hrms_id, 'n.is_read' => 1);
             $leads['read_notification'] = $this->notification->get_notifications($action, $select, $read_where, $table, $join = array(), $order_by='');
+
 
             // employee
             if ($result['basic_info']['designation'] == 'EM') {
@@ -1871,9 +1872,6 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
                 "result" => True,
                 "data" => ['count' => $leads, 'basic_info' => $result['basic_info'],'authorisation_key'=>$authorisation_key]
             );
-
-
-
             returnJson($result);
         } else {
             $err['result'] = false;
@@ -2289,6 +2287,7 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
             $select = array('hrms_id as DESCR10','name as DESCR30');
             $where = array('supervisor_id' => $records['hrms_id']);
             $result['employees'] = $this->Master_model->employees_with_supervisor($select,$where);
+
 
 
             $hrms_id = $records['hrms_id'];
@@ -3378,8 +3377,244 @@ private function verify_cbs_account($acc_no)
         );
         returnJson($error);
     }
+//count total lead and pending
+
+/**
+* @api {post} customer_retention_lead Count for the Total Lead and pending calls
+* @apiDescription count total lead and pending
+* @apiName getCustomerLead
+* @apiParam {String} hrms_id hrms id of the customer
+* @apiSuccess {int} total count
+* @apiSuccess {int} pending count
+* @apiGroup Customer Retention
+*/
+
+function customer_retention_lead_post()
+{
+        $params = $this->input->post();
+        if (!empty($params) && isset($params['hrms_id']) && !empty($params['hrms_id']))
+        {
+            $hrms_id = array(
+                'hrms_id' => $params['hrms_id'],
+
+            );
+            $result=$this->customer_import_model->get_hrms_id($hrms_id );
+            $res = array('result' => True,
+            'data' => $result);
+            returnJson($res);
+        }
+         $error = array(
+            "result" => False,
+            "data" => array("Missing Parameters.")
+        );
+        returnJson($error);
+
+}
+//list customer retention depend on the page number and list(pending or called)
+/**
+* @api {post} customer_retention_list Customer retention Called and Pending list.
+* @apiDescription list customer retention depend on the page number and list(pending or called)
+* @apiName getCustomerList
+* @apiParam {String} list Either called or pending
+* @apiParam {int} page  current page number
+* @apiSuccess {string} id  Customer ID
+* @apiSuccess {string} customer  customer name
+* @apiSuccess {Number} BalanceDrop current_balance
+* @apiSuccess {Number} PhoneNumber Contact Number
+* @apiGroup  Customer Retention
+*/
+function customer_retention_list_post()
+{
+    $params = $this->input->post();
+    if (!empty($params) && isset($params['list']))
+    {
+      $current_page=$params['page'];
+      $per_page = 14;
+      $current_index = ($current_page - 1) * $per_page;
 
 
+        $para = array(
+        'list' => $params['list'],
 
+        );
+        $result=$this->customer_import_model->get_customer_retention_list($para);
+        $item_list = array_slice($result, $current_index, $per_page);
+        $config['total_rows'] = count($result);
+        $this->load->library('pagination', $config);
+        $res = array('result' => True,
+                'data' => $item_list);
+        returnJson($res);
+    }
+     $error = array(
+            "result" => False,
+            "data" => array("Missing Parameters.")
+        );
+        returnJson($error);
+}
+//list customer retention depend on the page number and list(pending or called)
+/**
+* @api {post} customer_retention_detail Customer retention Details.
+* @apiDescription Display the customer retention information of given customer id
+* @apiName getCustomerRetentionDetail
+* @apiParam {int} customer_id  Customer ID
+* @apiSuccess {string} customer_name  customer name
+* @apiSuccess {int} contact_no Phone Number
+* @apiSuccess {int} id Customer Retention Id
+* @apiSuccess {int} customer_id Customer ID
+* @apiSuccess {string} internet_banking Yes/No
+* @apiSuccess {string} mobile_banking Yes/No
+* @apiSuccess {string} debit_card Yes/No
+* @apiSuccess {string} neft_rtgs Yes/No
+* @apiSuccess {string} moving_money_dena_to_non_dena Yes/No
+* @apiSuccess {string} remarks Customer Remark
+* @apiSuccess {int} three_months_internet_transaction Internet Transactions
+* @apiSuccess {int} three_months_mobile_transaction Mobile Transactions
+* @apiSuccess {int} transaction_debit_card_POS Debit Card Transactions
+* @apiGroup  Customer Retention
+*/
+function customer_retention_detail_post()
+{
+    $params=$this->input->post();
+    if (!empty($params) && isset($params['customer_id']))
+    {
+        $customer_id=$params['customer_id'];
+        $result=$this->customer_import_model->get_customer_retention_detail($params);
 
+        if($result[0]['internet_banking']==1)
+        {
+            $result[0]['internet_banking']='yes';
+        }
+        else
+        {
+            $result[0]['internet_banking']='no';
+        }
+
+        if($result[0]['mobile_banking']==1)
+        {
+            $result[0]['mobile_banking']='yes';
+        }
+        else
+        {
+            $result[0]['mobile_banking']='no';
+        }
+
+                if($result[0]['debit_card']==1)
+        {
+            $result[0]['debit_card']='yes';
+        }
+        else
+        {
+            $result[0]['debit_card']='no';
+        }
+
+                if($result[0]['neft_rtgs']==1)
+        {
+            $result[0]['neft_rtgs']='yes';
+        }
+        else
+        {
+            $result[0]['neft_rtgs']='no';
+        }
+
+        if($result[0]['moving_money_dena_to_non_dena']==1)
+        {
+            $result[0]['moving_money_dena_to_non_dena']='yes';
+        }
+        else
+        {
+            $result[0]['moving_money_dena_to_non_dena']='no';
+        }
+        $res = array('result' => True,
+                'data' => $result);
+        returnJson($res);
+    }
+     $error = array(
+            "result" => False,
+            "data" => array("Missing Parameters.")
+        );
+        returnJson($error);
+
+}
+/**
+* @api {post} customer_retention_remark_update Customer retention Remark Update.
+* @apiDescription Update the remark for the given customer id
+* @apiName updateRemark
+* @apiParam {int} customer_id  Customer ID
+* @apiParam {string} remark  contents
+* @apiSuccess {int} contact_no Phone Number
+* @apiSuccess {int} id Customer Retention Id
+* @apiSuccess {int} customer_id Customer ID
+* @apiSuccess {boolean} internet_banking yes/no
+* @apiSuccess {boolean} mobile_banking yes/no
+* @apiSuccess {boolean} debit_card yes/no
+* @apiSuccess {boolean} neft_rtgs yes/no
+* @apiSuccess {boolean} moving_money_dena_to_non_dena yes/no
+* @apiSuccess {string} remarks Customer Remark
+* @apiSuccess {int} three_months_internet_transaction Internet Transactions
+* @apiSuccess {int} three_months_mobile_transaction Mobile Transactions
+* @apiSuccess {int} transaction_debit_card_POS Debit Card Transactions
+* @apiGroup  Customer Retention
+*/
+function customer_retention_remark_update_post()
+{
+    $params=$this->input->post();
+    if (!empty($params) && isset($params['customer_id']) && isset($params['remark']))
+    {
+        // $customer_id=$params['customer_id'];
+        $result=$this->customer_import_model->update_customer_retention_remark($params);
+        if($result[0]['internet_banking']==1)
+        {
+            $result[0]['internet_banking']='yes';
+        }
+        else
+        {
+            $result[0]['internet_banking']='no';
+        }
+
+        if($result[0]['mobile_banking']==1)
+        {
+            $result[0]['mobile_banking']='yes';
+        }
+        else
+        {
+            $result[0]['mobile_banking']='no';
+        }
+
+        if($result[0]['debit_card']==1)
+        {
+            $result[0]['debit_card']='yes';
+        }
+        else
+        {
+            $result[0]['debit_card']='no';
+        }
+
+        if($result[0]['neft_rtgs']==1)
+        {
+            $result[0]['neft_rtgs']='yes';
+        }
+        else
+        {
+            $result[0]['neft_rtgs']='no';
+        }
+
+        if($result[0]['moving_money_dena_to_non_dena']==1)
+        {
+            $result[0]['moving_money_dena_to_non_dena']='yes';
+        }
+        else
+        {
+            $result[0]['moving_money_dena_to_non_dena']='no';
+        }
+        $res = array('result' => True,
+                'data' => $result);
+        returnJson($res);
+    }
+     $error = array(
+            "result" => False,
+            "data" => array("Missing Parameters.")
+        );
+        returnJson($error);
+
+}
 }

@@ -1,5 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-class CustomerRetentionImport extends CI_Controller {
+class CustomerRetentionDetailImport extends CI_Controller {
  function index()
  {
     $admin = ucwords(strtolower($this->session->userdata('admin_type')));
@@ -11,7 +11,7 @@ class CustomerRetentionImport extends CI_Controller {
     $this->make_bread->add('Upload', '', 0);
     $arrData['breadcrumb'] = $this->make_bread->output();
           /*Create Breadcumb*/
-           return load_view("customer_retention_import",$arrData);
+           return load_view("customer_retention_detail_import",$arrData);
       // $this->load->view('empimport');
  }
 
@@ -24,8 +24,8 @@ function import()
 
   if(isset($_FILES["file"]["name"]))
   {
-   $accountid=$this->customer_import_model->get_accountid();
    $customerid=$this->customer_import_model->get_customerid();
+
    $path = $_FILES["file"]["tmp_name"];
    $object = PHPExcel_IOFactory::load($path);
    foreach($object->getWorksheetIterator() as $worksheet)
@@ -34,45 +34,17 @@ function import()
     $highestColumn = $worksheet->getHighestColumn();
     for($row=2; $row<=$highestRow; $row++)
     {
-     $customer_name = $worksheet->getCellByColumnAndRow(0, $row)->getValue();
-     $hrms_id = $worksheet->getCellByColumnAndRow(1, $row)->getValue();
-     $account_id = $worksheet->getCellByColumnAndRow(2, $row)->getValue();
-     $email_id = $worksheet->getCellByColumnAndRow(3, $row)->getValue();
-     $contact_no = $worksheet->getCellByColumnAndRow(4, $row)->getValue();
-     $current_balance = $worksheet->getCellByColumnAndRow(5, $row)->getValue();
-     $max_balance_in_last_one_year = $worksheet->getCellByColumnAndRow(6, $row)->getValue();
-     $transaction_in_3_months = $worksheet->getCellByColumnAndRow(7, $row)->getValue();
-     $products_availed = $worksheet->getCellByColumnAndRow(8, $row)->getValue();
-     $IB_MB = $worksheet->getCellByColumnAndRow(9, $row)->getValue();
-     $debit_card_active_usage = $worksheet->getCellByColumnAndRow(10, $row)->getValue();
+     $customer_id = $worksheet->getCellByColumnAndRow(0, $row)->getValue();
+     $internet_banking = $worksheet->getCellByColumnAndRow(1, $row)->getValue();
+     $mobile_banking = $worksheet->getCellByColumnAndRow(2, $row)->getValue();
+     $debit_card = $worksheet->getCellByColumnAndRow(3, $row)->getValue();
+     $neft_rtgs = $worksheet->getCellByColumnAndRow(4, $row)->getValue();
 
-
-
-     $internet_banking = $worksheet->getCellByColumnAndRow(11, $row)->getValue();
-     $mobile_banking = $worksheet->getCellByColumnAndRow(12, $row)->getValue();
-     $debit_card = $worksheet->getCellByColumnAndRow(13, $row)->getValue();
-     $neft_rtgs = $worksheet->getCellByColumnAndRow(14, $row)->getValue();
-     $moving_money_dena_to_non_dena = $worksheet->getCellByColumnAndRow(15, $row)->getValue();
-     $three_months_internet_transaction = $worksheet->getCellByColumnAndRow(16, $row)->getValue();
-     $three_months_mobile_transaction = $worksheet->getCellByColumnAndRow(17, $row)->getValue();
-     $transaction_debit_card_POS = $worksheet->getCellByColumnAndRow(18, $row)->getValue();
-     $remarks = $worksheet->getCellByColumnAndRow(19, $row)->getValue();
-
-
-     $data[] = array(
-              'customer_name'=>$customer_name,
-              'hrms_id'=>$hrms_id,
-              'account_id'=>$account_id,
-              'email_id'=>$email_id,
-              'contact_no'=>$contact_no,
-              'current_balance'=>$current_balance,
-              'max_balance_in_last_one_year'=>$max_balance_in_last_one_year,
-              'transaction_in_3_months'=>$transaction_in_3_months,
-              'products_availed'=>$products_availed,
-              'IB_MB'=>$IB_MB,
-              'debit_card_active_usage'=>$debit_card_active_usage,
-            );
-
+     $moving_money_dena_to_non_dena = $worksheet->getCellByColumnAndRow(5, $row)->getValue();
+     $three_months_internet_transaction = $worksheet->getCellByColumnAndRow(6, $row)->getValue();
+     $three_months_mobile_transaction = $worksheet->getCellByColumnAndRow(7, $row)->getValue();
+     $transaction_debit_card_POS = $worksheet->getCellByColumnAndRow(8, $row)->getValue();
+     $remarks = $worksheet->getCellByColumnAndRow(9, $row)->getValue();
 
      if($internet_banking=='YES' || $internet_banking=='Yes' || $internet_banking=='yes')
      {
@@ -118,8 +90,8 @@ function import()
      {
         $moving_money_dena_to_non_dena=0;
      }
-     $data1[] = array(
-              // 'customer_id'=>$customer_id,
+     $data[] = array(
+              'customer_id'=>$customer_id,
               'internet_banking'=>$internet_banking,
               'mobile_banking'=>$mobile_banking,
               'debit_card'=>$debit_card,
@@ -130,43 +102,24 @@ function import()
               'three_months_mobile_transaction'=>$three_months_mobile_transaction,
               'transaction_debit_card_POS'=>$transaction_debit_card_POS,
      );
-
     }
    }
-    $res=$this->customer_import_model->insert($data,$accountid);
-
-    if($res)
-    {
-      for($i=0;$i<count($data1);$i++)
-      {
-        if($res[$i]['insert']!=0)
-        {
-          $data1[$i]['customer_id']=$res[$i]['insert']++;
-        }
-        else if($res[$i]['update']!=0)
-        {
-          $data1[$i]['customer_id']=$res[$i]['update'];
-        }
-      }
-
-       $res=$this->customer_import_model->insert_customer_detail($data1,$customerid);
-    }
-
+    $res=$this->customer_import_model->insert_customer_detail($data,$customerid);
    } 
    else
         {
           $this->session->set_flashdata('error', 'Please Select File!!');
-          redirect ('/customerretentionimport');
+          redirect ('/customerretentiondetailimport');
         }
       if($res)
       {
         $this->session->set_flashdata('success', 'File Uploaded Successfully');
-        redirect ('/customerretentionimport');
+        redirect ('/customerretentiondetailimport');
       }
       else
       {
         $this->session->set_flashdata('error', 'Somthing worng. Error!!');
-        redirect ('/customerretentionimport');
+        redirect ('/customerretentiondetailimport');
       }
      } 
 
