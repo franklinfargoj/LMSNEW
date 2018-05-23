@@ -3458,7 +3458,51 @@ function customer_retention_detail_post()
     {
         $customer_id=$params['customer_id'];
         $result=$this->customer_import_model->get_customer_retention_detail($params);
-        
+
+        if($result[0]['internet_banking']==1)
+        {
+            $result[0]['internet_banking']='yes';
+        }
+        else
+        {
+            $result[0]['internet_banking']='no';
+        }
+
+        if($result[0]['mobile_banking']==1)
+        {
+            $result[0]['mobile_banking']='yes';
+        }
+        else
+        {
+            $result[0]['mobile_banking']='no';
+        }
+
+                if($result[0]['debit_card']==1)
+        {
+            $result[0]['debit_card']='yes';
+        }
+        else
+        {
+            $result[0]['debit_card']='no';
+        }
+
+                if($result[0]['neft_rtgs']==1)
+        {
+            $result[0]['neft_rtgs']='yes';
+        }
+        else
+        {
+            $result[0]['neft_rtgs']='no';
+        }
+
+        if($result[0]['moving_money_dena_to_non_dena']==1)
+        {
+            $result[0]['moving_money_dena_to_non_dena']='yes';
+        }
+        else
+        {
+            $result[0]['moving_money_dena_to_non_dena']='no';
+        }
         $res = array('result' => True,
                 'data' => $result);
         returnJson($res);
@@ -3479,11 +3523,11 @@ function customer_retention_detail_post()
 * @apiSuccess {int} contact_no Phone Number
 * @apiSuccess {int} id Customer Retention Id
 * @apiSuccess {int} customer_id Customer ID
-* @apiSuccess {boolean} internet_banking 1 or 0
-* @apiSuccess {boolean} mobile_banking 1 or 0
-* @apiSuccess {boolean} debit_card 1 or 0
-* @apiSuccess {boolean} neft_rtgs 1 or 0
-* @apiSuccess {boolean} moving_money_dena_to_non_dena 1 or 0
+* @apiSuccess {boolean} internet_banking yes/no
+* @apiSuccess {boolean} mobile_banking yes/no
+* @apiSuccess {boolean} debit_card yes/no
+* @apiSuccess {boolean} neft_rtgs yes/no
+* @apiSuccess {boolean} moving_money_dena_to_non_dena yes/no
 * @apiSuccess {string} remarks Customer Remark
 * @apiSuccess {int} three_months_internet_transaction Internet Transactions
 * @apiSuccess {int} three_months_mobile_transaction Mobile Transactions
@@ -3497,7 +3541,50 @@ function customer_retention_remark_update_post()
     {
         // $customer_id=$params['customer_id'];
         $result=$this->customer_import_model->update_customer_retention_remark($params);
-        
+        if($result[0]['internet_banking']==1)
+        {
+            $result[0]['internet_banking']='yes';
+        }
+        else
+        {
+            $result[0]['internet_banking']='no';
+        }
+
+        if($result[0]['mobile_banking']==1)
+        {
+            $result[0]['mobile_banking']='yes';
+        }
+        else
+        {
+            $result[0]['mobile_banking']='no';
+        }
+
+        if($result[0]['debit_card']==1)
+        {
+            $result[0]['debit_card']='yes';
+        }
+        else
+        {
+            $result[0]['debit_card']='no';
+        }
+
+        if($result[0]['neft_rtgs']==1)
+        {
+            $result[0]['neft_rtgs']='yes';
+        }
+        else
+        {
+            $result[0]['neft_rtgs']='no';
+        }
+
+        if($result[0]['moving_money_dena_to_non_dena']==1)
+        {
+            $result[0]['moving_money_dena_to_non_dena']='yes';
+        }
+        else
+        {
+            $result[0]['moving_money_dena_to_non_dena']='no';
+        }
         $res = array('result' => True,
                 'data' => $result);
         returnJson($res);
