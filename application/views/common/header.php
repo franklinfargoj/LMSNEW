@@ -329,6 +329,13 @@
                     </a>
                 </li>
                 <?php }?>
+                <?php if(in_array($this->session->userdata('admin_type'),array('Super admin'))) {?>
+                    <li>
+                        <a href="<?php echo site_url('crm')?>">
+                            CRM
+                        </a>
+                    </li>
+                <?php }?>
 
 			</ul>
 		</div>
