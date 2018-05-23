@@ -72,7 +72,7 @@ function get_hrms_id($hrmsid)
 
 	// $query1 = $this->db->query("SELECT count(*) as Pending FROM customer_retention WHERE hrms_id='".$id."' AND call_date IS NULL");
 	$wherecondition2=array('hrms_id'=>$id,'call_date IS NULL');
-	$this->db->select("count(*) as Total");
+	$this->db->select("count(*) as Pending");
 	$this->db->from('customer_retention');
 	$results2=$this->db->get()->result_array();
 
