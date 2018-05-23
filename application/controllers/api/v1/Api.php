@@ -3490,23 +3490,52 @@ function customer_retention_detail_post()
 * @apiSuccess {int} transaction_debit_card_POS Debit Card Transactions
 * @apiGroup  Customer Retention
 */
-function customer_retention_remark_update_post()
-{
-    $params=$this->input->post();
-    if (!empty($params) && isset($params['customer_id']) && isset($params['remark']))
+    function customer_retention_remark_update_post()
     {
-        // $customer_id=$params['customer_id'];
-        $result=$this->customer_import_model->update_customer_retention_remark($params);
-        
-        $res = array('result' => True,
-                'data' => $result);
-        returnJson($res);
+        $params=$this->input->post();
+        if (!empty($params) && isset($params['customer_id']) && isset($params['remark']))
+        {
+            // $customer_id=$params['customer_id'];
+            $result=$this->customer_import_model->update_customer_retention_remark($params);
+
+            $res = array('result' => True,
+                    'data' => $result);
+            returnJson($res);
+        }
+         $error = array(
+                "result" => False,
+                "data" => array("Missing Parameters.")
+            );
+            returnJson($error);
+
     }
-     $error = array(
+    /**
+     * @api {post} get_crm_detail_post Get CRM Details.
+     * @apiDescription Fetch CRM details using slug name
+     * @apiName get_crm_detail_post
+     * @apiParam {int} slug  Slug
+     * @apiSuccess {int} Id CRM Id
+     * @apiSuccess {varchar} CRM Title
+     * @apiSuccess {text} CRMContent
+     * @apiGroup  CRM
+     */
+    function get_crm_detail_post()
+    {
+        $params=$this->input->post();
+        if (!empty($params) && isset($params['slug']))
+        {
+            // $customer_id=$params['customer_id'];
+            $result=$this->Master_model->get_crm_detail($params['slug']);
+
+            $res = array('result' => True,
+                'data' => $result);
+            returnJson($res);
+        }
+        $error = array(
             "result" => False,
             "data" => array("Missing Parameters.")
         );
         returnJson($error);
 
-}
+    }
 }
