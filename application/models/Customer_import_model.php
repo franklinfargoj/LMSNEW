@@ -7,19 +7,34 @@ function insert($data,$accountid)
 {
 	foreach ($accountid as $value) 
 	$array[] = $value->account_id;
-
+	$customeridupdated = array();
 	foreach ($data as $key=> $value)
 	{	
 		if(in_array($value['account_id'], $array))
 		{
 			$this->db->where('account_id',$value['account_id']);
 		    $res=$this->db->update('customer_retention', $value);
+
+		    $this->db->select('id');
+		    $this->db->where('account_id',$value['account_id']);
+		    $query = $this->db->get('customer_retention');
+		 	$res   = $query->result(); 
+			foreach ($res as $value1) 
+			{
+    			$customeridaffected[]['update'] = $value1->id;
+    		}
 		    unset($data[$key]);
+		    
+
 		}
  	}
- 	$res=$this->db->insert_batch('customer_retention', $data);
 
- 	return true;
+ 	$this->db->insert_batch('customer_retention', $data);
+
+ 	$customeridaffected[]['insert'] = $this->db->insert_id();
+ 	return $customeridaffected;
+
+
 }
 function insert_customer_detail($data,$customerid)
 {
@@ -29,6 +44,7 @@ function insert_customer_detail($data,$customerid)
 
 	foreach ($data as $key=> $value)
 	{	
+
 		if(in_array($value['customer_id'], $array))
 		{
 
@@ -37,8 +53,8 @@ function insert_customer_detail($data,$customerid)
 		    unset($data[$key]);
 		}
  	}
-
  	$res=$this->db->insert_batch('customer_retention_details', $data);
+
 
  	return true;
 }

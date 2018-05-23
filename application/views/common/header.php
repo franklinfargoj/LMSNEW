@@ -112,13 +112,13 @@
 					</a>
 				</li>
 				<?php }?>
-				<?php if(in_array($this->session->userdata('admin_type'),array('Super admin'))) {?>
-				<li class="<?php echo ($controller == 'customerretentiondetailimport' && $method == 'import') ? 'active' : ''?>">
-					<a href="<?php echo site_url('customerretentiondetailimport')?>">
-						Customer Retention Details Upload
-					</a>
-				</li>
-				<?php }?>
+				<?php //if(in_array($this->session->userdata('admin_type'),array('Super admin'))) {?>
+				<!-- <li class="<?php //echo ($controller == 'customerretentiondetailimport' && $method == 'import') ? 'active' : ''?>"> -->
+					<!-- <a href="<?php //echo site_url('customerretentiondetailimport')?>"> -->
+						<!-- Customer Retention Details Upload -->
+					<!-- </a> -->
+				<!-- </li> -->
+				<?php //}?>
 <!--                --><?php //if(in_array($this->session->userdata('admin_type'),array('Super admin'))) {?>
 <!--				<li class="--><?php //echo ($controller == 'leads' && $method == 'upload_employee') ? 'active' : ''?><!--">-->
 <!--					<a href="--><?php //echo site_url('leads/upload_employee')?><!--">-->
