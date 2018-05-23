@@ -3479,11 +3479,11 @@ function customer_retention_detail_post()
 * @apiSuccess {int} contact_no Phone Number
 * @apiSuccess {int} id Customer Retention Id
 * @apiSuccess {int} customer_id Customer ID
-* @apiSuccess {string} internet_banking Yes/No
-* @apiSuccess {string} mobile_banking Yes/No
-* @apiSuccess {string} debit_card Yes/No
-* @apiSuccess {string} neft_rtgs Yes/No
-* @apiSuccess {string} moving_money_dena_to_non_dena Yes/No
+* @apiSuccess {boolean} internet_banking 1 or 0
+* @apiSuccess {boolean} mobile_banking 1 or 0
+* @apiSuccess {boolean} debit_card 1 or 0
+* @apiSuccess {boolean} neft_rtgs 1 or 0
+* @apiSuccess {boolean} moving_money_dena_to_non_dena 1 or 0
 * @apiSuccess {string} remarks Customer Remark
 * @apiSuccess {int} three_months_internet_transaction Internet Transactions
 * @apiSuccess {int} three_months_mobile_transaction Mobile Transactions

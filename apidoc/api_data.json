@@ -281,38 +281,38 @@
           },
           {
             "group": "Success 200",
-            "type": "string",
+            "type": "boolean",
             "optional": false,
             "field": "internet_banking",
-            "description": "<p>Yes/No</p>"
+            "description": "<p>1 or 0</p>"
           },
           {
             "group": "Success 200",
-            "type": "string",
+            "type": "boolean",
             "optional": false,
             "field": "mobile_banking",
-            "description": "<p>Yes/No</p>"
+            "description": "<p>1 or 0</p>"
           },
           {
             "group": "Success 200",
-            "type": "string",
+            "type": "boolean",
             "optional": false,
             "field": "debit_card",
-            "description": "<p>Yes/No</p>"
+            "description": "<p>1 or 0</p>"
           },
           {
             "group": "Success 200",
-            "type": "string",
+            "type": "boolean",
             "optional": false,
             "field": "neft_rtgs",
-            "description": "<p>Yes/No</p>"
+            "description": "<p>1 or 0</p>"
           },
           {
             "group": "Success 200",
-            "type": "string",
+            "type": "boolean",
             "optional": false,
             "field": "moving_money_dena_to_non_dena",
-            "description": "<p>Yes/No</p>"
+            "description": "<p>1 or 0</p>"
           },
           {
             "group": "Success 200",
