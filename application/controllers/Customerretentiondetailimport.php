@@ -46,7 +46,50 @@ function import()
      $transaction_debit_card_POS = $worksheet->getCellByColumnAndRow(8, $row)->getValue();
      $remarks = $worksheet->getCellByColumnAndRow(9, $row)->getValue();
 
+     if($internet_banking=='YES' || $internet_banking=='Yes' || $internet_banking=='yes')
+     {
+        $internet_banking=1;
+     }
+     else if($internet_banking=='NO' || $internet_banking=='No' || $internet_banking=='no')
+     {
+        $internet_banking=0;
+     }
 
+     if($mobile_banking=='YES' || $mobile_banking=='Yes' || $mobile_banking=='yes')
+     {
+        $mobile_banking=1;
+     }
+     else if($mobile_banking=='NO' || $mobile_banking=='No' || $mobile_banking=='no')
+     {
+        $mobile_banking=0;
+     }
+
+     if($debit_card=='YES' || $debit_card=='Yes' || $debit_card=='yes')
+     {
+        $debit_card=1;
+     }
+     else if($debit_card=='NO' || $debit_card=='No' || $debit_card=='no')
+     {
+        $debit_card=0;
+     }
+
+     if($neft_rtgs=='YES' || $neft_rtgs=='Yes' || $neft_rtgs=='yes')
+     {
+        $neft_rtgs=1;
+     }
+     else if($neft_rtgs=='NO' || $neft_rtgs=='No' || $neft_rtgs=='no')
+     {
+        $neft_rtgs=0;
+     }
+
+     if($moving_money_dena_to_non_dena=='YES' || $moving_money_dena_to_non_dena=='Yes' || $moving_money_dena_to_non_dena=='yes')
+     {
+        $moving_money_dena_to_non_dena=1;
+     }
+     else if($moving_money_dena_to_non_dena=='NO' || $moving_money_dena_to_non_dena=='No' || $moving_money_dena_to_non_dena=='no')
+     {
+        $moving_money_dena_to_non_dena=0;
+     }
      $data[] = array(
               'customer_id'=>$customer_id,
               'internet_banking'=>$internet_banking,

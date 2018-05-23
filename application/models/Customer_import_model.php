@@ -25,7 +25,7 @@ function insert_customer_detail($data,$customerid)
 {
 
 	foreach ($customerid as $value) 
-	$array[] = $value->account_id;
+	$array[] = $value->customer_id;
 
 	foreach ($data as $key=> $value)
 	{	
@@ -33,12 +33,12 @@ function insert_customer_detail($data,$customerid)
 		{
 
 			$this->db->where('customer_id',$value['customer_id']);
-		    $res=$this->db->update('customer_retention_detatils', $value);
+		    $res=$this->db->update('customer_retention_details', $value);
 		    unset($data[$key]);
 		}
  	}
 
- 	$res=$this->db->insert_batch('customer_retention_detatils', $data);
+ 	$res=$this->db->insert_batch('customer_retention_details', $data);
 
  	return true;
 }
@@ -55,7 +55,7 @@ function get_customerid()
 {
     $data = array();
     $this->db->select('customer_id');
-    $query = $this->db->get('customer_retention_detatils');
+    $query = $this->db->get('customer_retention_details');
     $res   = $query->result();        
     return $res;
 }
