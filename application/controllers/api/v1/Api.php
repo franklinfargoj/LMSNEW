@@ -1650,6 +1650,7 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
         //$password = $params['password'];//$password = base64_decode($params['password']);
         $user_id = $params['user_id'];
         $password = aes_decode($params['password']);
+        //$password = $params['password'];
         $device_token = $params['device_token'];
         $device_type = $params['device_type'];
 
@@ -1658,14 +1659,16 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
         $where = array('hrms_id' => $user_id, 'password' => md5($password));
         $auth_response = $this->Login_model->check_login($where,Tbl_emp_dump);
 
-        $auth = $auth_response;
-        if(!empty($auth_response)) {
+        $records = $auth_response[0];
+
+        //pe($records);die;
+
+        if(!empty($records)) {
            // if ($auth->DBK_LMS_AUTH->password == 'True') {
             // $records_response = call_external_url(HRMS_API_URL_GET_RECORD.$result->DBK_LMS_AUTH->username);
             //$records_response = call_external_url(HRMS_API_URL_GET_RECORD.'emplid='.$auth->DBK_LMS_AUTH->username);
             //$records_response = call_external_url(HRMS_API_URL_GET_RECORD.'hrms_id='.$auth->DBK_LMS_AUTH->username);
             //$records = json_decode($records_response);
-            $records = $auth[0];
 
             $authorisation_key = random_number();
 /*            $data = array(
@@ -1713,6 +1716,7 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
 
             $result['basic_info'] = array(
                 'hrms_id' => $records['hrms_id'],
+                'dept_id' => $records['dept_id'],
                 'dept_type_id' => $records['dept_type_id'],
                 'dept_type_name' => $records['dept_type_name'],
                 'branch_id' => $records['branch_id'],
@@ -1726,8 +1730,11 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
                 'mobile' => $records['contact_no'],
                 'email_id' => $records['email_id'],
                 'designation' => get_designation($records['designation_id']),
-                'dept_id' => $records['dept_id']
             );
+
+            $select = array('hrms_id as DESCR10','name as DESCR30');
+            $where = array('supervisor_id' => $records['hrms_id']);
+            $result['employees'] = $this->Master_model->employees_with_supervisor($select,$where);
 
             $hrms_id = $records['hrms_id'];
             $action = 'count';
@@ -1739,7 +1746,6 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
 
             $read_where = array('n.notification_to' => $hrms_id, 'n.is_read' => 1);
             $leads['read_notification'] = $this->notification->get_notifications($action, $select, $read_where, $table, $join = array(), $order_by='');
-
 
             // employee
             if ($result['basic_info']['designation'] == 'EM') {
@@ -1816,7 +1822,7 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
                 if (isset($result['basic_info']['branch_id']) && $result['basic_info']['branch_id'] != '') {
                     $branch_id = $result['basic_info']['branch_id'];
                     $type = 'BM';
-                    $final = $this->countnew($type, $branch_id, $records->dbk_lms_emp_record1->DBK_LMS_COLL);
+                    $final = $this->countnew($type, $branch_id,$result['employees']);
 
                     $leads['generated_converted'] = $final;
                     //for assigned lead
@@ -1851,20 +1857,23 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
                 if (isset($result['basic_info']['zone_id']) && $result['basic_info']['zone_id'] != '') {
                     $zone_id = $result['basic_info']['zone_id'];
                     $type = 'ZM';
-                    $final = $this->countnew($type, $zone_id, $records->dbk_lms_emp_record1->DBK_LMS_COLL);
+                    $final = $this->countnew($type, $zone_id,$result['employees']);
                     $leads['generated_converted'] = $final;
                 }
             }
             // GM
             if ($result['basic_info']['designation'] == 'GM') {
                 $type = 'GM';
-                $final = $this->countnew($type, '', $records->dbk_lms_emp_record1->DBK_LMS_COLL);
+                $final = $this->countnew($type, '', $result['employees']);
                 $leads['generated_converted'] = $final;
             }
             $result = array(
                 "result" => True,
                 "data" => ['count' => $leads, 'basic_info' => $result['basic_info'],'authorisation_key'=>$authorisation_key]
             );
+
+
+
             returnJson($result);
         } else {
             $err['result'] = false;
@@ -2280,7 +2289,6 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
             $select = array('hrms_id as DESCR10','name as DESCR30');
             $where = array('supervisor_id' => $records['hrms_id']);
             $result['employees'] = $this->Master_model->employees_with_supervisor($select,$where);
-
 
 
             $hrms_id = $records['hrms_id'];
