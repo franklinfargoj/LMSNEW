@@ -3,16 +3,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Customer_import_model extends CI_Model
 {
 
-function insert($data,$hrms_id)
+function insert($data,$accountid)
 {
-	foreach ($hrms_id as $value) 
-	$array[] = $value->hrms_id;
+	foreach ($accountid as $value) 
+	$array[] = $value->account_id;
 
 	foreach ($data as $key=> $value)
 	{	
-		if(in_array($value['hrms_id'], $array))
+		if(in_array($value['account_id'], $array))
 		{
-			$this->db->like('hrms_id',$value['hrms_id'],'both');
+			$this->db->where('account_id',$value['account_id']);
 		    $res=$this->db->update('customer_retention', $value);
 		    unset($data[$key]);
 		}
@@ -21,11 +21,41 @@ function insert($data,$hrms_id)
 
  	return true;
 }
-function get_hrmsid()
+function insert_customer_detail($data,$customerid)
+{
+
+	foreach ($customerid as $value) 
+	$array[] = $value->customer_id;
+
+	foreach ($data as $key=> $value)
+	{	
+		if(in_array($value['customer_id'], $array))
+		{
+
+			$this->db->where('customer_id',$value['customer_id']);
+		    $res=$this->db->update('customer_retention_details', $value);
+		    unset($data[$key]);
+		}
+ 	}
+
+ 	$res=$this->db->insert_batch('customer_retention_details', $data);
+
+ 	return true;
+}
+
+function get_accountid()
 {
     $data = array();
-    $this->db->select('hrms_id');
+    $this->db->select('account_id');
     $query = $this->db->get('customer_retention');
+    $res   = $query->result();        
+    return $res;
+}
+function get_customerid()
+{
+    $data = array();
+    $this->db->select('customer_id');
+    $query = $this->db->get('customer_retention_details');
     $res   = $query->result();        
     return $res;
 }

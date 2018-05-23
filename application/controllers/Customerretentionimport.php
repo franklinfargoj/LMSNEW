@@ -24,7 +24,7 @@ function import()
 
   if(isset($_FILES["file"]["name"]))
   {
-    $hrmsid=$this->customer_import_model->get_hrmsid();
+   $accountid=$this->customer_import_model->get_accountid();
    $path = $_FILES["file"]["tmp_name"];
    $object = PHPExcel_IOFactory::load($path);
    foreach($object->getWorksheetIterator() as $worksheet)
@@ -62,7 +62,7 @@ function import()
      );
     }
    }
-    $res=$this->customer_import_model->insert($data,$hrmsid);
+    $res=$this->customer_import_model->insert($data,$accountid);
    } 
    else
         {
