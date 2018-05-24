@@ -51,14 +51,19 @@
                     );
                     echo form_label('CRM Content:<span style="color:red;">*</span>', 'content', $attributes);
 
-                    $data = array(
-                        'type'  => 'text',
-                        'name'  => 'content',
-                        'id'    => 'content',
-                        'class' => '',
-                        'value' => $crmDetail[0]['content']
-                    );
-                    echo form_input($data);
+//                    $data = array(
+//                        'type'  => 'text',
+//                        'name'  => 'content',
+//                        'id'    => 'content',
+//                        'class' => '',
+//                        'value' => $crmDetail[0]['content']
+//                    );
+//                    echo form_input($data);
+                    ?>
+                    <textarea rows="4" cols="50" name = "content" id="content" style="margin: 0px; width: 469px; height: 78px;">
+                        <?php echo @$crmDetail[0]['content'];?>
+                        </textarea>
+                    <?php
 
                     // Assuming that the 'title' field value was incorrect:
                     echo form_error('content', '<span class="help-block">', '</span>');
