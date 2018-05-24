@@ -1,6 +1,57 @@
 [
   {
     "type": "post",
+    "url": "get_crm_detail_post",
+    "title": "Get CRM Details.",
+    "description": "<p>Fetch CRM details using slug name</p>",
+    "name": "get_crm_detail_post",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>Slug</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "Id",
+            "description": "<p>CRM Id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "varchar",
+            "optional": false,
+            "field": "CRM",
+            "description": "<p>Title</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "text",
+            "optional": false,
+            "field": "CRMContent",
+            "description": ""
+          }
+        ]
+      }
+    },
+    "group": "CRM",
+    "version": "0.0.0",
+    "filename": "application/controllers/api/v1/Api.php",
+    "groupTitle": "CRM"
+  },
+  {
+    "type": "post",
     "url": "customer_retention_lead",
     "title": "Count for the Total Lead and pending calls",
     "description": "<p>count total lead and pending</p>",
