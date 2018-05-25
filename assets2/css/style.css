@@ -323,8 +323,8 @@ body{
 	background-color: transparent;
 	outline: none;
 	/*color: #8a8b8e;*/
-	color: #999;
-	font-size: 18px;
+	color: #333333;
+	font-size: 14px;
 	padding: 0 2px;
 	border-bottom: solid 1px #ccc;
 }
@@ -362,7 +362,7 @@ body{
 
 .form-control .submit-btn{
 	border:1px solid #ffffff;
-	background-color:#01559d;
+	background-color:#007b5d;
 	color: #ffffff;
 	font-size: 16.56px;
 	line-height: 20px;
@@ -376,7 +376,7 @@ body{
 	font-family: "Montserrat-Regular";
 }
 .form-control .submit-btn:hover{
-	background-color: #01559d;
+	background-color: #007b5d;
 	color: #ffffff;
 }
 .form-options{
@@ -415,7 +415,7 @@ body{
 }
 
 .form-submit span{
-	background-color: #01559d;
+	background-color: #007b5d;
 	color: #fff;
 	vertical-align: middle;
 	display: table-cell;
@@ -712,6 +712,7 @@ strong{
 }
 .lead-form .form-control.form-submit{
 	margin-bottom: 0;
+	margin-top: 20px;
 }
 
 .form-control select{
@@ -804,8 +805,8 @@ img#rs {
 }
 .bg-red {
 	position: relative;
-	height: 48px;
-	width: 48px;
+	height: 32px;
+	width: 32px;
 	margin: 0 auto;
 	margin-bottom: 35px;
 	display: inline-block;
@@ -813,7 +814,7 @@ img#rs {
 .bg-red1{
 	float: right;
 	padding-top: 10px;
-	margin-bottom: 10px;
+	margin-bottom: 18px;
 	right: 12px;
 }
 .bg-red1 img{
@@ -826,10 +827,11 @@ img#rs {
 }
 .bg-red span{
 	position: absolute;
-	top:24px!important;
+	top:18px !important;
 	left: 0!important;
 	width: 100%;
 	text-align: center;
+	font-size: 14px !important;
 }
 .m-b{
 	margin-bottom: 40px!important;
@@ -961,8 +963,7 @@ a.btn-Download{
 input#ticket_range ,input#amount,input#years,input#interest,input#password,input#username,input#captext{
 	float: left;
 	margin-top: -4px;
-	height: 40px;
-	padding: 8px 0px;
+	height: 32px;
 	line-height: 14px;
 }
 input#interest {
@@ -1047,8 +1048,8 @@ span.right-toggle {
 }
 .bg-c p{
 	display: inline-block;
-	font-size: 20px;
-	padding: 15px 0 0 15px;
+	font-size: 16px;
+	padding: 15px 0 5px 15px;
 }
 .margin-b{
 	margin-bottom: 12px;
@@ -1399,7 +1400,7 @@ table.dataTable.row-border tbody th, table.dataTable.row-border tbody td, table.
 	border: 0 none;
 }
 .ui-tabs .ui-tabs-panel{
-	border: 1px solid #a4cef3 !important;
+	border: 1px solid #333333 !important;
 }
 .ui-state-default{
 	border: 0 none !important;
@@ -1410,7 +1411,7 @@ table.dataTable.row-border tbody th, table.dataTable.row-border tbody td, table.
 }
 .ui-widget.ui-widget-content{border: 0 none !important;    top: -3px!important;}
 .product-guide-tab .ui-state-default.ui-state-active{
-	background-color: #01559d !important;
+	background-color: #007b5d !important;
 	color: #ffffff;
 	outline: none;
 
@@ -1430,8 +1431,8 @@ table.dataTable.row-border tbody th, table.dataTable.row-border tbody td, table.
 /*product guide*/
 /*EMI calculator*/
 .range-slider .ui-slider-handle{
-	border: 1px solid #ed4c4c !important;
-	background-color: #ed4c4c !important;
+	border: 1px solid #007b5d !important;
+	background-color: #007b5d !important;
 	width: 32px;
 	height: 26px;
 	padding: 0 !important;
@@ -1646,7 +1647,7 @@ table.dataTable.row-border tbody th, table.dataTable.row-border tbody td, table.
 	color: #fff;
 	letter-spacing: 0.5px;
 	text-align: left;
-	border-bottom: 1px solid #3168a8;
+	border-bottom: 1px solid #389680;
 }
 .box li:first-child{
 
@@ -1820,7 +1821,7 @@ div#accordion {
 	margin: 0 10px;
 }
 .breadcrumbs ul li a:hover{
-	color: #01559d;
+	color: #007b5d;
 }
 .breadcrumbs ul li a span{
 	margin:0 10px ;
