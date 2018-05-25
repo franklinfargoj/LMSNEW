@@ -1,0 +1,3 @@
+hrms_id,Employee Name,designation_id,designation,Email id,Contact no,Branch name Id,Branch Name,District Id,State Id,Zone name,Zone name Id,Dept_type_id,Dept_name,Supervisor hrms id
+1234,Aatish Gore,3421,Branch manager,aatish.gore@wwindia.com,7506260369,2343,Mumbai,234,3234,west,3423,123,4234,NA
+1235,Rahul Singh,3423,Employee,rahul.singh@wwindia.com,9869621245,2343,Mumbai,234,3234,west,3423,123,4234,1234
