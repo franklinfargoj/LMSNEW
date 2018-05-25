@@ -116,6 +116,13 @@
             "optional": false,
             "field": "page",
             "description": "<p>current page number</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "hrms_id",
+            "description": "<p>hrms id of user</p>"
           }
         ]
       }

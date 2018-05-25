@@ -94,22 +94,27 @@ function get_hrms_id($hrmsid)
 function get_customer_retention_list($para)
 {
 	$list=$para['list'];
+	$hrmsid=$para['hrmsid'];
 	if($list=='pending')
 	{
 		$this->db->select("id,customer_name as 'Customer Name',current_balance as '%Balance Drop',contact_no as 'Phone number'");
 		$this->db->from('customer_retention');
+		$this->db->where('hrms_id',$hrmsid);
 		$this->db->where('call_date IS NULL');
 		$this->db->order_by("current_balance", "desc");
-		// $query = $this->db->query("SELECT id,customer_name as 'Customer Name',current_balance as '%Balance Drop',contact_no as 'Phone number' FROM customer_retention WHERE call_date IS NULL ORDER BY current_balance desc");
+		
+		$query = $this->db->query("SELECT id,customer_name as 'Customer Name',current_balance as '%Balance Drop',contact_no as 'Phone number' FROM customer_retention WHERE call_date IS NULL ORDER BY current_balance desc");
 	}
 	else if($list=='called')
 	{
 		$this->db->select("id,customer_name as 'Customer Name',current_balance as '%Balance Drop',contact_no as 'Phone number'");
 		$this->db->from('customer_retention');
+		$this->db->where('hrms_id',$hrmsid);
 		$this->db->where('call_date IS NOT NULL');
 		$this->db->order_by("current_balance", "desc");
 		// $query = $this->db->query("SELECT id,customer_name as 'Customer Name',current_balance as '%Balance Drop',contact_no as 'Phone number'  FROM customer_retention WHERE call_date IS NOT NULL ORDER BY current_balance desc");
 	}
+
 	$result = $this->db->get()->result_array();
 	return $result;
 }
