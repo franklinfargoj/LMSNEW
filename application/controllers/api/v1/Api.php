@@ -3431,6 +3431,7 @@ function customer_retention_lead_post()
 * @apiName getCustomerList
 * @apiParam {String} list Either called or pending
 * @apiParam {int} page  current page number
+* @apiParam {string} hrms_id  hrms id of user
 * @apiSuccess {string} id  Customer ID
 * @apiSuccess {string} customer  customer name
 * @apiSuccess {Number} BalanceDrop current_balance
@@ -3440,7 +3441,7 @@ function customer_retention_lead_post()
 function customer_retention_list_post()
 {
     $params = $this->input->post();
-    if (!empty($params) && isset($params['list']))
+    if (!empty($params) && isset($params['list']) && isset($params['page']) && isset($params['hrms_id']))
     {
       $current_page=$params['page'];
       $per_page = 14;
@@ -3449,7 +3450,7 @@ function customer_retention_list_post()
 
         $para = array(
         'list' => $params['list'],
-
+        'hrmsid' => $params['hrms_id'],
         );
         $result=$this->customer_import_model->get_customer_retention_list($para);
         $item_list = array_slice($result, $current_index, $per_page);

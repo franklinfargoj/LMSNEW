@@ -32,6 +32,7 @@ class Reports extends CI_Controller
 
         $this->load->model('Lead');
         $this->load->model('Master_model','Master');
+        $this->load->model('Reports_model','Reports');
     }
 
     /*
@@ -2736,5 +2737,416 @@ class Reports extends CI_Controller
 
         //pe($arrData);die;
         return $arrData;
+    }
+    function import_csv()
+    {
+        $admin = ucwords(strtolower($this->session->userdata('admin_type')));
+        if ($admin != 'Super Admin')
+        {
+            redirect('dashboard');
+        }
+        /*Create Breadcumb*/
+        $this->make_bread->add('Import CSV', '', 0);
+        $arrData['breadcrumb'] = $this->make_bread->output();
+        /*Create Breadcumb*/
+        return load_view("Reports/import_csv",$arrData);
+        // $this->load->view('empimport');
+    }
+
+    public function import_data(){
+        $post = $this->input->post();
+        $reportType = $this->input->post("reportType");
+
+        if($reportType=='both')
+        {
+            $regdata = $this->excel_dump_state_zone();
+        }
+        else if($reportType=='zone')
+        {
+            $regdata = $this->excel_dump_zone();
+        }
+        else if($reportType=='state')
+        {
+            $regdata = $this->excel_dump_state();
+        }
+    }
+
+    public function excel_dump_state(){
+        try{
+
+            $this->db->select('*');
+            $this->db->from("db_state");
+            $res = $this->db->get();
+
+
+            $total_record = $res->num_rows();
+            $all_userdata = $res->result_array();
+
+            $this->load->library('PHPExcel');
+            $xl_obj = new PHPExcel();
+
+            $this->phpexcel->setActiveSheetIndex(0);
+            $this->phpexcel->getActiveSheet()->setCellValue('A1', 'ID');
+            $this->phpexcel->getActiveSheet()->setCellValue('B1', 'State Name');
+            $this->phpexcel->getActiveSheet()->setCellValue('C1', 'State Code');
+            $this->phpexcel->getActiveSheet()->setCellValue('D1', 'Zone Code');
+
+            foreach(range('A','D1') as $columnID) {
+                $this->phpexcel->getActiveSheet()->getColumnDimension($columnID)
+                    ->setAutoSize(true);
+            }
+
+            if(!empty($all_userdata)){
+
+                $Submission = '';
+
+                for($i=2;$i<=($total_record+1);$i++)
+                {
+                    $this->phpexcel->getActiveSheet()->setCellValue('A'.$i,($i-1));
+                    $this->phpexcel->getActiveSheet()->setCellValue('B'.$i,$all_userdata[$i-2]["name"]);
+                    $this->phpexcel->getActiveSheet()->setCellValue('C'.$i,$all_userdata[$i-2]["code"]);
+                    $this->phpexcel->getActiveSheet()->setCellValue('D'.$i,$all_userdata[$i-2]["zone_code"]);
+
+                }
+
+            }else{
+                $this->phpexcel->getActiveSheet()->setCellValue('Z4','NO Record Found');
+            }
+
+
+
+            $filename ="State_".date('Y-m-d H:i:s').".xls";
+
+            header('Content-Type: application/vnd.ms-excel');
+            header('Content-Disposition: attachment;filename="'.$filename.'"');
+            header('Cache-Control: max-age=0');
+
+            $objWriter = PHPExcel_IOFactory::createWriter($this->phpexcel, 'Excel5');
+            ob_end_clean();
+            $objWriter->save('php://output');
+
+            exit;
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+    }
+
+    public function excel_dump_zone(){
+        try{
+
+            $this->db->select('*');
+            $this->db->from("db_zone");
+            $res = $this->db->get();
+
+
+            $total_record = $res->num_rows();
+            $all_userdata = $res->result_array();
+
+            $this->load->library('PHPExcel');
+            $xl_obj = new PHPExcel();
+
+            $this->phpexcel->setActiveSheetIndex(0);
+            $this->phpexcel->getActiveSheet()->setCellValue('A1', 'ID');
+            $this->phpexcel->getActiveSheet()->setCellValue('B1', 'Zone Code');
+            $this->phpexcel->getActiveSheet()->setCellValue('C1', 'Zone Name');
+
+            foreach(range('A','D1') as $columnID) {
+                $this->phpexcel->getActiveSheet()->getColumnDimension($columnID)
+                    ->setAutoSize(true);
+            }
+
+            if(!empty($all_userdata)){
+
+                $Submission = '';
+
+                for($i=2;$i<=($total_record+1);$i++)
+                {
+                    $this->phpexcel->getActiveSheet()->setCellValue('A'.$i,($i-1));
+                    $this->phpexcel->getActiveSheet()->setCellValue('B'.$i,$all_userdata[$i-2]["code"]);
+                    $this->phpexcel->getActiveSheet()->setCellValue('C'.$i,$all_userdata[$i-2]["name"]);
+                }
+
+            }else{
+                $this->phpexcel->getActiveSheet()->setCellValue('Z4','NO Record Found');
+            }
+
+
+
+            $filename ="Zone_".date('Y-m-d H:i:s').".xls";
+
+            header('Content-Type: application/vnd.ms-excel');
+            header('Content-Disposition: attachment;filename="'.$filename.'"');
+            header('Cache-Control: max-age=0');
+
+            $objWriter = PHPExcel_IOFactory::createWriter($this->phpexcel, 'Excel5');
+            ob_end_clean();
+            $objWriter->save('php://output');
+
+            exit;
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+    }
+
+    public function excel_dump_state_zone(){
+        try{
+
+            $this->db->select('db_state.id,db_state.name,db_state.code,db_state.zone_code,db_zone.name AS zname');
+            $this->db->from("db_state");
+            $this->db->join('db_zone','db_zone.code = db_state.zone_code');
+            $res = $this->db->get();
+//            echo $this->db->last_query();
+
+            $total_record = $res->num_rows();
+            $all_userdata = $res->result_array();
+//            print_r($all_userdata);
+//            exit;
+            $this->load->library('PHPExcel');
+            $xl_obj = new PHPExcel();
+
+            $this->phpexcel->setActiveSheetIndex(0);
+            $this->phpexcel->getActiveSheet()->setCellValue('A1', 'ID');
+            $this->phpexcel->getActiveSheet()->setCellValue('B1', 'State Name');
+            $this->phpexcel->getActiveSheet()->setCellValue('C1', 'State Code');
+            $this->phpexcel->getActiveSheet()->setCellValue('D1', 'Zone Code');
+            $this->phpexcel->getActiveSheet()->setCellValue('E1', 'Zone Name');
+
+            foreach(range('A','E1') as $columnID) {
+                $this->phpexcel->getActiveSheet()->getColumnDimension($columnID)
+                    ->setAutoSize(true);
+            }
+
+            if(!empty($all_userdata)){
+
+                $Submission = '';
+
+                for($i=2;$i<=($total_record+1);$i++)
+                {
+                    $this->phpexcel->getActiveSheet()->setCellValue('A'.$i,($i-1));
+                    $this->phpexcel->getActiveSheet()->setCellValue('B'.$i,$all_userdata[$i-2]["name"]);
+                    $this->phpexcel->getActiveSheet()->setCellValue('C'.$i,$all_userdata[$i-2]["code"]);
+                    $this->phpexcel->getActiveSheet()->setCellValue('D'.$i,$all_userdata[$i-2]["zone_code"]);
+                    $this->phpexcel->getActiveSheet()->setCellValue('E'.$i,$all_userdata[$i-2]["zname"]);
+
+                }
+
+            }else{
+                $this->phpexcel->getActiveSheet()->setCellValue('Z4','NO Record Found');
+            }
+
+            $filename ="State_Zone_".date('Y-m-d H:i:s').".xls";
+
+            header('Content-Type: application/vnd.ms-excel');
+            header('Content-Disposition: attachment;filename="'.$filename.'"');
+            header('Cache-Control: max-age=0');
+
+            $objWriter = PHPExcel_IOFactory::createWriter($this->phpexcel, 'Excel5');
+            ob_end_clean();
+            $objWriter->save('php://output');
+
+            exit;
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+    }
+
+    /*
+     * upload
+     * Does the excel file import.
+     * @author Sumit Desai
+     * @access public
+     * @param none
+     * @return void
+     */
+
+    public function csv_import($param = '')
+    {
+        $admin = ucwords(strtolower($this->session->userdata('admin_type')));
+        if ($admin != 'Super Admin'){
+            redirect('dashboard');
+        }
+        /*Create Breadcumb*/
+        $this->make_bread->add('Leads Upload', '', 0);
+        $arrData['breadcrumb'] = $this->make_bread->output();
+        /*Create Breadcumb*/
+
+        if($this->input->post('Submit')) {
+            $lead_source = $this->input->post('lead_source');
+            $this->form_validation->set_rules('lead_source','Lead Source', 'required');
+            if ($this->form_validation->run() === FALSE) {
+                $msg = notify("Please Select Lead Source",'danger');
+                $this->session->set_flashdata('message', $msg);
+                redirect('reports/import_csv');
+            }
+            if (isset($_FILES['filename']) && !empty($_FILES['filename']['tmp_name'])) {
+                make_upload_directory('./uploads');
+                $file = upload_excel('./uploads', 'filename');
+
+                if (!is_array($file)) {
+                    $msg = notify($file, $type = "danger");
+                    $this->session->set_flashdata('error', $msg);
+                    redirect('reports/import_csv');
+                } else {
+
+                    set_time_limit(0);
+                    ini_set('memory_limit', '-1');
+                    $table_db = '';
+                    if($lead_source == 'branch') {
+                        $keys = [ 'code', 'name', 'district_code'];
+                        $table_db = "db_branch";
+                    }else if($lead_source == 'district'){
+                        $keys = [ 'code', 'name', 'state_code'];
+                        $table_db = "db_district";
+                    }else if($lead_source == 'state'){
+                        $keys = ['code', 'name', 'zone_code'];
+                        $table_db = "db_state";
+                    }else if($lead_source == 'zone'){
+                        $keys = ['code', 'name'];
+                        $table_db = "db_zone";
+                    }
+                    if($lead_source == 'zone') {
+                        $excelData = fetch_range_excel_data($file['full_path'], 'A2:B', $keys);
+                    }else {
+                        $excelData = fetch_range_excel_data($file['full_path'], 'A2:C', $keys);
+                    }
+                    $validation = $this->validate_leads_data($excelData,$lead_source);
+                    if (!empty($validation['insert_array'])) {
+                        $insert_count = $this->Lead->insert_uploaded_data($table_db, $validation['insert_array']);
+                    }
+                    if ($validation['type'] == 'error') {
+                        make_upload_directory('./uploads/errorlog');
+                        $target_path = './uploads/errorlog/';
+                        $target_file = $file['file_name'];
+                        create_excel_error_file($validation['data'], $target_path.$target_file,$target_file);
+                        $data = array(
+                            'file_name' => $target_file,
+                            'status' => 'failed',
+                            'lead_source'=> $lead_source
+                        );
+                        $this->Lead->uploaded_log('uploaded_leads_log', $data);
+                        $download_url = base_url('uploads/errorlog/'.$target_file);
+                        $msg = notify('<span style="color: green">'.$validation['total_inserted'] . ' rows inserted sucessfully.</span> Error occured in ' . $validation['total_error_rows'] . ' rows.Please refer log file <a href="'.$download_url.'">here</a>.', 'danger');
+                        $this->session->set_flashdata('error', $msg);
+                        redirect(base_url('reports/import_csv'), 'refresh');
+                    }
+                    $data = array(
+                        'file_name' => $file['file_name'],
+                        'status' => 'success',
+                        'lead_source'=>$lead_source
+                    );
+                    $this->Lead->uploaded_log('uploaded_leads_log', $data);
+                    $msg = notify('File Uploaded Successfully.' . $validation['total_inserted'] . ' rows inserted. ', 'success');
+                    $this->session->set_flashdata('success', $msg);
+                    redirect(base_url('reports/import_csv'), 'refresh');
+
+                }
+            }
+            $msg = notify("Please upload a file",'danger');
+            $this->session->set_flashdata('message', $msg);
+            redirect('reports/import_csv');
+        }
+//        $arrData['uploaded_logs'] = $this->Lead->get_uploaded_leads_logs();
+        $middle = "Reports/import_csv";
+        load_view($middle,$arrData);
+    }
+
+    private function validate_leads_data($excelData,$lead_source)
+    {
+        $total_inserted=0;
+        $total_rows = count($excelData);
+        $error = $insert_array = $update_array = array();
+
+        foreach ($excelData as $key => $value){
+            if($lead_source == 'branch') {
+                $parent_table = 'db_district';
+                $prod_cat_title = preg_replace('!\s+!', ' ', $value['district_code']);
+                $whereArray = array('code' => ucwords(strtolower(trim($prod_cat_title))));
+                $prod_code = $this->Reports->fetch_code($whereArray,$parent_table);
+                $table_name = 'db_branch';
+                $wherenewArray = array('code' => ucwords(strtolower(trim($value['code']))));
+                $code = $this->Reports->check_code($wherenewArray,$table_name);
+                if ($prod_code == false) {
+                    $error[$key] = 'Code does not exist.';
+                } else if ($code == false) {
+                    $error[$key] = 'Duplicate Code.';
+                } else if ($value['code'] == '' || $value['name'] == '' || $value['district_code'] == '') {
+                    $error[$key] = 'Parameter is missing.';
+                } else {
+
+                        $value['code'] = $value['code'];
+                        $value['name'] = $value['name'];
+                        $value['district_code'] = $value['district_code'];
+
+                    $insert_array[] = $value;
+                    $total_inserted++;
+                }
+            }else if ($lead_source == 'district') {
+                $parent_table = 'db_state';
+                $prod_cat_title = preg_replace('!\s+!', ' ', $value['state_code']);
+                $whereArray = array('code' => ucwords(strtolower(trim($prod_cat_title))));
+                $prod_code = $this->Reports->fetch_code($whereArray,$parent_table);
+                $wherenewArray = array('code' => ucwords(strtolower(trim($value['code']))));
+                $table_name = 'db_district';
+                $code = $this->Reports->check_code($wherenewArray,$table_name);
+                if ($prod_code == false) {
+                    $error[$key] = 'Code does not exist.';
+                } else if ($code == false) {
+                    $error[$key] = 'Duplicate Code.';
+                } else if ($value['code'] == '' || $value['name'] == '' || $value['state_code'] == '') {
+                    $error[$key] = 'Parameter is missing.';
+                } else {
+                        $value['code'] = $value['code'];
+                        $value['name'] = $value['name'];
+                        $value['state_code'] = $value['state_code'];
+
+                    $insert_array[] = $value;
+                    $total_inserted++;
+                }
+            }else if ($lead_source == 'state') {
+                $parent_table = 'db_zone';
+                $prod_cat_title = preg_replace('!\s+!', ' ', $value['zone_code']);
+                $whereArray = array('code' => ucwords(strtolower(trim($prod_cat_title))));
+                $prod_code = $this->Reports->fetch_code($whereArray,$parent_table);
+                $wherenewArray = array('code' => ucwords(strtolower(trim($value['code']))));
+                $table_name = 'db_state';
+                $code = $this->Reports->check_code($wherenewArray,$table_name);
+                if ($prod_code == false) {
+                    $error[$key] = 'Code does not exist.';
+                } else if ($code == false) {
+                    $error[$key] = 'Duplicate Code.';
+                } else if ($value['code'] == '' || $value['name'] == '' || $value['zone_code'] == '') {
+                    $error[$key] = 'Parameter is missing.';
+                } else {
+                        $value['code'] = $value['code'];
+                        $value['name'] = $value['name'];
+                        $value['zone_code'] = $value['zone_code'];
+
+                    $insert_array[] = $value;
+                    $total_inserted++;
+                }
+            }else if ($lead_source == 'zone') {
+                $table_name = 'db_zone';
+                $wherenewArray = array('code' => ucwords(strtolower(trim($value['code']))));
+                $code = $this->Reports->check_code($wherenewArray,$table_name);
+                 if ($code == false) {
+                    $error[$key] = 'Duplicate Code.';
+                } else if ($value['code'] == '' || $value['name'] == '') {
+                    $error[$key] = 'Parameter is missing.';
+                } else {
+
+                        $value['code'] = $value['code'];
+                        $value['name'] = $value['name'];
+
+                    $insert_array[] = $value;
+                    $total_inserted++;
+                }
+            }
+        }
+
+        if(!empty($error))
+        {
+            return ['type' => 'error','total_inserted'=>$total_inserted ,'total_error_rows'=>($total_rows-$total_inserted), 'data' => $error,'insert_array' => $insert_array, 'update_array' => $update_array];
+        }
+        return ['type' => 'success','total_inserted'=>$total_inserted, 'insert_array' => $insert_array, 'update_array' => $update_array];
     }
 }
