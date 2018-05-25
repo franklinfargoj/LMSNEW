@@ -22,13 +22,13 @@
 	<button type="submit" name="Import" class="btn btn-info"  >   Save  </button>
 	<div class="valid-msg"><span>*</span>Only csv</div>
 </td>
-
 <td><div class="upload-xl">
                 <a href="<?php echo base_url('uploads/sample/sample_lead.xlsx')?>">
                     <img src="<?php echo base_url().ASSETS;?>images/excel-img.png" alt="excel">
                     <span>Download Sample File</span>
                 </a>
             </div></td>
+
 </tr>
 
 </table> 
