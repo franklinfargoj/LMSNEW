@@ -24,7 +24,7 @@
 <tr>
 <td>Choose your file:<hr><input type="file" class="form-control" name="file" id="file"  align="center"/>
 	<div class="valid-msg"><span>*</span>Only csv</div>
-	 <button type="submit" name="Import" class="btn btn-info"  >   Save  </button>
+<button type="submit" name="Import" class="btn btn-success" > Submit </button>
 </td>
 <td><div class="vl"></div></td>
 
