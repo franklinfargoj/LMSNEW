@@ -85,10 +85,10 @@ function get_hrms_id($hrmsid)
 	$query1 = $this->db->query("SELECT count(*) as Pending FROM customer_retention WHERE hrms_id='".$id."' AND call_date IS NULL");
 	$result2=$query1->result_array();
 
-	$result = array_merge($result1,$result2);
+	// $result = array_merge($result1,$result2);
 
-	$results['Total']=$result[0]['Total'];
-	$results['Pending']=$result[1]['Pending'];
+	$results['Total']=$result1[0]['Total'];
+	$results['Pending']=$result2[0]['Pending'];
 	return $results;
 }
 function get_customer_retention_list($para)
