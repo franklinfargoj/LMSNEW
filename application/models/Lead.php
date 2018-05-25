@@ -23,6 +23,8 @@ class Lead  extends CI_Model
 	public function add_leads($lead_data = array())
 	{
 		if (!empty($lead_data)) {
+//            pe($lead_data);
+//            exit;
             $this->db->db_debug = FALSE;
             $this->db->insert($this->_tbl_db_leads, $lead_data);
             $errors = $this->db->error();
@@ -595,13 +597,17 @@ class Lead  extends CI_Model
                 ->join('db_lead_assign AS La', 'La.lead_id = Ld.id', 'left')
                 ->join('db_master_products', 'db_master_products.id = Ld.product_id', 'left')
                 ->join('db_reminder_scheduler AS r','r.lead_id=Ld.id','left')
-                //->where('La.is_updated',1)
-                //s->where('La.is_deleted',0)
-                ->order_by("La.modified_by","desc")
+                //->where('La.is_updated',1) ->where('La.is_deleted',0) ->order_by("La.modified_by","desc") ->where('Ld.id',$lead_id);
+                ->order_by("La.id", "desc")
+                ->order_by("r.id", "desc")
+                ->limit(1,0)
                 ->where('Ld.id',$lead_id);
+
         $result = $this->db->get()->result_array();
         return $result;
     }
+
+
 
     public function actual_amt($table,$select,$where,$join,$group_by,$order_by,$limit=''){
 
@@ -642,6 +648,55 @@ class Lead  extends CI_Model
         }
         return false;
     }
+
+//
+//    public function add_account_no($data,$lead_id){
+//
+//        if (!empty($data)) {
+//
+//            $this->db->insert(Tbl_Leads,$data)
+//                     ->where('id', $lead_id);
+//            $this->db->where('id','some_id');
+//            $errors = $this->db->error();
+//
+//            if($errors['code']){
+//                $response['status'] = 'error';
+//                $response['code'] = $errors['code'];
+//                return $response;
+//            }else{
+//                return $this->db->insert_id();
+//            }
+//            return false;
+//
+//        }
+//    }
+
+
+    /**
+     * add_account_no
+     * Inserts a/c no
+     * @author Franklin Fargoj
+     * @access public
+     * @param $data,$lead_id
+     * @return
+     */
+    public function add_account_no($data,$lead_id){
+        if (!empty($data)) {
+            $this->db->where('id', $lead_id);
+            $this->db->update(Tbl_Leads, $data);
+
+            $errors = $this->db->error();
+            if($errors['code']){
+                $response['status'] = 'error';
+                $response['code'] = $errors['code'];
+            }else{
+                $response['status'] = 'success';
+                $response['affected_rows'] = $this->db->affected_rows();
+            }
+            return $response;
+        }
+    }
+
 
 
 /*    public function lists_testing($table,$select,$where,$join,$group_by,$order_by,$limit=''){

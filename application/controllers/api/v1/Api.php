@@ -2901,9 +2901,11 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
           //  isset($params['account_no']) && strlen(trim($params['account_no'])) == 12){
             isset($params['account_no'])) {
             //$api_res = $this->verify_cbs_account(trim($params['account_no']));
-            $api_res = $this->verify_cbs_account(aes_decode(trim($params['account_no'])));
+           $api_res = $this->verify_cbs_account(aes_decode(trim($params['account_no'])),$params['lead_id']);
+
             $api_res = strip_tags($api_res);
             $api_res = json_decode($api_res,true);
+
             if($api_res['status'] != 'False'){
 //                $acc_no = $params['account_no'];
                 $cbs_res = $api_res['data'];
@@ -2929,7 +2931,8 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
                 returnJson($res);
             }
             $res = array('result' => False,
-                'data' => array('Verification Failed'));
+                //'data' => array('Verification Failed'));
+                  'data' => array('Failed to added AccountId'));
             returnJson($res);
         }
         $res = array('result' => False,
@@ -2952,7 +2955,9 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
             }
 
             //$api_res = $this->verify_cbs_account(trim($params['account_no']));
-            $api_res = $this->verify_cbs_account(aes_decode(trim($params['account_no'])));
+            // $api_res = $this->verify_cbs_account(aes_decode(trim($params['account_no'])));
+
+            $api_res = $this->verify_cbs_account(aes_decode(trim($params['account_no'])),$params['lead_id']);
             $api_res = strip_tags($api_res);
             $api_res = json_decode($api_res,true);
             if($api_res['status'] != 'False'){
@@ -3175,9 +3180,23 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
         returnJson($error);
     }
 
-private function verify_cbs_account($acc_no)
+    private function verify_cbs_account($acc_no,$lead_id)
     {
-        $host    = "172.25.2.23";
+        $data=array('opened_account_no'=>$acc_no);
+        $result = $this->Lead->add_account_no($data,$lead_id);
+
+        if($result)
+        {
+            $response_data = 'AccountId added successfully';
+            $response['status']='True';
+        }else{
+            $response_data = 'Failed to added AccountId';
+            $response['status']='False';
+        }
+        $response['data'] = $response_data;
+        return json_encode($response);
+
+        /*$host    = "172.25.2.23";
         $port    = 11221;
         $strval='1200';
         $primary = chr(bindec('10110000'));
@@ -3247,7 +3266,7 @@ private function verify_cbs_account($acc_no)
             $response['status']='False';
         }
         $response['data'] = $response_data[1];
-        return json_encode($response);
+        return json_encode($response);*/
     }
 
     public function route_to_rapc_post()

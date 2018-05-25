@@ -781,7 +781,7 @@ class Leads extends CI_Controller
     public function details_generated($lead_id){
         $lead_id = decode_id($lead_id);
         $arrData['leads'] = $this->Lead->lead_details($lead_id);
-        //pe($lead_id);die;
+        //pe($arrData['leads']);die;
         $all_status = $this->config->item('lead_status');
 
         if($arrData['leads'][0]['status'] == 'NC'){
@@ -1679,8 +1679,10 @@ class Leads extends CI_Controller
     public function verify_account(){
            if($this->input->post('acc_no') != ''){
             $acc_no = base64_decode(base64_decode($this->input->post('acc_no')));
+            $lead_id = $this->input->post('lead_id');
+            //   echo $acc_no;die;
             //$response = verify_account($acc_no);
-            $response = $this->verify_accountcbs($acc_no);
+            $response = $this->verify_accountcbs($acc_no,$lead_id);
             echo $response;
         }
     }
@@ -1826,80 +1828,21 @@ class Leads extends CI_Controller
             redirect('leads/upload_employee');
         }
     }
-   
-private function verify_accountcbs($acc_no)
+   //franklin fargoj
+    private function verify_accountcbs($acc_no,$lead_id)
     {
-        //echo $acc_no;die;
-        $host    = "172.25.2.23";
-        $port    = 11221;
-        $strval='1200';
-        $primary = chr(bindec('10110000'));
-        $primary = $primary.chr(bindec('00110000'));
-        $primary = $primary.chr(bindec('10000001'));
-        $primary = $primary.chr(bindec('00000001'));
-        $primary = $primary.chr(bindec('01000000'));
-        $primary = $primary.chr(bindec('00100000'));
-        $primary = $primary.chr(bindec('10000000'));
-        $primary = $primary.chr(0);
+        $data=array('opened_account_no'=>$acc_no);
+        $result = $this->Lead->add_account_no($data,$lead_id);
 
-        $sec = chr(0);
-        $sec = $sec.chr(0);
-        $sec = $sec.chr(0);
-        $sec = $sec.chr(0);
-        $sec = $sec.chr(bindec('00000100'));
-        $sec = $sec.chr(0);
-        $sec = $sec.chr(0);
-        $sec = $sec.chr(bindec('00101000'));
-
-        $field_3 = '970000';
-        $field_4 = '0000000000000000';
-        $field_11 = '000000'.date('His');
-        $field_12 = date('YmdHis');
-        $field_17 = date('Ymd');
-        $field_24 = '200';
-        $field_32 = '03018';
-        $field_34 = '09000400463';
-        //$field_41 = 'LMS             ';
-        $field_43 = '08BANKAWAY';
-        $field_49 = 'INR';
-        $field_102 = '31018        0000    '.$acc_no;
-        $field_123 = '003LMS';
-        $field_125 = '009LMSMOBILE';
-
-        //$message = $msg."970000000000000000000000000001010120170808072141201708082000301809000000000IVR             08BANKAWAYINR31018        0000    9158885659  003IVR009IVRMOBILE";
-
-        $msg_header= $strval.$primary.$sec;
-        $message = $msg_header.$field_3.$field_4.$field_11.$field_12.$field_17.$field_24.$field_32.$field_34.$field_43.$field_49.$field_102.$field_123.$field_125;
-
-        //echo "Message To server :".$message;
-        // create socket
-        $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP) or die("Could not create socket\n");
-        // connect to server
-        $result = socket_connect($socket, $host, $port) or die("Could not connect to server\n");
-        //echo "Conection Established Successfully With IP - ".$host." And PORT - ".$port;
-        //echo "<br>";
-        // send string to server
-        $cnt = socket_write($socket, $message, strlen($message)) or die("Could not send data to server\n");
-        //echo "Message Sent To Server :".$message;
-        //echo "<br>";
-        //echo "Sent Message Length :" .$cnt;
-        //echo "<br>";
-        // get server response
-        $result = socket_read ($socket, 2048) or die("Could not read server response\n");
-        //echo "Reply From Server  :".$result;die;
-        // close socket
-        socket_close($socket);
-
-        $response= array();
-        if(strpos($result,'UNI000000') !== false)
+        if($result)
         {
-            $response_data = explode('LMS~',$result);
+            $response_data = 'AccountId added successfully';
             $response['status']='True';
         }else{
-            $response_data = explode('LMS~',$result);
+            $response_data = 'Failed to added AccountId';
             $response['status']='False';
         }
-        $response['data'] = $response_data[1];
+        $response['data'] = $response_data;
         return json_encode($response);
     }
 
