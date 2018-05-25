@@ -1,4 +1,5 @@
 <?php
+pe($leads);exit;
 //    $lead_status = $this->config->item('lead_status');
     $all_lead_status = $this->config->item('lead_status');
     $lead_type = $this->config->item('lead_type');
@@ -42,6 +43,8 @@
     $state_extra = 'id="state_id"';
     $district_extra = 'id="district_id"';
     $branch_extra = 'id="branch_id"';
+
+    $lead_id = $leads[0]['id'];
 ?>
 <div class="page-title">
     <div class="container clearfix">
@@ -723,12 +726,14 @@
                 url: base_url + "leads/verify_account",
                 data: {
                     '<?php echo $this->security->get_csrf_token_name(); ?>': '<?php echo $this->security->get_csrf_hash(); ?>',
-                    acc_no: $.base64.encode($.base64.encode(acc_no))
+                    acc_no: $.base64.encode($.base64.encode(acc_no)),
+                    lead_id:<?php echo $lead_id ?>
                 }/*,
                 beforeSend:function(){
                     return confirm("Are you sure?");
                 }*/
             }).success(function(resp){
+
                     var regex = /(<([^>]+)>)/ig;
                     var body = resp;
                     var result = body.replace(regex, "");
