@@ -44,7 +44,6 @@ function insert_customer_detail($data,$customerid)
 
 	foreach ($data as $key=> $value)
 	{	
-
 		if(in_array($value['customer_id'], $array))
 		{
 
@@ -79,21 +78,18 @@ function get_hrms_id($hrmsid)
 {
 
 	$id=$hrmsid['hrms_id'];
-	// $query = $this->db->query("SELECT count(*) as Total FROM customer_retention WHERE hrms_id='".$id."' AND call_date IS NOT NULL");
-	$wherecondition1=array('hrms_id'=>$id,'call_date IS NOT NULL');
-	$this->db->select("count(*) as Total");
-	$this->db->from('customer_retention');
-	$this->db->where($wherecondition1);
-	$results1=$this->db->get()->result_array();
+	
+	$query = $this->db->query("SELECT count(*) as Total FROM customer_retention WHERE hrms_id='".$id."' AND call_date IS NOT NULL");
+	$result1=$query->result_array();
 
-	// $query1 = $this->db->query("SELECT count(*) as Pending FROM customer_retention WHERE hrms_id='".$id."' AND call_date IS NULL");
-	$wherecondition2=array('hrms_id'=>$id,'call_date IS NULL');
-	$this->db->select("count(*) as Pending");
-	$this->db->from('customer_retention');
-	$results2=$this->db->get()->result_array();
+	$query1 = $this->db->query("SELECT count(*) as Pending FROM customer_retention WHERE hrms_id='".$id."' AND call_date IS NULL");
+	$result2=$query1->result_array();
 
-	$result = array_merge($results1,$results2);
-	return $result;
+	$result = array_merge($result1,$result2);
+
+	$results['Total']=$result[0]['Total'];
+	$results['Pending']=$result[1]['Pending'];
+	return $results;
 }
 function get_customer_retention_list($para)
 {
