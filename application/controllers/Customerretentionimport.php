@@ -20,12 +20,14 @@ function import()
 
   $this->load->model('customer_import_model');
   $this->load->library('excel');
-  
+  $this->load->model('csv_import_model');
 
   if(isset($_FILES["file"]["name"]))
   {
    $accountid=$this->customer_import_model->get_accountid();
    $customerid=$this->customer_import_model->get_customerid();
+
+   $hrmsid=$this->csv_import_model->get_hrmsid();
    $path = $_FILES["file"]["tmp_name"];
    $object = PHPExcel_IOFactory::load($path);
    foreach($object->getWorksheetIterator() as $worksheet)
@@ -119,7 +121,7 @@ function import()
         $moving_money_dena_to_non_dena=0;
      }
      $data1[] = array(
-              // 'customer_id'=>$customer_id,
+              'hrms_id'=>$hrms_id,
               'internet_banking'=>$internet_banking,
               'mobile_banking'=>$mobile_banking,
               'debit_card'=>$debit_card,
@@ -133,39 +135,34 @@ function import()
 
     }
    }
-    $res=$this->customer_import_model->insert($data,$accountid);
-
+    $res=$this->customer_import_model->insert($data,$accountid,$hrmsid);
     if($res)
     {
-      for($i=0;$i<count($data1);$i++)
-      {
-        if($res[$i]['insert']!=0)
-        {
-          $data1[$i]['customer_id']=$res[$i]['insert']++;
-        }
-        else if($res[$i]['update']!=0)
-        {
-          $data1[$i]['customer_id']=$res[$i]['update'];
-        }
-      }
 
-       $res=$this->customer_import_model->insert_customer_detail($data1,$customerid);
+       $res=$this->customer_import_model->insert_customer_detail($data1,$customerid,$hrmsid,$res);
+   
     }
 
    } 
    else
-        {
-          $this->session->set_flashdata('error', 'Please Select File!!');
-          redirect ('/customerretentionimport');
-        }
-      if($res)
+    {
+      $this->session->set_flashdata('error', 'Please Select File!!');
+      redirect ('/customerretentionimport');
+    }
+ 
+      if(!isset($res[0]))
       {
-        $this->session->set_flashdata('success', 'File Uploaded Successfully');
+         $this->session->set_flashdata('success','File uploaded successfully..!!!');
         redirect ('/customerretentionimport');
-      }
+             }
       else
       {
-        $this->session->set_flashdata('error', 'Somthing worng. Error!!');
+        for($i=0;$i<count($res);$i++)
+        {
+          $msg.='row number '.$res[$i].' not having correct hrms id so not uploaded <br>';
+        }
+        $msg.='Remaining data uploaded successfully..!!!';
+        $this->session->set_flashdata('error',$msg);
         redirect ('/customerretentionimport');
       }
      } 

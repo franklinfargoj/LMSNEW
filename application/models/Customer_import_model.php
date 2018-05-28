@@ -3,59 +3,113 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Customer_import_model extends CI_Model
 {
 
-function insert($data,$accountid)
+function insert($data,$accountid,$hrmsid)
 {
 	foreach ($accountid as $value) 
 	$array[] = $value->account_id;
+
+	foreach ($hrmsid as $value) 
+	$array1[] = $value->hrms_id;
+
+	
+
 	$customeridupdated = array();
 	foreach ($data as $key=> $value)
 	{	
-		if(in_array($value['account_id'], $array))
+		if(in_array($value['hrms_id'], $array1))
 		{
-			$this->db->where('account_id',$value['account_id']);
-		    $res=$this->db->update('customer_retention', $value);
-
-		    $this->db->select('id');
-		    $this->db->where('account_id',$value['account_id']);
-		    $query = $this->db->get('customer_retention');
-		 	$res   = $query->result(); 
-			foreach ($res as $value1) 
+			if(in_array($value['account_id'], $array))
 			{
-    			$customeridaffected[]['update'] = $value1->id;
-    		}
-		    unset($data[$key]);
-		    
+				$this->db->where('account_id',$value['account_id']);
+			    $res=$this->db->update('customer_retention', $value);
 
+			    $this->db->select('id');
+			    $this->db->where('account_id',$value['account_id']);
+			    $query = $this->db->get('customer_retention');
+			 	$res   = $query->result(); 
+				foreach ($res as $value1) 
+				{
+	    			$customeridaffected[]['update'] = $value1->id;
+	    		}
+			    unset($data[$key]);
+			    
+			}
 		}
+		else
+		{
+			unset($data[$key]);
+		}
+
  	}
 
  	$this->db->insert_batch('customer_retention', $data);
-
- 	$customeridaffected[]['insert'] = $this->db->insert_id();
+ 	$customeridaffected['insert'] = $this->db->insert_id();
  	return $customeridaffected;
 
 
 }
-function insert_customer_detail($data,$customerid)
+function insert_customer_detail($data,$customerid,$hrmsid,$idvalue)
 {
 
 	foreach ($customerid as $value) 
 	$array[] = $value->customer_id;
 
+
+	foreach ($hrmsid as $value) 
+	$array1[] = $value->hrms_id;
+	
+	$hrmsidno=2;
+	$j=0;
+	$i=0;
+	$newid=$idvalue['insert'];
 	foreach ($data as $key=> $value)
 	{	
-		if(in_array($value['customer_id'], $array))
+		if(in_array($value['hrms_id'], $array1))
 		{
+			unset($data[$j]['hrms_id']);
+			if($idvalue[$i]['update']!=0)
+	        {
+	          $data[$key]['customer_id']=$idvalue[$i]['update'];
+	          $i++;
+	        }
+	        else
+	        {
 
-			$this->db->where('customer_id',$value['customer_id']);
-		    $res=$this->db->update('customer_retention_details', $value);
-		    unset($data[$key]);
+	          $data[$key]['customer_id']=$newid++;
+	        }
+
+			if(in_array($data[$key]['customer_id'], $array))
+			{
+				unset($value['hrms_id']);
+				$this->db->where('customer_id',$data[$key]['customer_id']);
+			    $res=$this->db->update('customer_retention_details',$value);
+			    unset($data[$key]);
+			}
 		}
+		else
+		{
+			unset($data[$key]);
+			$result[]=$hrmsidno;
+		}
+		$j++;
+		$hrmsidno++;
+		
  	}
- 	$res=$this->db->insert_batch('customer_retention_details', $data);
-
-
- 	return true;
+foreach ($data as $key => $value) {
+	if($value['customer_id']==0)
+	{
+		  unset($data[$key]);
+	}
+}
+ 	$this->db->insert_batch('customer_retention_details', $data);
+ 	if(count($result)==0)
+ 	{
+ 		return true;
+ 	}
+ 	else
+ 	{	
+ 		return $result;
+ 	}
 }
 
 function get_accountid()
@@ -116,6 +170,8 @@ function get_customer_retention_list($para)
 	}
 
 	$result = $this->db->get()->result_array();
+
+
 	return $result;
 }
 function get_customer_retention_detail($para)
