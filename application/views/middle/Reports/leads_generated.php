@@ -471,7 +471,7 @@ $lead_sources = $this->config->item('lead_source');
             var columns = [5];
         
             //Initialize datatable configuration
-            initTable(table,columns);
+            initTable(table,columns,false,true);
         }
         
         $('#product_category_id').change(function () {
@@ -493,6 +493,11 @@ $lead_sources = $this->config->item('lead_source');
                 }
             });
         });
+
+
+
     });
+
+
 </script>
 <script src="<?php echo base_url().ASSETS;?>js/reports.js"></script>

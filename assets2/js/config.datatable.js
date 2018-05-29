@@ -1,8 +1,9 @@
-var initTable = function (table,columns,chkbox) {
+var initTable = function (table,columns,chkbox,scrollX) {
     /*
      * Initialize DataTables, with no sorting on the 'details' column
      */
     var oTable = table.DataTable({
+        "scrollX" : scrollX || false,
         "columnDefs": [{
             "orderable": false,
             "targets": columns
