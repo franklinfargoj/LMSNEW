@@ -288,7 +288,7 @@
                                     <?php }?>
 
 
-                                    <label>Verify Account</label>
+                                    <label>Add account</label>
                                     <?php
                                     $data = array(
                                         'type'  => 'text',
@@ -309,7 +309,7 @@
 
                                     <a href="javascript:void(0);" class="float-right verify_account">
                                         <img src="<?php echo base_url().ASSETS;?>images/left-nav.png" alt="left-nav">
-                                        <span>Verify</span>
+                                        <span>Add</span>
                                         <img src="<?php echo base_url().ASSETS;?>images/right-nav.png" alt="right-nav">
                                     </a>
                                 </div>
@@ -743,7 +743,8 @@
 
                         if(response['status'] == 'True'){
                             $('.loader').hide();
-                            var useraction = confirm(response['data'] + " \n\n Is above record verified?");
+                          //  var useraction = confirm(response['data'] + " \n\n Is above record verified?");
+                            var useraction = confirm(response['data']);
                             if(useraction)
                             {
                                 $('.submit_button').show();
@@ -756,7 +757,8 @@
 
                         }else{
                             $('.loader').hide();
-                            alert('Verification Failed');
+                        //  alert('Verification Failed');
+                            alert('AccountId Failed to add.');
                         }
             });
         }

@@ -167,6 +167,7 @@
 					</a>
 				</li>
 				<?php }?>
+
 				<?php if(in_array($this->session->userdata('admin_type'),array('EM','BM','ZM','GM'))) {?>
 				<li class="<?php echo (($controller == 'dashboard') && ($method == 'emi_calculator' || $method == 'fd_calculator' || $method == 'rd_calculator')) ? 'active' : ''?>" id="cal-droped">
 					<a href="#" >
@@ -201,67 +202,54 @@
 					</a>
 				</li> -->
 				<?php }?>
-				<?php if(in_array($this->session->userdata('admin_type'),array('EM','BM','ZM','GM'))) {?>
-				<li class="<?php echo ($controller == 'product_guide') ? 'active' : ''?>">
-					<a href="<?php echo site_url('product_guide/view')?>">
-						Product Guide
-					</a>
-				</li>
-				<?php }?>
-                <?php if(in_array($this->session->userdata('admin_type'),array('EM','BM','ZM','GM'))) {?>
-				<li class="<?php echo (($controller == 'leads') && ($method == 'generated')) ? 'active' : ''?>">
-					<a href="<?php echo site_url('leads/generated')?>">
-						Lead Generated
-					</a>
-				</li>
-				<?php }?>
+				
 				<?php if(in_array($this->session->userdata('admin_type'),array('BM','ZM','GM','Super admin'))) {?>
-				<li class="<?php echo ($controller == 'reports') ? 'active' : ''?>" id="cal-droped1">
-					<a href="#">
-					Reports &#9662;
-					</a>
-					<ul class="cal-drop1">
-						<li class="<?php echo ($controller == 'usage') ? 'active' : ''?>" id="cal-droped3">
-							<a href="#">
-
-					<span class="right-toggle">&#9666;</span>Login <span class="left-toggle"> &#9656;</span>
-
-							</a>
-							<ul class="cal-drop3">
-								<li>
-									<a href="<?php echo site_url('reports/index/usage')?>">
-									Login Report
-									</a>
-								</li>
-
-							</ul>
-						</li>
-					
-						<li class="<?php echo ($controller == 'reports') ? 'active' : ''?>" id="cal-droped2">
+					<li class="<?php echo ($controller == 'reports') ? 'active' : ''?>" id="cal-droped1">
 						<a href="#">
-						 
-						<span class="right-toggle">&#9666;</span>Performance<span class="left-toggle"> &#9656;</span>
+							Reports &#9662;
 						</a>
-							<ul class="cal-drop2">
-								<li>
-									<a href="<?php echo site_url('reports/index/pendancy_leads_reports')?>">
-										Pendency Leads
-									</a>
-								</li>
-								<li>
-									<a href="<?php echo site_url('reports/index/leads_type_reports')?>">
-										Interested Leads Report
-									</a>
-								</li>
+						<ul class="cal-drop1">
+							<li class="<?php echo ($controller == 'usage') ? 'active' : ''?>" id="cal-droped3">
+								<a href="#">
 
-								<li>
-									<a href="<?php echo site_url('reports/index/leads_generated_vs_converted')?>">
-										Business Generated Report
-									</a>
-								</li>
-							</ul>
-						</li>
-	                   <!--  <li>
+									<span class="right-toggle">&#9666;</span>Login <span class="left-toggle"> &#9656;</span>
+
+								</a>
+								<ul class="cal-drop3">
+									<li>
+										<a href="<?php echo site_url('reports/index/usage')?>">
+											Login Report
+										</a>
+									</li>
+
+								</ul>
+							</li>
+
+							<li class="<?php echo ($controller == 'reports') ? 'active' : ''?>" id="cal-droped2">
+								<a href="#">
+
+									<span class="right-toggle">&#9666;</span>Performance<span class="left-toggle"> &#9656;</span>
+								</a>
+								<ul class="cal-drop2">
+									<li>
+										<a href="<?php echo site_url('reports/index/pendancy_leads_reports')?>">
+											Pendency Leads
+										</a>
+									</li>
+									<li>
+										<a href="<?php echo site_url('reports/index/leads_type_reports')?>">
+											Interested Leads Report
+										</a>
+									</li>
+
+									<li>
+										<a href="<?php echo site_url('reports/index/leads_generated_vs_converted')?>">
+											Business Generated Report
+										</a>
+									</li>
+								</ul>
+							</li>
+							<!--  <li>
 							<a href="<?php echo site_url('reports/index/leads_generated')?>">
 							Leads generated
 							</a>
@@ -276,52 +264,68 @@
 							Leads generated vs converted
 							</a>
 						</li> -->
-						<li class="<?php echo ($controller == 'leads_classification') ? 'active' : ''?>" id="cal-droped4">
-							<a href="#">
-							
-							<span class="right-toggle">&#9666;</span>Classification<span class="left-toggle"> &#9656;</span>
-							</a>
-							<ul class="cal-drop4">
-<!--								<li>-->
-<!--									<a href="--><?php //echo site_url('reports/index/leads_classification')?><!--">-->
-<!--									Leads Classification-->
-<!--									</a>-->
-<!--								</li>-->
-								<li>
-									<a href="<?php echo site_url('reports/index/leads_generated')?>">
-										Leads Generated
-									</a>
-								</li>
-								<li>
-									<a href="<?php echo site_url('reports/index/leads_assigned')?>">
-                                        Current Location
-									</a>
-								</li>
-                                <li>
-                                    <a href="<?php echo site_url('reports/index/leads_unassigned')?>">
-                                        Unassigned Leads
-                                    </a>
-                                </li>
-                                <li>
-									<a href="<?php echo site_url('reports/index/status_flow')?>">
-										Master Report
-									</a>
-								</li>
-                                <?php if($this->session->userdata('admin_type')=='Super admin'){?>
-                                <li>
-                                    <a href="<?php echo site_url('reports/index/dashboard')?>">
-                                        Dashboard
-                                    </a>
-                                </li>
-                                <?php }?>
-							</ul>
-						</li>
-						
-					</ul>
-				</li>
+							<li class="<?php echo ($controller == 'leads_classification') ? 'active' : ''?>" id="cal-droped4">
+								<a href="#">
 
+									<span class="right-toggle">&#9666;</span>Classification<span class="left-toggle"> &#9656;</span>
+								</a>
+								<ul class="cal-drop4">
+									<!--								<li>-->
+									<!--									<a href="--><?php //echo site_url('reports/index/leads_classification')?><!--">-->
+									<!--									Leads Classification-->
+									<!--									</a>-->
+									<!--								</li>-->
+									<li>
+										<a href="<?php echo site_url('reports/index/leads_generated')?>">
+											Leads Generated
+										</a>
+									</li>
+									<li>
+										<a href="<?php echo site_url('reports/index/leads_assigned')?>">
+											Current Location
+										</a>
+									</li>
+									<li>
+										<a href="<?php echo site_url('reports/index/leads_unassigned')?>">
+											Unassigned Leads
+										</a>
+									</li>
+									<li>
+										<a href="<?php echo site_url('reports/index/status_flow')?>">
+											Master Report
+										</a>
+									</li>
+									<?php if($this->session->userdata('admin_type')=='Super admin'){?>
+										<li>
+											<a href="<?php echo site_url('reports/index/dashboard')?>">
+												Dashboard
+											</a>
+										</li>
+									<?php }?>
+								</ul>
+							</li>
+
+						</ul>
+					</li>
 				<?php }?>
-                         <?php if(in_array($this->session->userdata('admin_type'),array('Super admin'))) {?>
+
+				<?php if(in_array($this->session->userdata('admin_type'),array('EM','BM','ZM','GM'))) {?>
+					<li class="<?php echo (($controller == 'leads') && ($method == 'generated')) ? 'active' : ''?>">
+						<a href="<?php echo site_url('leads/generated')?>">
+							Lead Generated
+						</a>
+					</li>
+				<?php }?>
+
+				<?php if(in_array($this->session->userdata('admin_type'),array('EM','BM','ZM','GM'))) {?>
+				<li class="<?php echo ($controller == 'product_guide') ? 'active' : ''?>">
+					<a href="<?php echo site_url('product_guide/view')?>">
+						Product Guide
+					</a>
+				</li>
+				<?php }?>
+
+                <?php if(in_array($this->session->userdata('admin_type'),array('Super admin'))) {?>
 				<li class="<?php echo ($controller == 'change_password') ? 'active' : ''?>">
 					<a href="<?php echo site_url('change_password')?>">
 						Change Password
