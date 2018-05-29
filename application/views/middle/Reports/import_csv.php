@@ -19,6 +19,7 @@ $source_options['state'] = 'State';
 $source_options['zone'] = 'Zone';
 $source_options['district'] = 'District';
 $source_options['branch'] = 'Branch';
+$source_options['all'] = 'All In One';
 $data_submit = array(
     'name' => 'Submit',
     'id' => 'Submit',
@@ -147,13 +148,15 @@ $data_submit = array(
     $('#lead_source').change(function () {
         var end = this.value;
         if(end == 'state'){
-            $("#sample").attr("href", "http://localhost/LMSNEW/uploads/sample/sample_state.xlsx");
+            $("#sample").attr("href", "http://localhost/LMSNEW/uploads/sample/sample_state.xls");
         }else if(end == 'zone'){
-            $("#sample").attr("href", "http://localhost/LMSNEW/uploads/sample/sample_zone.xlsx");
+            $("#sample").attr("href", "http://localhost/LMSNEW/uploads/sample/sample_zone.xls");
         }else if(end == 'branch'){
-            $("#sample").attr("href", "http://localhost/LMSNEW/uploads/sample/sample_branch.xlsx");
+            $("#sample").attr("href", "http://localhost/LMSNEW/uploads/sample/sample_branch.xls");
         }else if(end == 'district'){
-            $("#sample").attr("href", "http://localhost/LMSNEW/uploads/sample/sample_district.xlsx");
+            $("#sample").attr("href", "http://localhost/LMSNEW/uploads/sample/sample_district.xls");
+        }else if(end == 'all'){
+            $("#sample").attr("href", "http://localhost/LMSNEW/uploads/sample/sample_all.xls");
         }
     });
 

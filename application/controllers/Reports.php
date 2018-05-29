@@ -3003,15 +3003,24 @@ class Reports extends CI_Controller
                     }else if($lead_source == 'zone'){
                         $keys = ['code', 'name'];
                         $table_db = "db_zone";
+                    }else if($lead_source == 'all'){
+                        $keys = ['branch_code', 'branch_name','district_code', 'district_name','state_code', 'state_name','zone_code','zone_name'];
+//                        $table_db = "db_zone";
                     }
                     if($lead_source == 'zone') {
                         $excelData = fetch_range_excel_data($file['full_path'], 'A2:B', $keys);
+                    }else if($lead_source == 'all'){
+                        $excelData = fetch_range_excel_data($file['full_path'], 'A2:H', $keys);
                     }else {
                         $excelData = fetch_range_excel_data($file['full_path'], 'A2:C', $keys);
                     }
                     $validation = $this->validate_leads_data($excelData,$lead_source);
                     if (!empty($validation['insert_array'])) {
-                        $insert_count = $this->Lead->insert_uploaded_data($table_db, $validation['insert_array']);
+                        if($lead_source == 'all'){
+                            $insert_count = $this->Reports->insert_uploaded_data_all($validation['insert_array']);
+                        }else {
+                            $insert_count = $this->Lead->insert_uploaded_data($table_db, $validation['insert_array']);
+                        }
                     }
                     if ($validation['type'] == 'error') {
                         make_upload_directory('./uploads/errorlog');
@@ -3130,12 +3139,51 @@ class Reports extends CI_Controller
                 $code = $this->Reports->check_code($wherenewArray,$table_name);
                  if ($code == false) {
                     $error[$key] = 'Duplicate Code.';
-                } else if ($value['code'] == '' || $value['name'] == '') {
+                 } else if ($value['code'] == '' || $value['name'] == '') {
                     $error[$key] = 'Parameter is missing.';
-                } else {
+                 } else {
 
                         $value['code'] = $value['code'];
                         $value['name'] = $value['name'];
+
+                    $insert_array[] = $value;
+                    $total_inserted++;
+                }
+            }
+            else if ($lead_source == 'all') {
+
+                $wherenewArray = array('code' => ucwords(strtolower(trim($value['zone_code']))),
+                    'name' => ucwords(strtolower(trim($value['zone_name']))));
+                $z_code = $this->Reports->check_code($wherenewArray,'db_zone');
+
+                $wherenewArray = array('code' => ucwords(strtolower(trim($value['state_code']))),
+                    'name' => ucwords(strtolower(trim($value['state_name']))));
+                $s_code = $this->Reports->check_code($wherenewArray,'db_state');
+
+                $wherenewArray = array('code' => ucwords(strtolower(trim($value['district_code']))),
+                    'name' => ucwords(strtolower(trim($value['district_name']))));
+                $d_code = $this->Reports->check_code($wherenewArray,'db_district');
+
+                $wherenewArray = array('code' => ucwords(strtolower(trim($value['branch_code']))),
+                    'name' => ucwords(strtolower(trim($value['branch_name']))));
+                $b_code = $this->Reports->check_code($wherenewArray,'db_branch');
+                if ($z_code == false || $s_code == false || $d_code == false || $b_code == false) {
+                    $error[$key] = 'Duplicate Code.';
+                } else if ($value['branch_code'] == '' || $value['branch_name'] == ''||
+                    $value['district_code'] == '' || $value['district_name'] == ''||
+                    $value['state_code'] == '' || $value['state_name'] == ''||
+                    $value['zone_code'] == '' || $value['zone_name'] == '') {
+                    $error[$key] = 'Parameter is missing.';
+                } else {
+
+                    $value['branch_code'] = $value['branch_code'];
+                    $value['branch_name'] = $value['branch_name'];
+                    $value['district_code'] = $value['district_code'];
+                    $value['district_name'] = $value['district_name'];
+                    $value['state_code'] = $value['state_code'];
+                    $value['state_name'] = $value['state_name'];
+                    $value['zone_code'] = $value['zone_code'];
+                    $value['zone_name'] = $value['zone_name'];
 
                     $insert_array[] = $value;
                     $total_inserted++;
