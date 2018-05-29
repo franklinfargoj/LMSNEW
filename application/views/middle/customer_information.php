@@ -9,7 +9,7 @@
     <div class="inner-content">
         <div class="container">
         <div class="float-right">
-            <span class="lead-num"><a href="<?php echo site_url('faq');?>"><span><</span>Back</a></span>
+            <span class="lead-num"><a href="<?php echo site_url('customerretentionlist');?>"><span><</span>Back</a></span>
         </div>
             <div id="accordion" class="faq-accordion faq-a">
                 <?php 
@@ -25,8 +25,8 @@
                                         Has the customer registered?
                                     </td>
                                     <td>
-                                        <input type="radio" name="ib" <?php if($customerinfo[0]['internet_banking']==1) echo 'checked'; ?>>Yes
-                                        <input type="radio" name="ib" <?php if($customerinfo[0]['internet_banking']==0) echo 'checked'; ?>>No
+                                        <input disabled type="radio" name="ib" <?php if($customerinfo[0]['internet_banking']==1) echo 'checked'; ?>>Yes
+                                        <input disabled type="radio" name="ib" <?php if($customerinfo[0]['internet_banking']==0) echo 'checked'; ?>>No
                                     </td> 
                                 </tr>
                                 <tr>
@@ -45,8 +45,8 @@
                                         Has the customer registered?
                                     </td>
                                     <td>
-                                        <input type="radio" name="mb" <?php if($customerinfo[0]['mobile_banking']==1) echo 'checked'; ?>>Yes
-                                        <input type="radio" name="mb"   <?php if($customerinfo[0]['mobile_banking']==0) echo 'checked'; ?>>No
+                                        <input disabled type="radio" name="mb" <?php if($customerinfo[0]['mobile_banking']==1) echo 'checked'; ?>>Yes
+                                        <input disabled  type="radio" name="mb"   <?php if($customerinfo[0]['mobile_banking']==0) echo 'checked'; ?>>No
                                     </td> 
                                 </tr>
                                 <tr>
@@ -66,8 +66,8 @@
                                         Has the customer conducted any NEFT / RTGSin branch or online?
                                     </td>
                                     <td>
-                                        <input type="radio" name="db"  <?php if($customerinfo[0]['debit_card']==1) echo 'checked'; ?>>Yes
-                                        <input type="radio" name="db"  <?php if($customerinfo[0]['debit_card']==0) echo 'checked'; ?>>No
+                                        <input disabled  type="radio" name="db"  <?php if($customerinfo[0]['debit_card']==1) echo 'checked'; ?>>Yes
+                                        <input disabled  type="radio" name="db"  <?php if($customerinfo[0]['debit_card']==0) echo 'checked'; ?>>No
                                     </td> 
                                 </tr>
                                 <tr>
@@ -87,8 +87,8 @@
                                         Has the customer registered?
                                     </td>
                                     <td>
-                                        <input type="radio" name="nb"   <?php if($customerinfo[0]['neft_rtgs']==1) echo 'checked'; ?>>Yes
-                                        <input type="radio" name="nb"  <?php if($customerinfo[0]['neft_rtgs']==0) echo 'checked'; ?>>No
+                                        <input disabled  type="radio" name="nb"   <?php if($customerinfo[0]['neft_rtgs']==1) echo 'checked'; ?>>Yes
+                                        <input disabled  type="radio" name="nb"  <?php if($customerinfo[0]['neft_rtgs']==0) echo 'checked'; ?>>No
                                     </td> 
                                 </tr>
 
@@ -98,8 +98,8 @@
                                     </td>
                                     <td>
                                        
-                                        <input type="radio" name="ivb"   <?php if($customerinfo[0]['moving_money_dena_to_non_dena']==1) echo 'checked'; ?>>Yes
-                                        <input type="radio" name="ivb"   <?php if($customerinfo[0]['moving_money_dena_to_non_dena']==0) echo 'checked'; ?>>No
+                                        <input disabled  type="radio" name="ivb"   <?php if($customerinfo[0]['moving_money_dena_to_non_dena']==1) echo 'checked'; ?>>Yes
+                                        <input disabled  type="radio" name="ivb"   <?php if($customerinfo[0]['moving_money_dena_to_non_dena']==0) echo 'checked'; ?>>No
                                     </td>
                                 </tr>
                                  <tr>
@@ -108,8 +108,9 @@
                                  </tr>
                                  <tr>
                                     <td>
-                                        <form method="POST" action=<?php echo base_url()."customerretentionimport/update/"; ?>>
-                                        <input type="hidden" name="<?php echo $this->security->get_csrf_token_name();?>" value="<?php echo $this->security->get_csrf_hash();?>">
+                                        <form method="POST" action=<?php echo base_url()."customerretentionlist/update/"; ?>>
+                                                <input type="hidden" name="<?php echo $this->security->get_csrf_token_name();?>" value="<?php echo $this->security->get_csrf_hash();?>">
+                                                <input type="hidden" name="custmid" value=<?php echo $customerinfo[0]['id']; ?>>
                                         <textarea name="remark"><?php echo $customerinfo[0]['remarks']; ?></textarea><br>
                                         <input type="submit">
                                     </form>

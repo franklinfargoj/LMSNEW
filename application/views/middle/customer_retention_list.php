@@ -6,7 +6,7 @@
 <!-- BEGIN PRODUCT -->
 <div class="page-title">
     <div class="container clearfix">
-        <h3 class="text-center">Products</h3>
+        <h3 class="text-center">Customer Retention</h3>
     </div>
 </div>
 <div class="page-content">
@@ -18,9 +18,7 @@
                     <span class="total-lead">Total Customer</span>
                     <span class="lead-num"> : <?php echo count($customerlist);?></span>
                 </div>
-                <div class="float-right">
-                    <span class="lead-num"><a href="<?php echo site_url('product/add');?>">Add</a></span>
-                </div>
+               
             </div>
             <table id="sample_3" class="display lead-table">
                 <thead>

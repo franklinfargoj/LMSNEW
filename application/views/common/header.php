@@ -112,8 +112,8 @@
 					</a>
 				</li>
 				<?php }?>
-				<?php if(in_array($this->session->userdata('admin_type'),array('Super admin'))) {?>
-				<li class="<?php echo ($controller == 'customerretentionlist' && $method == 'import') ? 'active' : ''?>">
+				<?php if(!in_array($this->session->userdata('admin_type'),array('Super admin'))) {?>
+				<li class="<?php echo ($controller == 'customerretentionlist') ? 'active' : ''?>">
 					<a href="<?php echo site_url('customerretentionlist')?>">
 						Customer Retention List
 					</a>
