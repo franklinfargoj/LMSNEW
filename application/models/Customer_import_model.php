@@ -199,4 +199,35 @@ function update_customer_retention_remark($para)
 		return $result;
 	}
 }
+function view_customer()
+{
+
+		$this->db->select("id,customer_name as 'Customer Name',current_balance as '%Balance Drop',contact_no as 'Phone number', call_date as 'call'");
+		$this->db->from('customer_retention');
+		// $this->db->where('hrms_id',$hrmsid);
+		// $this->db->where('call_date IS NULL');
+		$this->db->order_by("current_balance", "desc");
+		
+		// $query = $this->db->query("SELECT id,customer_name as 'Customer Name',current_balance as '%Balance Drop',contact_no as 'Phone number' FROM customer_retention WHERE call_date IS NULL ORDER BY current_balance desc");
+	
+	$result = $this->db->get()->result_array();
+	// echo '<pre>';
+	// print_r($result);exit;
+
+	return $result;
+}
+function view_customer_info($id)
+{
+	$this->db->select('cr.customer_name,cr.contact_no,cd.*');
+    $this->db->from('customer_retention_details cd');
+    $this->db->join('customer_retention cr','cd.customer_id=cr.id');
+    $this->db->where('cr.id',$id);
+    $result= $this->db->get()->result_array();
+
+	return $result;
+}
+function update()
+{
+	echo $_POST['remark'];exit;
+}
 }
