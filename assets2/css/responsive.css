@@ -197,3 +197,16 @@
         width: 166px;
     }
 } */
+
+@media only screen and (min-width:768px) and (max-width:1023px){
+    .login-wrapper .bank-logo{width:50%; padding:40px;}
+    .login-wrapper .login-form{width:50%; padding:110px 30px;}
+}
+@media only screen and (max-width:767px){
+    .login-wrapper{position: static; transform: translate(0%,0%); display:block;}
+    .login-wrapper .bank-logo{width:100%; padding:20px; display:block;}
+    .login-wrapper .bank-logo .bottom-content{margin-top:40px;}
+    .login-wrapper .bank-logo .bottom-content h2{font-size:35px;}
+    .login-wrapper .bank-logo .logo-area{margin-bottom:20px;}
+    .login-wrapper .login-form{width:100%; padding:20px; display:block;}
+}
