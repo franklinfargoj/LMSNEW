@@ -4,12 +4,12 @@ class CustomerRetentionList extends CI_Controller {
  function index()
  {
     $admin = ucwords(strtolower($this->session->userdata('admin_type')));
-    if ($admin != 'Super Admin')
+    if ($admin == 'Super Admin')
     {
         redirect('dashboard');
     }
               /*Create Breadcumb*/
-               $this->load->model('customer_import_model');
+    $this->load->model('customer_import_model');
     $this->make_bread->add('Upload', '', 0);
     $arrData['breadcrumb'] = $this->make_bread->output();
     $arrData['customerlist'] = $this->customer_import_model->view_customer();
@@ -21,12 +21,12 @@ class CustomerRetentionList extends CI_Controller {
  {
 
     $admin = ucwords(strtolower($this->session->userdata('admin_type')));
-    if ($admin != 'Super Admin')
+    if ($admin == 'Super Admin')
     {
         redirect('dashboard');
     }
               /*Create Breadcumb*/
-               $this->load->model('customer_import_model');
+    $this->load->model('customer_import_model');
     $this->make_bread->add('Upload', '', 0);
     $arrData['breadcrumb'] = $this->make_bread->output();
     $arrData['customerinfo'] = $this->customer_import_model->view_customer_info($id);
@@ -34,4 +34,16 @@ class CustomerRetentionList extends CI_Controller {
     return load_view("customer_information",$arrData);
       // $this->load->view('empimport');
  }
+ function update()
+{ 
+  $this->load->model('customer_import_model');
+  $para['remark']=$_POST['remark'];
+  $para['customer_id']=$_POST['custmid'];
+  $res=$this->customer_import_model->update_customer_retention_remark($para);
+  if($res)
+  {
+    $this->session->set_flashdata('success','Remark updated Successfully..!!!');
+    redirect ('/customerretentionlist/view/'.$_POST['custmid']);
+  }
+}
 }

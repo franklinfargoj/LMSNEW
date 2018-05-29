@@ -185,10 +185,10 @@ function get_customer_retention_detail($para)
 }
 function update_customer_retention_remark($para)
 {
-
 	$array=array('remarks'=>$para['remark']);
 	$this->db->where('customer_id',$para['customer_id']);
 	$res=$this->db->update('customer_retention_details', $array);
+		
 	if($res)
 	{
 		$this->db->select('cr.customer_name,cr.contact_no,cd.*');
@@ -226,8 +226,5 @@ function view_customer_info($id)
 
 	return $result;
 }
-function update()
-{
-	echo $_POST['remark'];exit;
-}
+
 }
