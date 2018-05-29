@@ -182,7 +182,7 @@
     position: fixed!important;
 }
 }*/
-@media only screen and (min-width:1200px) and (max-width:1370px) {
+/* @media only screen and (min-width:1200px) and (max-width:1370px) {
     .header .logo{width: 18%;}
     .header .top-navigation{width: 69%;}
     .logged-in .name.responsive-login{display:block;position: relative;top: -25px;left: 45px;top: -47px;
@@ -196,4 +196,4 @@
     .header .right-nav{
         width: 166px;
     }
-}
+} */

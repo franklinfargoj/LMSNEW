@@ -2072,7 +2072,7 @@ tr.even-dash {
 	display: block;
 	width:40%;
 	padding: 0 20px;
-	margin:20px 0;
+	margin:20px auto;
 }
 .inner-content.text-s .lead-gen-box p{
 	width: 100%;
@@ -2085,4 +2085,7 @@ tr.even-dash {
 }
 .margin-bottom-20{
 	margin-bottom: 20px;
+}
+.center-title{
+	text-align:center;
 }
