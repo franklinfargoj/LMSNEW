@@ -90,7 +90,7 @@ $form_attributes = array('class' => 'form', 'method' => 'post', 'accept-charset'
 <br/>
 							<div class="emi-section">
                                 <label>Your EMI</label>
-                                <span style="color: black" id="your_emi" class="input-box"></span>
+                                <span style="color: white" id="your_emi" class="input-box"></span>
                                 <div class="emi-month-text">per month</div>
                             </div>
 						</div>
