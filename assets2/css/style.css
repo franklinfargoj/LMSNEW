@@ -481,8 +481,9 @@ body{
 }
 .header .top-navigation{
 	width: 100%;
-	display: inline-block;
+	display: block;
 	vertical-align: middle;
+	clear: both;
 }
 .header .right-nav{
 	width: 50%;
@@ -635,6 +636,10 @@ span.count {
 	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
 	width: 50%;
+	text-align:center;
+}
+.main-content .lead-section .view-content{
+	margin: 60px auto 0;
 }
 
 .lead-section + .lead-section {
@@ -651,6 +656,9 @@ span.count {
 	margin-bottom: 35px;
 	font-family: "lato";
 	color: #2e2e30;
+}
+.lead-section h3 br{
+	display: none;
 }
 strong{
 	font-weight: bold;
@@ -736,7 +744,7 @@ strong{
 	padding: 6px;
 }
 
-.lead-form .form-control label{width: 155px; color: #333333; font-size: 15px;}
+.lead-form .form-control label{width: 175px; color: #333333; font-size: 15px;}
 .radio-control{float: left;}
 .radio-control input{
 	width: auto;
@@ -1477,8 +1485,8 @@ table.dataTable.row-border tbody th, table.dataTable.row-border tbody td, table.
 }
 .emi-content .range-slider .step{
 	position: relative;
-	top: -19px;
-	width: 98%;
+	top: -9px;
+    width: 97%;
 }
 .tick{
 	position: absolute;
@@ -2056,4 +2064,24 @@ tr.even-dash {
 }
 .timeline .timeline-items .timeline-item:nth-of-type(2n+1)::before {
 	border-top: 1em solid #017c5e !important;
+}
+
+.lead-gen-box{
+	border:1px solid #c0c0c0;
+	display: block;
+	width:40%;
+	padding: 0 20px;
+	margin:20px 0;
+}
+.inner-content.text-s .lead-gen-box p{
+	width: 100%;
+}
+.inner-content.text-s .lead-gen-box p b{
+	float:right;
+}
+.inner-content.text-s .lead-gen-box p:last-child{
+	border: none;
+}
+.margin-bottom-20{
+	margin-bottom: 20px;
 }
