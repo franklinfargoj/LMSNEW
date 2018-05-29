@@ -148,15 +148,15 @@ $data_submit = array(
     $('#lead_source').change(function () {
         var end = this.value;
         if(end == 'state'){
-            $("#sample").attr("href", "http://localhost/LMSNEW/uploads/sample/sample_state.xls");
+            $("#sample").attr("href", "<?php echo base_url();?>uploads/sample/sample_state.xls");
         }else if(end == 'zone'){
-            $("#sample").attr("href", "http://localhost/LMSNEW/uploads/sample/sample_zone.xls");
+            $("#sample").attr("href", "<?php echo base_url();?>uploads/sample/sample_zone.xls");
         }else if(end == 'branch'){
-            $("#sample").attr("href", "http://localhost/LMSNEW/uploads/sample/sample_branch.xls");
+            $("#sample").attr("href", "<?php echo base_url();?>uploads/sample/sample_branch.xls");
         }else if(end == 'district'){
-            $("#sample").attr("href", "http://localhost/LMSNEW/uploads/sample/sample_district.xls");
+            $("#sample").attr("href", "<?php echo base_url();?>uploads/sample/sample_district.xls");
         }else if(end == 'all'){
-            $("#sample").attr("href", "http://localhost/LMSNEW/uploads/sample/sample_all.xls");
+            $("#sample").attr("href", "<?php echo base_url();?>uploads/sample/sample_all.xls");
         }
     });
 
