@@ -22,7 +22,7 @@
                 <img src="<?php echo base_url().ASSETS;?>images/man-box.jpg" alt="self" class="Pbox-img">
                 <h4>Branch Generated</h4>
                 <div class="bg-red bg-c">
-                <img src="<?php echo base_url().ASSETS;?>images/red-circle.png" alt="bg-red" class="img-w">
+                <img src="<?php echo base_url().ASSETS;?>images/red-circle-small.png" alt="bg-red" class="img-w">
                 <ul>
                 <?php $walkin = 0;
                 if($unassigned_leads_count['walkin'] != 0)
@@ -41,7 +41,7 @@
                 <img src="<?php echo base_url().ASSETS;?>images/man2-box.jpg" alt="self" class="Pbox-img">
                 <h4>Website,IVR</h4>
                 <div class="bg-red bg-c">
-                <img src="<?php echo base_url().ASSETS;?>images/red-circle.png" alt="bg-red"  class="img-w">
+                <img src="<?php echo base_url().ASSETS;?>images/red-circle-small.png" alt="bg-red"  class="img-w">
                 <ul>
                     <?php $enquiry = 0;
                     if($unassigned_leads_count['enquiry'] != 0)
@@ -59,7 +59,7 @@
                 <img src="<?php echo base_url().ASSETS;?>images/hand-box.jpg" alt="self" class="Pbox-img">
                 <h4>Other Agent</h4>
                 <div class="bg-red bg-c">
-                <img src="<?php echo base_url().ASSETS;?>images/red-circle.png" alt="bg-red" class="img-w">
+                <img src="<?php echo base_url().ASSETS;?>images/red-circle-small.png" alt="bg-red" class="img-w">
                 <ul>
                     <?php $tieups = 0;
                     if($unassigned_leads_count['tie_ups'] != 0)
@@ -77,7 +77,7 @@
                 <img src="<?php echo base_url().ASSETS;?>images/board-box.jpg" alt="self" class="Pbox-img">
                 <h4>Analytics</h4>
                 <div class="bg-red bg-c">
-                <img src="<?php echo base_url().ASSETS;?>images/red-circle.png" alt="bg-red" class="img-w">
+                <img src="<?php echo base_url().ASSETS;?>images/red-circle-small.png" alt="bg-red" class="img-w">
                 <ul>
                     <?php $analytics = 0;
                     if($unassigned_leads_count['analytics'] != 0)

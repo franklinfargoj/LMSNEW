@@ -580,6 +580,7 @@ span.count {
 	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;
+	height: 18px;
 }
 .logged-in a{
 	color: #ffffff;
