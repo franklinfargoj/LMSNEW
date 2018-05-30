@@ -59,6 +59,9 @@ body {font-family: Arial;}
                     <span class="total-lead">Total Customer</span>
                     <span class="lead-num"> : <?php echo count($customerlist);?></span>
                 </div>
+                        <div class="float-right">
+            <span class="lead-num"><a href="<?php echo site_url('customerretentionlist');?>"><span><</span>Back</a></span>
+        </div>
             </div>
             <div class="tab">
 <a  class="tablinks" href="<?php echo site_url('customerretentionlist/called')?>">
