@@ -1,4 +1,45 @@
+<head>
+    <style>
+body {font-family: Arial;}
 
+/* Style the tab */
+.tab {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+}
+
+/* Style the buttons inside the tab */
+.tab a {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+.tab a:hover {
+    background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab a.active {
+    background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
+}
+</style>
+</head>
 <!-- BEGIN PAGE LEVEL STYLES -->
     <link href="<?php echo base_url().ASSETS;?>css/jquery.dataTables.min.css" rel="stylesheet">
 <!-- END PAGE LEVEL STYLES -->
@@ -18,8 +59,18 @@
                     <span class="total-lead">Total Customer</span>
                     <span class="lead-num"> : <?php echo count($customerlist);?></span>
                 </div>
-               
             </div>
+            <div class="tab">
+<a  class="tablinks" href="<?php echo site_url('customerretentionlist/called')?>">
+                    Called
+                </a>
+ <a class="tablinks" href="<?php echo site_url('customerretentionlist/notcalled')?>">
+                                   Not Called
+                </a>
+
+</div>
+          
+
             <table id="sample_3" class="display lead-table">
                 <thead>
 

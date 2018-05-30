@@ -226,5 +226,36 @@ function view_customer_info($id)
 
 	return $result;
 }
+function calledlist()
+{
+	$this->db->select("id,customer_name as 'Customer Name',current_balance as '%Balance Drop',contact_no as 'Phone number', call_date as 'call'");
+		$this->db->from('customer_retention');
+		// $this->db->where('hrms_id',$hrmsid);
+		$this->db->where('call_date IS NOT NULL');
+		$this->db->order_by("current_balance", "desc");
+		
+		// $query = $this->db->query("SELECT id,customer_name as 'Customer Name',current_balance as '%Balance Drop',contact_no as 'Phone number' FROM customer_retention WHERE call_date IS NULL ORDER BY current_balance desc");
+	
+	$result = $this->db->get()->result_array();
+	// echo '<pre>';
+	// print_r($result);exit;
 
+	return $result;
+}
+function notcalllist()
+{
+	$this->db->select("id,customer_name as 'Customer Name',current_balance as '%Balance Drop',contact_no as 'Phone number', call_date as 'call'");
+		$this->db->from('customer_retention');
+		// $this->db->where('hrms_id',$hrmsid);
+		$this->db->where('call_date IS NULL');
+		$this->db->order_by("current_balance", "desc");
+		
+		// $query = $this->db->query("SELECT id,customer_name as 'Customer Name',current_balance as '%Balance Drop',contact_no as 'Phone number' FROM customer_retention WHERE call_date IS NULL ORDER BY current_balance desc");
+	
+	$result = $this->db->get()->result_array();
+	// echo '<pre>';
+	// print_r($result);exit;
+
+	return $result;
+}
 }
