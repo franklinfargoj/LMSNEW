@@ -10,7 +10,7 @@ class CustomerRetentionList extends CI_Controller {
     }
               /*Create Breadcumb*/
     $this->load->model('customer_import_model');
-    $this->make_bread->add('Upload', '', 0);
+    $this->make_bread->add('Customer Retention List', '', 0);
     $arrData['breadcrumb'] = $this->make_bread->output();
     $arrData['customerlist'] = $this->customer_import_model->view_customer();
           /*Create Breadcumb*/
@@ -27,7 +27,7 @@ class CustomerRetentionList extends CI_Controller {
     }
               /*Create Breadcumb*/
     $this->load->model('customer_import_model');
-    $this->make_bread->add('Upload', '', 0);
+    $this->make_bread->add('Customer Retention Information', '', 0);
     $arrData['breadcrumb'] = $this->make_bread->output();
     $arrData['customerinfo'] = $this->customer_import_model->view_customer_info($id);
           /*Create Breadcumb*/
@@ -45,5 +45,37 @@ class CustomerRetentionList extends CI_Controller {
     $this->session->set_flashdata('success','Remark updated Successfully..!!!');
     redirect ('/customerretentionlist/view/'.$_POST['custmid']);
   }
+}
+function called()
+{
+
+  $admin = ucwords(strtolower($this->session->userdata('admin_type')));
+    if ($admin == 'Super Admin')
+    {
+        redirect('dashboard');
+    }
+              /*Create Breadcumb*/
+    $this->load->model('customer_import_model');
+    $this->make_bread->add('Customer Retention List', '', 0);
+    $arrData['breadcrumb'] = $this->make_bread->output();
+    $arrData['customerlist'] = $this->customer_import_model->calledlist();
+          /*Create Breadcumb*/
+    return load_view("customer_retention_list",$arrData);
+}
+function notcalled()
+{
+
+  $admin = ucwords(strtolower($this->session->userdata('admin_type')));
+    if ($admin == 'Super Admin')
+    {
+        redirect('dashboard');
+    }
+              /*Create Breadcumb*/
+    $this->load->model('customer_import_model');
+    $this->make_bread->add('Customer Retention List', '', 0);
+    $arrData['breadcrumb'] = $this->make_bread->output();
+    $arrData['customerlist'] = $this->customer_import_model->notcalllist();
+          /*Create Breadcumb*/
+    return load_view("customer_retention_list",$arrData);
 }
 }
