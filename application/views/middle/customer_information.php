@@ -6,7 +6,7 @@
 </div>
 <div class="page-content">
     <span class="bg-top"></span>
-    <div class="inner-content">
+    <div class="inner-content customer-retention-details">
         <div class="container">
         <div class="float-right">
             <span class="lead-num"><a href="<?php echo site_url('customerretentionlist/customerlist');?>"><span><</span>Back</a></span>
@@ -20,11 +20,11 @@
                         <div>
                             <table>
                                 <tr>
-                                    <td>
+                                    <td class="no-border">
                                         <h4>Internet Banking</h4>
                                         Has the customer registered?
                                     </td>
-                                    <td>
+                                    <td class="no-border">
                                         <input disabled type="radio" name="ib" <?php if($customerinfo[0]['internet_banking']==1) echo 'checked'; ?>>Yes
                                         <input disabled type="radio" name="ib" <?php if($customerinfo[0]['internet_banking']==0) echo 'checked'; ?>>No
                                     </td> 
@@ -40,11 +40,11 @@
                        <!-- //////////////////////////////////////////////////////////// -->
                              
                                 <tr>
-                                    <td>
+                                    <td class="no-border">
                                         <h4>Mobile Banking</h4>
                                         Has the customer registered?
                                     </td>
-                                    <td>
+                                    <td class="no-border">
                                         <input disabled type="radio" name="mb" <?php if($customerinfo[0]['mobile_banking']==1) echo 'checked'; ?>>Yes
                                         <input disabled  type="radio" name="mb"   <?php if($customerinfo[0]['mobile_banking']==0) echo 'checked'; ?>>No
                                     </td> 
@@ -61,11 +61,11 @@
                        <!-- //////////////////////////////////////////////////////////// -->
                              
                                 <tr>
-                                    <td>
+                                    <td class="no-border">
                                         <h4>Debit Card</h4>
                                         Has the customer conducted any NEFT / RTGSin branch or online?
                                     </td>
-                                    <td>
+                                    <td class="no-border">
                                         <input disabled  type="radio" name="db"  <?php if($customerinfo[0]['debit_card']==1) echo 'checked'; ?>>Yes
                                         <input disabled  type="radio" name="db"  <?php if($customerinfo[0]['debit_card']==0) echo 'checked'; ?>>No
                                     </td> 
@@ -82,11 +82,11 @@
                        <!-- //////////////////////////////////////////////////////////// -->
                              
                                 <tr>
-                                    <td>
+                                    <td class="no-border">
                                         <h4>NEFT / RTGS</h4>
                                         Has the customer registered?
                                     </td>
-                                    <td>
+                                    <td class="no-border">
                                         <input disabled  type="radio" name="nb"   <?php if($customerinfo[0]['neft_rtgs']==1) echo 'checked'; ?>>Yes
                                         <input disabled  type="radio" name="nb"  <?php if($customerinfo[0]['neft_rtgs']==0) echo 'checked'; ?>>No
                                     </td> 
@@ -103,19 +103,28 @@
                                     </td>
                                 </tr>
                                  <tr>
-                                    <td><h4>Remarks</h4></td>
-                                    <td></td>
+                                    <td class="no-border"><h4>Remarks</h4></td>
+                                    <td class="no-border"></td>
                                  </tr>
                                  <tr>
-                                    <td>
+                                    <td colspan="2">
                                         <form method="POST" action=<?php echo base_url()."customerretentionlist/update/"; ?>>
                                                 <input type="hidden" name="<?php echo $this->security->get_csrf_token_name();?>" value="<?php echo $this->security->get_csrf_hash();?>">
                                                 <input type="hidden" name="custmid" value=<?php echo $customerinfo[0]['id']; ?>>
-                                        <textarea name="remark"><?php echo $customerinfo[0]['remarks']; ?></textarea><br>
-                                        <input type="submit">
+                                        <div class="form-control">        
+                                            <textarea name="remark" col="40" rows="10"><?php echo $customerinfo[0]['remarks']; ?></textarea>
+                                        </div>
+                                        <button type="submit" name="Submit" value="Submit" class="full-btn">
+                                            <img src="http://localhost:/LMSNEW/assets2/images/left-nav.png" alt="left-nav" class="left-btn-img">
+                                            <span class="btn-txt">Submit</span>
+                                            <img src="http://localhost:/LMSNEW/assets2/images/right-nav.png" alt="left-nav" class="right-btn-img">
+                                        </button>
+
+
+                                        <!-- <input type="submit"> -->
                                     </form>
                                     </td>
-                                    <td></td>
+                  
                                  </tr>
                                  
                             </table>

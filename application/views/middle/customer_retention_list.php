@@ -52,7 +52,7 @@ body {font-family: Arial;}
 </div>
 <div class="page-content">
     <span class="bg-top"></span>
-    <div class="inner-content">
+    <div class="inner-content customer-retention">
         <div class="container">
             <div class="lead-top clearfix">
                 <div class="float-left">

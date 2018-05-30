@@ -2089,3 +2089,71 @@ tr.even-dash {
 .center-title{
 	text-align:center;
 }
+
+.customer-retention .tab{
+	background: transparent;
+	border: none;
+}
+.customer-retention .lead-table{
+	border-top: 0;
+}
+.customer-retention .tab .tablinks{
+	background-color: #007b5d !important;
+    color: #ffffff;
+    outline: none;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    margin-right: 10px;
+}
+
+.customer-retention-details div#accordion{
+	margin-top:45px;
+}
+.customer-retention-details .ui-accordion .ui-accordion-header{
+	margin: 0;
+	background: #007b5d !important;
+	color: #ffffff !important;
+	border-radius: 0;
+}
+.customer-retention-details .ui-accordion .ui-accordion-content{
+	padding: 0;
+}
+.customer-retention-details .ui-accordion .ui-accordion-content table{
+	margin: 15px;
+	border:none;
+	box-shadow: none;
+	width: calc(100% - 30px);
+}
+.customer-retention-details .ui-accordion .ui-accordion-content tr{
+	background: transparent;
+}
+.customer-retention-details .ui-accordion .ui-accordion-content td{
+	font-size: 14px;
+	border-bottom:1px solid #d1d1d1;
+}
+.customer-retention-details .ui-accordion .ui-accordion-content tr:last-child td{
+	border:none;
+}
+.customer-retention-details .ui-accordion .ui-accordion-content td.no-border{
+	border:none;
+	padding-bottom: 0;
+}
+.customer-retention-details .ui-accordion .ui-accordion-content td form{
+	padding: 0;
+	margin: 0;
+	border:none;
+}
+.customer-retention-details .ui-accordion .ui-accordion-content td textarea{
+	width:100%;
+	padding: 10px;
+	border: 1px solid #d3d3d3;
+}
+.customer-retention-details .ui-accordion .ui-accordion-content td input[type="text"]{
+	border: 1px solid #d3d3d3;
+    height: auto;
+    padding: 6px;
+}
+.customer-retention-details .ui-accordion .ui-accordion-content h4{
+	margin-bottom:5px;
+	font-size: 18px;
+}
