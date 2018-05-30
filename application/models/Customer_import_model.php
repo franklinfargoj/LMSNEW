@@ -227,6 +227,7 @@ function view_customer_info($id)
 }
 function calledlist()
 {
+		$hrmsid=$_SESSION['admin_id'];
 	// $this->db->select("id,customer_name as 'Customer Name',current_balance as '%Balance Drop',contact_no as 'Phone number', call_date as 'call'");
 	// $this->db->from('customer_retention');
 	// $this->db->where('hrms_id',$hrmsid);
@@ -235,8 +236,9 @@ function calledlist()
 	// $result = $this->db->get()->result_array();		
 	$query = $this->db->query("SELECT id,customer_name as 'Customer Name',current_balance 
 		as '%Balance Drop',call_date as 'call' FROM customer_retention 
-		 WHERE TRIM( LEADING  0 FROM hrms_id)='".ltrim($hrmsid, '0')."' AND  call_date IS NULL ORDER BY current_balance desc");
+		 WHERE TRIM( LEADING  0 FROM hrms_id)='".ltrim($hrmsid, '0')."' AND  call_date IS NOT NULL ORDER BY current_balance desc");
 	$result = $query->result_array();
+
 	return $result;
 }
 function notcalllist()
