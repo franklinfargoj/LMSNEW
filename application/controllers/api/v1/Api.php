@@ -1871,8 +1871,6 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
         } else {
             $err['result'] = false;
             $err['data'] = "Invalid login details.Kindly contact HRMS Admin.";
-            $err['passowrd'] = $params['password'];
-            $err['enc_passowrd'] = $password;
             returnJson($err);
         }
     }
