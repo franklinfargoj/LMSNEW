@@ -2105,7 +2105,7 @@ tr.even-dash {
     border-top-right-radius: 3px;
     margin-right: 10px;
 }
-.customer-retention .tab .tablinks.active{
+.customer-retention .tab .active{
 	background-color: #007b5d !important;
     color: #ffffff;
 }
@@ -2146,6 +2146,13 @@ tr.even-dash {
 	padding: 0;
 	margin: 0;
 	border:none;
+}
+
+.customer-retention-details .ui-accordion .ui-accordion-content td span{
+	display:inline-block;
+	float:right;
+	font-weight: bold;
+	font-size: 20px;
 }
 .customer-retention-details .ui-accordion .ui-accordion-content td textarea{
 	width:100%;
