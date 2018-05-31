@@ -2098,12 +2098,16 @@ tr.even-dash {
 	border-top: 0;
 }
 .customer-retention .tab .tablinks{
-	background-color: #007b5d !important;
+	background-color: #666666 !important;
     color: #ffffff;
     outline: none;
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
     margin-right: 10px;
+}
+.customer-retention .tab .tablinks.active{
+	background-color: #007b5d !important;
+    color: #ffffff;
 }
 
 .customer-retention-details div#accordion{
