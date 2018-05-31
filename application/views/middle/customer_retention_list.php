@@ -1,3 +1,7 @@
+<?php
+    $controller =  $this->router->fetch_class();
+    $method =  $this->router->fetch_method();
+    ?>
 <head>
     <style>
 body {font-family: Arial;}
@@ -23,12 +27,19 @@ body {font-family: Arial;}
 
 /* Change background color of buttons on hover */
 .tab a:hover {
-    background-color: #ddd;
+    background-color: ;
+
 }
 
 /* Create an active/current tablink class */
 .tab a.active {
-    background-color: #ccc;
+    background-color:#C0C0C0;
+    outline: none;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    margin-right: 10px;
+    color:black;
+
 }
 
 /* Style the tab content */
@@ -64,10 +75,10 @@ body {font-family: Arial;}
         </div>
             </div>
             <div class="tab">
-<a  class="tablinks" href="<?php echo site_url('customerretentionlist/called')?>">
+<a  class="<?php echo ($controller == 'customerretentionlist' && $method == 'called') ? 'active' : 'tablinks'?>" href="<?php echo site_url('customerretentionlist/called')?>">
                     Called
                 </a>
- <a class="tablinks" href="<?php echo site_url('customerretentionlist/notcalled')?>">
+ <a class="<?php echo ($controller == 'customerretentionlist' && $method == 'notcalled') ? 'active' : 'tablinks'?>" href="<?php echo site_url('customerretentionlist/notcalled')?>">
                                    Not Called
                 </a>
 
