@@ -22,40 +22,67 @@
                                 <tr>
                                     <td class="no-border">
                                         <h4>Internet Banking</h4>
-                                        Has the customer registered?
-                                    </td>
-                                    <td class="no-border">
+                                        
+
+                                        <label>Has the customer registered? :</label>
+                                    
+                                        
+                                        <span>
+
+                                            <?php if($customerinfo[0]['internet_banking']==1){ ?> 
+
+                                                <img width="25" src="<?php echo site_url('assets2/images/tick-icon.png');?>">
+                                            <?php } ?>
+                                            <?php if($customerinfo[0]['internet_banking']==0){ ?>
+                                                <img width="20" src="<?php echo site_url('assets2/images/cross.png');?>">
+                                            <?php } ?>    
+                                        </span>
+                                    </td> 
+                                    <!-- <td class="no-border">
                                         <input disabled type="radio" name="ib" <?php if($customerinfo[0]['internet_banking']==1) echo 'checked'; ?>>Yes
                                         <input disabled type="radio" name="ib" <?php if($customerinfo[0]['internet_banking']==0) echo 'checked'; ?>>No
-                                    </td> 
+                                    </td> -->
                                 </tr>
                                 <tr>
                                     <td>
-                                        Number of Transactions in last 3 months 
+                                        <label>Number of Transactions in last 3 months : </label>
+                                        <span><?php echo $customerinfo[0]['three_months_internet_transaction']; ?></span>
                                     </td>
-                                    <td>
-                                        <input readonly type="text" name="iib" value=<?php echo $customerinfo[0]['three_months_internet_transaction']; ?>>
-                                    </td>
+                                    <!-- <td>
+                                       <input readonly type="text" name="iib" value=<?php echo $customerinfo[0]['three_months_internet_transaction']; ?>>
+                                    </td> -->
                                 </tr>
                        <!-- //////////////////////////////////////////////////////////// -->
                              
                                 <tr>
                                     <td class="no-border">
                                         <h4>Mobile Banking</h4>
-                                        Has the customer registered?
+                                        <label>Has the customer registered? :</label>
+                                        <span>
+                                            <?php if($customerinfo[0]['mobile_banking']==1){ ?> 
+
+                                                <img width="25" src="<?php echo site_url('assets2/images/tick-icon.png');?>">
+                                            <?php } ?>
+                                            <?php if($customerinfo[0]['mobile_banking']==0){ ?>
+                                                <img width="20" src="<?php echo site_url('assets2/images/cross.png');?>">
+                                            <?php } ?>    
+                                        </span>
                                     </td>
-                                    <td class="no-border">
+                                   <!--  <td class="no-border">
                                         <input disabled type="radio" name="mb" <?php if($customerinfo[0]['mobile_banking']==1) echo 'checked'; ?>>Yes
                                         <input disabled  type="radio" name="mb"   <?php if($customerinfo[0]['mobile_banking']==0) echo 'checked'; ?>>No
-                                    </td> 
+                                    </td>  -->
                                 </tr>
                                 <tr>
                                     <td>
-                                        Number of Transactions in last 3 months 
+                                        <label>Number of Transactions in last 3 months : </label>
+                                        <span>
+                                            <?php echo $customerinfo[0]['three_months_mobile_transaction']; ?>
+                                        </span>
                                     </td>
-                                    <td>
+                                    <!-- <td>
                                         <input readonly type="text" name="imb"  value=<?php echo $customerinfo[0]['three_months_mobile_transaction']; ?>>
-                                    </td>
+                                    </td> -->
                                 </tr>
 
                        <!-- //////////////////////////////////////////////////////////// -->
@@ -63,20 +90,30 @@
                                 <tr>
                                     <td class="no-border">
                                         <h4>Debit Card</h4>
-                                        Has the customer conducted any NEFT / RTGSin branch or online?
+                                        <label>Has the customer conducted any NEFT / RTGSin branch or online? :</label>
+                                        <span>
+                                             <?php if($customerinfo[0]['debit_card']==1){ ?> 
+
+                                                <img width="25" src="<?php echo site_url('assets2/images/tick-icon.png');?>">
+                                            <?php } ?>
+                                            <?php if($customerinfo[0]['debit_card']==0){ ?>
+                                                <img width="20" src="<?php echo site_url('assets2/images/cross.png');?>">
+                                            <?php } ?>   
+                                        </span>
                                     </td>
-                                    <td class="no-border">
+                                    <!-- <td class="no-border">
                                         <input disabled  type="radio" name="db"  <?php if($customerinfo[0]['debit_card']==1) echo 'checked'; ?>>Yes
                                         <input disabled  type="radio" name="db"  <?php if($customerinfo[0]['debit_card']==0) echo 'checked'; ?>>No
-                                    </td> 
+                                    </td>  -->
                                 </tr>
                                 <tr>
                                     <td>
-                                        Number of Transaction using debit card at POS
+                                        <label>Number of Transaction using debit card at POS :</label>
+                                        <span><?php echo $customerinfo[0]['transaction_debit_card_POS']; ?></span>
                                     </td>
-                                    <td>
+                                    <!-- <td>
                                         <input readonly type="text" name="idb" value=<?php echo $customerinfo[0]['transaction_debit_card_POS']; ?>>
-                                    </td>
+                                    </td> -->
                                 </tr>
                                
                        <!-- //////////////////////////////////////////////////////////// -->
@@ -84,30 +121,47 @@
                                 <tr>
                                     <td class="no-border">
                                         <h4>NEFT / RTGS</h4>
-                                        Has the customer registered?
+                                        <label>Has the customer registered? :</label>
+                                        <span>
+                                             <?php if($customerinfo[0]['neft_rtgs']==1){ ?> 
+
+                                                <img width="25" src="<?php echo site_url('assets2/images/tick-icon.png');?>">
+                                            <?php } ?>
+                                            <?php if($customerinfo[0]['neft_rtgs']==0){ ?>
+                                                <img width="20" src="<?php echo site_url('assets2/images/cross.png');?>">
+                                            <?php } ?>   
+                                        </span>
                                     </td>
-                                    <td class="no-border">
+                                    <!-- <td class="no-border">
                                         <input disabled  type="radio" name="nb"   <?php if($customerinfo[0]['neft_rtgs']==1) echo 'checked'; ?>>Yes
                                         <input disabled  type="radio" name="nb"  <?php if($customerinfo[0]['neft_rtgs']==0) echo 'checked'; ?>>No
-                                    </td> 
+                                    </td>  -->
                                 </tr>
 
                                 <tr>
                                     <td>
-                                        Is the customer moving money from Dena bank account to Non-Dena own Account
+                                        <label>Is the customer moving money from Dena bank account to Non-Dena own Account : </label>
+                                        <span>
+                                             <?php if($customerinfo[0]['moving_money_dena_to_non_dena']==1){ ?> 
+
+                                                <img width="25" src="<?php echo site_url('assets2/images/tick-icon.png');?>">
+                                            <?php } ?>
+                                            <?php if($customerinfo[0]['moving_money_dena_to_non_dena']==0){ ?>
+                                                <img width="20" src="<?php echo site_url('assets2/images/cross.png');?>">
+                                            <?php } ?>   
+                                        </span>
                                     </td>
-                                    <td>
+                                    <!-- <td>
                                        
                                         <input disabled  type="radio" name="ivb"   <?php if($customerinfo[0]['moving_money_dena_to_non_dena']==1) echo 'checked'; ?>>Yes
                                         <input disabled  type="radio" name="ivb"   <?php if($customerinfo[0]['moving_money_dena_to_non_dena']==0) echo 'checked'; ?>>No
-                                    </td>
+                                    </td> -->
                                 </tr>
                                  <tr>
                                     <td class="no-border"><h4>Remarks</h4></td>
-                                    <td class="no-border"></td>
                                  </tr>
                                  <tr>
-                                    <td colspan="2">
+                                    <td>
                                         <form method="POST" action=<?php echo base_url()."customerretentionlist/update/"; ?>>
                                                 <input type="hidden" name="<?php echo $this->security->get_csrf_token_name();?>" value="<?php echo $this->security->get_csrf_hash();?>">
                                                 <input type="hidden" name="custmid" value=<?php echo $customerinfo[0]['id']; ?>>
@@ -122,7 +176,7 @@
 
 
                                         <!-- <input type="submit"> -->
-                                    </form>
+                                         </form>
                                     </td>
                   
                                  </tr>
