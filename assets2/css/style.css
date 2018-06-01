@@ -455,7 +455,7 @@ body{
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
-	overflow: hidden;
+	/* overflow: hidden; */
 
 }
 .container form {
@@ -978,6 +978,10 @@ input#ticket_range ,input#amount,input#years,input#interest,input#password,input
 input#interest {
     width: 70px;
     margin-right: 10px;
+}
+input#interest + label{
+	position: static;
+	margin-left:10px !important;
 }
 input#captext{
 	margin-top: 15px;
