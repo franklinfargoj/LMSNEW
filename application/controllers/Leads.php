@@ -41,6 +41,7 @@ class Leads extends CI_Controller
      */
     public function add()
     {
+//        pe($this->session->all_userdata());die;
         if($this->session->userdata('admin_type') == 'Super admin'){
             redirect('/dashboard');
         }
@@ -1785,14 +1786,19 @@ class Leads extends CI_Controller
         $select = array('lead.id','lead.lead_name','products.title','lead.id');
         $table = Tbl_Leads.' AS lead';
         $join[] = array('table' =>Tbl_Products.' AS products','on_condition'=>'products.id = lead.product_id','type'=>'left');
+
         if($this->session->userdata('admin_type')=='EM'){
             $where = array('lead.created_by'=>$user);
         }
         if($this->session->userdata('admin_type')=='BM'){
             $where = array('lead.created_by_branch_id'=>$this->session->userdata('branch_id'));
         }
-        if($this->session->userdata('admin_type')=='BM'){
+        //franklin fargoj
+        if($this->session->userdata('admin_type')=='ZM'){
             $where = array('lead.created_by_zone_id'=>$this->session->userdata('zone_id'));
+        }
+        if($this->session->userdata('admin_type')=='GM'){
+            $where = array();
         }
 
         $order_by = 'lead.created_on DESC';
@@ -1801,6 +1807,7 @@ class Leads extends CI_Controller
         $middle = "Leads/view/lead_generated";
         load_view($middle,$arrData);
     }
+
     public function upload_rapc_mapping(){
         if($this->input->post('Submit')) {
             if (isset($_FILES['filename']) && !empty($_FILES['filename']['tmp_name'])) {
