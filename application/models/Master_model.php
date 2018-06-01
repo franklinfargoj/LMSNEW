@@ -483,4 +483,12 @@ class Master_model extends CI_Model{
         $where['id'] = $id;
         return $this->update($where,'db_crm',$data);
     }
+
+    public function get_crm_detail($slug){
+        $this->db->select('id,title,content,slug');
+        $this->db->from('db_crm');
+        $this->db->where('slug',$slug);
+        $query =  $this->db->get();
+        return $query->result_array();
+    }
 }
