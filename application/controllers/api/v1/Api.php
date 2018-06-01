@@ -3436,6 +3436,7 @@ function customer_retention_lead_post()
 * @apiSuccess {string} customer  customer name
 * @apiSuccess {Number} BalanceDrop current_balance
 * @apiSuccess {Number} PhoneNumber Contact Number
+* @apiSuccess {date} CallDate Retrun If call date is present
 * @apiGroup  Customer Retention
 */
 function customer_retention_list_post()
@@ -3473,6 +3474,7 @@ function customer_retention_list_post()
 * @apiName getCustomerRetentionDetail
 * @apiParam {int} customer_id  Customer ID
 * @apiSuccess {string} customer_name  customer name
+* @apiSuccess {date} CallDate Retrun If call date is present
 * @apiSuccess {int} contact_no Phone Number
 * @apiSuccess {int} id Customer Retention Id
 * @apiSuccess {int} customer_id Customer ID
@@ -3494,50 +3496,52 @@ function customer_retention_detail_post()
     {
         $customer_id=$params['customer_id'];
         $result=$this->customer_import_model->get_customer_retention_detail($params);
+        if(isset($result['customer_id']))
+        {
+            if($result[0]['internet_banking']==1)
+            {
+                $result[0]['internet_banking']='yes';
+            }
+            else
+            {
+                $result[0]['internet_banking']='no';
+            }
 
-        if($result[0]['internet_banking']==1)
-        {
-            $result[0]['internet_banking']='yes';
-        }
-        else
-        {
-            $result[0]['internet_banking']='no';
-        }
+            if($result[0]['mobile_banking']==1)
+            {
+                $result[0]['mobile_banking']='yes';
+            }
+            else
+            {
+                $result[0]['mobile_banking']='no';
+            }
 
-        if($result[0]['mobile_banking']==1)
-        {
-            $result[0]['mobile_banking']='yes';
-        }
-        else
-        {
-            $result[0]['mobile_banking']='no';
-        }
+            if($result[0]['debit_card']==1)
+            {
+                $result[0]['debit_card']='yes';
+            }
+            else
+            {
+                $result[0]['debit_card']='no';
+            }
 
-                if($result[0]['debit_card']==1)
-        {
-            $result[0]['debit_card']='yes';
-        }
-        else
-        {
-            $result[0]['debit_card']='no';
-        }
+                    if($result[0]['neft_rtgs']==1)
+            {
+                $result[0]['neft_rtgs']='yes';
+            }
+            else
+            {
+                $result[0]['neft_rtgs']='no';
+            }
 
-                if($result[0]['neft_rtgs']==1)
-        {
-            $result[0]['neft_rtgs']='yes';
-        }
-        else
-        {
-            $result[0]['neft_rtgs']='no';
-        }
-
-        if($result[0]['moving_money_dena_to_non_dena']==1)
-        {
-            $result[0]['moving_money_dena_to_non_dena']='yes';
-        }
-        else
-        {
-            $result[0]['moving_money_dena_to_non_dena']='no';
+            if($result[0]['moving_money_dena_to_non_dena']==1)
+            {
+                $result[0]['moving_money_dena_to_non_dena']='yes';
+            }
+            else
+            {
+                $result[0]['moving_money_dena_to_non_dena']='no';
+            }
         }
         $res = array('result' => True,
                 'data' => $result);
@@ -3577,49 +3581,52 @@ function customer_retention_remark_update_post()
     {
         // $customer_id=$params['customer_id'];
         $result=$this->customer_import_model->update_customer_retention_remark($params);
-        if($result[0]['internet_banking']==1)
+        if(isset($result['customer_id']))
         {
-            $result[0]['internet_banking']='yes';
-        }
-        else
-        {
-            $result[0]['internet_banking']='no';
-        }
+            if($result[0]['internet_banking']==1)
+            {
+                $result[0]['internet_banking']='yes';
+            }
+            else
+            {
+                $result[0]['internet_banking']='no';
+            }
 
-        if($result[0]['mobile_banking']==1)
-        {
-            $result[0]['mobile_banking']='yes';
-        }
-        else
-        {
-            $result[0]['mobile_banking']='no';
-        }
+            if($result[0]['mobile_banking']==1)
+            {
+                $result[0]['mobile_banking']='yes';
+            }
+            else
+            {
+                $result[0]['mobile_banking']='no';
+            }
 
-        if($result[0]['debit_card']==1)
-        {
-            $result[0]['debit_card']='yes';
-        }
-        else
-        {
-            $result[0]['debit_card']='no';
-        }
+            if($result[0]['debit_card']==1)
+            {
+                $result[0]['debit_card']='yes';
+            }
+            else
+            {
+                $result[0]['debit_card']='no';
+            }
 
-        if($result[0]['neft_rtgs']==1)
-        {
-            $result[0]['neft_rtgs']='yes';
-        }
-        else
-        {
-            $result[0]['neft_rtgs']='no';
-        }
+            if($result[0]['neft_rtgs']==1)
+            {
+                $result[0]['neft_rtgs']='yes';
+            }
+            else
+            {
+                $result[0]['neft_rtgs']='no';
+            }
 
-        if($result[0]['moving_money_dena_to_non_dena']==1)
-        {
-            $result[0]['moving_money_dena_to_non_dena']='yes';
-        }
-        else
-        {
-            $result[0]['moving_money_dena_to_non_dena']='no';
+            if($result[0]['moving_money_dena_to_non_dena']==1)
+            {
+                $result[0]['moving_money_dena_to_non_dena']='yes';
+            }
+            else
+            {
+                $result[0]['moving_money_dena_to_non_dena']='no';
+            }
         }
         $res = array('result' => True,
                 'data' => $result);

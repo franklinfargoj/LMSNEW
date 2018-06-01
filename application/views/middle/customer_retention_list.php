@@ -75,12 +75,13 @@ body {font-family: Arial;}
         </div>
             </div>
             <div class="tab">
+                 <a class="<?php echo ($controller == 'customerretentionlist' && $method == 'notcalled') ? 'active' : 'tablinks'?>" href="<?php echo site_url('customerretentionlist/notcalled')?>">
+                    Not Called
+                </a>
 <a  class="<?php echo ($controller == 'customerretentionlist' && $method == 'called') ? 'active' : 'tablinks'?>" href="<?php echo site_url('customerretentionlist/called')?>">
                     Called
                 </a>
- <a class="<?php echo ($controller == 'customerretentionlist' && $method == 'notcalled') ? 'active' : 'tablinks'?>" href="<?php echo site_url('customerretentionlist/notcalled')?>">
-                                   Not Called
-                </a>
+
 
 </div>
           
@@ -92,7 +93,12 @@ body {font-family: Arial;}
                         <th style="text-align:center">Sr. No.</th>
                         <th>Customer Name</th>
                         <th>% Balance Drop</th>
+                        <?php if($type=='called') { ?>
+                        <th>Called</th>
+                        <?php } ?>
+                        <?php if($type=='notcalled') { ?>
                         <th>Status</th>
+                        <?php } ?>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -112,7 +118,8 @@ body {font-family: Arial;}
                                  <?php echo ucwords($value['%Balance Drop']);?>
                             </td>
                             <td>
-                                <?php if($value['call']==NULL) echo ucwords('Not called'); else echo ucwords('Called');?>
+                                <?php if($type=='notcalled') echo ucwords('Not called');?>
+                                <?php if($type=='called')echo date('dS-F-Y', strtotime($value['call'])); ?>
                             </td>
                             <td>
                                 <a class="" href="<?php echo site_url('customerretentionlist/view/'. $value['id'])?>">

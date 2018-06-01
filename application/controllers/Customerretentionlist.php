@@ -59,6 +59,7 @@ function called()
     $this->make_bread->add('Customer Retention List', '', 0);
     $arrData['breadcrumb'] = $this->make_bread->output();
     $arrData['customerlist'] = $this->customer_import_model->calledlist();
+    $arrData['type']='called';
           /*Create Breadcumb*/
     return load_view("customer_retention_list",$arrData);
 }
@@ -75,6 +76,7 @@ function notcalled()
     $this->make_bread->add('Customer Retention List', '', 0);
     $arrData['breadcrumb'] = $this->make_bread->output();
     $arrData['customerlist'] = $this->customer_import_model->notcalllist();
+     $arrData['type']='notcalled';
           /*Create Breadcumb*/
     return load_view("customer_retention_list",$arrData);
 }

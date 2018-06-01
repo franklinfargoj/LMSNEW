@@ -3,14 +3,20 @@
         <h3 class="text-center">Customer Information</h3>
         
     </div>
+             <div class="float-right">
+            <span class="lead-num"><a href="<?php echo site_url('customerretentionlist/notcalled');?>"><span><</span>Back</a></span>
+        </div>
 </div>
 <div class="page-content">
-    <span class="bg-top"></span>
+
+    <span class="bg-top">
+                       
+    </span>
+
     <div class="inner-content customer-retention-details">
+
         <div class="container">
-        <div class="float-right">
-            <span class="lead-num"><a href="<?php echo site_url('customerretentionlist/customerlist');?>"><span><</span>Back</a></span>
-        </div>
+
             <div id="accordion" class="faq-accordion faq-a">
                 <?php 
                     if($customerinfo){
