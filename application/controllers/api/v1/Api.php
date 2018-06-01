@@ -3642,7 +3642,7 @@ function customer_retention_remark_update_post()
      * @apiSuccess {text} CRMContent
      * @apiGroup  CRM
      */
-    function get_crm_detail_post()
+    function get_crm_detail_post_post()
     {
         $params=$this->input->post();
         if (!empty($params) && isset($params['slug']))
