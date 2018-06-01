@@ -19,7 +19,7 @@
 			<div style="margin-left: 24px;width:86%;"><font size="4" color="green">Total No.of Leads</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;<font size="4" color="red">Pending Calls</font></div>
 
 			<div class="view-content ravishbtn" style="margin-top: 60px;text-align: center;width: 98%;">
-			<a href="<?php echo site_url('customerretentionlist/customerlist')?>">VIEW</a>
+			<a href="<?php echo site_url('customerretentionlist/notcalled')?>">VIEW</a>
 			</div>
 		</div>
 	</div>

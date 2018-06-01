@@ -128,18 +128,17 @@ function get_customerid()
     $res   = $query->result();        
     return $res;
 }
+////////////////////////////for apis///////////////////////////////////////////////////
 function get_hrms_id($hrmsid)
 {
 
 	$id=$hrmsid['hrms_id'];
 	
-	$query = $this->db->query("SELECT count(*) as Total FROM customer_retention WHERE TRIM( LEADING  0 FROM hrms_id)='".ltrim($id, '0')."' AND call_date IS NOT NULL");
+	$query = $this->db->query("SELECT count(*) as Total FROM customer_retention WHERE TRIM( LEADING  0 FROM hrms_id)='".ltrim($id, '0')."'");
 	$result1=$query->result_array();
 
 	$query1 = $this->db->query("SELECT count(*) as Pending FROM customer_retention WHERE TRIM( LEADING  0 FROM hrms_id)='".ltrim($id, '0')."' AND call_date IS NULL");
 	$result2=$query1->result_array();
-
-	// $result = array_merge($result1,$result2);
 
 	$results['Total']=$result1[0]['Total'];
 	$results['Pending']=$result2[0]['Pending'];
@@ -151,27 +150,14 @@ function get_customer_retention_list($para)
 	$hrmsid=$para['hrmsid'];
 	if($list=='pending')
 	{
-		// $this->db->select("id,customer_name as 'Customer Name',current_balance as '%Balance Drop',contact_no as 'Phone number'");
-		// $this->db->from('customer_retention');
-		// $this->db->where('hrms_id',$hrmsid);
-		// $this->db->where('call_date IS NULL');
-		// $this->db->order_by("current_balance", "desc");
-		
 		$query = $this->db->query("SELECT id,customer_name as 'Customer Name',current_balance 
-		as '%Balance Drop',contact_no as 'Phone number' FROM customer_retention 
+		as '%Balance Drop',contact_no as 'Phone number',DATE_FORMAT(call_date, '%D-%M-%Y') as 'call_date' FROM customer_retention 
 		 WHERE TRIM( LEADING  0 FROM hrms_id)='".ltrim($hrmsid, '0')."' AND  call_date IS NULL ORDER BY current_balance desc");
 	}
 	else if($list=='called')
 	{
-		// $this->db->select("id,customer_name as 'Customer Name',current_balance as '%Balance Drop',contact_no as 'Phone number'");
-		// $this->db->from('customer_retention');
-		// $this->db->where('hrms_id',$hrmsid);
-		// $this->db->where('call_date IS NOT NULL');
-		// $this->db->order_by("current_balance", "desc");
-		// $query = $this->db->query("SELECT id,customer_name as 'Customer Name',current_balance as '%Balance Drop',contact_no as 'Phone number'  FROM customer_retention WHERE call_date IS NOT NULL ORDER BY current_balance desc");
-
 		$query = $this->db->query("SELECT id,customer_name as 'Customer Name',current_balance 
-		as '%Balance Drop',contact_no as 'Phone number' FROM customer_retention 
+		as '%Balance Drop',contact_no as 'Phone number',DATE_FORMAT(call_date, '%D-%M-%Y') as 'call_date' FROM customer_retention 
 		 WHERE TRIM( LEADING  0 FROM hrms_id)='".ltrim($hrmsid, '0')."' AND  call_date IS NOT NULL ORDER BY current_balance desc");
 
 	}
@@ -181,7 +167,7 @@ function get_customer_retention_list($para)
 }
 function get_customer_retention_detail($para)
 {
-	$this->db->select('cr.customer_name,cr.contact_no,cd.*');
+	$this->db->select("cr.customer_name,DATE_FORMAT(call_date, '%D-%M-%Y') as 'call_date',cr.contact_no,cd.*");
     $this->db->from('customer_retention_details cd');
     $this->db->join('customer_retention cr','cd.customer_id=cr.id');
     $this->db->where($para);
@@ -190,10 +176,11 @@ function get_customer_retention_detail($para)
 }
 function update_customer_retention_remark($para)
 {
-	$array=array('remarks'=>$para['remark']);
-	$this->db->where('customer_id',$para['customer_id']);
-	$res=$this->db->update('customer_retention_details', $array);
-		
+	$date = date('Y-m-d H:i:s');
+	$res=$this->db->query("UPDATE customer_retention_details AS cd,
+						customer_retention AS cr SET  `remarks` ='".$para['remark']."',
+					`call_date` = '".$date." ' WHERE  cr.id=cd.customer_id AND  `cd`.`customer_id`=".$para['customer_id']);
+
 	if($res)
 	{
 		$this->db->select('cr.customer_name,cr.contact_no,cd.*');
@@ -206,15 +193,11 @@ function update_customer_retention_remark($para)
 }
 
 ///////customer Retention for the web/////////////////////
+
 function view_customer()
 {
-	$hrmsid=$_SESSION['admin_id'];
-
-	// $this->db->select("id,customer_name as 'Customer Name',current_balance as '%Balance Drop',contact_no as 'Phone number', call_date as 'call'");
-	// $this->db->from('customer_retention');
-	// $this->db->where('TRIM( LEADING  "0" FROM hrms_id)',$hrmsid);
-	// $this->db->order_by("current_balance", "desc");
-	// $result= $this->db->get()->result_array();
+	$user=get_session();
+	$hrmsid=$user['hrms_id'];
 
 	$query = $this->db->query("SELECT id,customer_name as 'Customer Name',current_balance 
 				as '%Balance Drop', call_date as 'call' FROM customer_retention 
@@ -234,13 +217,9 @@ function view_customer_info($id)
 }
 function calledlist()
 {
-	$hrmsid=$_SESSION['admin_id'];
-	// $this->db->select("id,customer_name as 'Customer Name',current_balance as '%Balance Drop',contact_no as 'Phone number', call_date as 'call'");
-	// $this->db->from('customer_retention');
-	// $this->db->where('hrms_id',$hrmsid);
-	// $this->db->where('call_date IS NOT NULL');
-	// $this->db->order_by("current_balance", "desc");
-	// $result = $this->db->get()->result_array();		
+	$user=get_session();
+	$hrmsid=$user['hrms_id'];
+
 	$query = $this->db->query("SELECT id,customer_name as 'Customer Name',current_balance 
 		as '%Balance Drop',call_date as 'call' FROM customer_retention 
 		 WHERE TRIM( LEADING  0 FROM hrms_id)='".ltrim($hrmsid, '0')."' AND  call_date IS NOT NULL ORDER BY current_balance desc");
@@ -250,14 +229,8 @@ function calledlist()
 }
 function notcalllist()
 {
-	$hrmsid=$_SESSION['admin_id'];
-	// $this->db->select("id,customer_name as 'Customer Name',current_balance as '%Balance Drop',contact_no as 'Phone number', call_date as 'call'");
-	// $this->db->from('customer_retention');
-	// $this->db->where('TRIM( LEADING  "0" FROM hrms_id)',$hrmsid);
-	// $this->db->where('call_date IS NULL');
-	// $this->db->order_by("current_balance", "desc");
-	// $result = $this->db->get()->result_array();
-
+	$user=get_session();
+	$hrmsid=$user['hrms_id'];
 	$query = $this->db->query("SELECT id,customer_name as 'Customer Name',current_balance
 		 as '%Balance Drop',call_date as 'call' FROM customer_retention 
 		 WHERE TRIM( LEADING  0 FROM hrms_id)='".ltrim($hrmsid, '0')."' AND call_date IS NULL ORDER BY current_balance desc");
@@ -267,9 +240,10 @@ function notcalllist()
 
 function total_lead()
 {
-	$hrmsid=$_SESSION['admin_id'];
+	$user=get_session();
+	$hrmsid=$user['hrms_id'];
 
-	$query = $this->db->query("SELECT count(*) as Total FROM customer_retention WHERE TRIM( LEADING  0 FROM hrms_id)='".ltrim($hrmsid, '0')."'  AND call_date IS NOT NULL");
+	$query = $this->db->query("SELECT count(*) as Total FROM customer_retention WHERE TRIM( LEADING  0 FROM hrms_id)='".ltrim($hrmsid, '0')."'");
 	$result1=$query->result_array();
 
 	$query1 = $this->db->query("SELECT count(*) as Pending FROM customer_retention WHERE  TRIM( LEADING  0 FROM hrms_id)='".ltrim($hrmsid, '0')."'  AND call_date IS NULL");

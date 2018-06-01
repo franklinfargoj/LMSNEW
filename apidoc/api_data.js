@@ -157,6 +157,13 @@ define({ "api": [
             "optional": false,
             "field": "PhoneNumber",
             "description": "<p>Contact Number</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "date",
+            "optional": false,
+            "field": "CallDate",
+            "description": "<p>Retrun If call date is present</p>"
           }
         ]
       }
@@ -194,6 +201,13 @@ define({ "api": [
             "optional": false,
             "field": "customer_name",
             "description": "<p>customer name</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "date",
+            "optional": false,
+            "field": "CallDate",
+            "description": "<p>Retrun If call date is present</p>"
           },
           {
             "group": "Success 200",
