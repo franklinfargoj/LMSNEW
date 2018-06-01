@@ -466,7 +466,7 @@ $config['csrf_exclude_uris'] = array('api/v1/api/authentication','api/v1/api/add
     'api/v1/api/check_account_no','api/v1/api/update_lead_status_by_em',
     'api/v1/api/verify_account','api/v1/api/leads_count_by_leads_status','api/v1/api/generated_conversion','api/v1/api/route_to_rapc',
     'api/v1/other_api/rapc_leads_list','api/v1/api/drop_lead','api/v1/api/confirm_cbs_response',
-    'api/v1/api/customer_retention_lead','api/v1/api/customer_retention_list','api/v1/api/customer_retention_detail','api/v1/api/customer_retention_remark_update','get_crm_detail_post'
+    'api/v1/api/customer_retention_lead','api/v1/api/customer_retention_list','api/v1/api/customer_retention_detail','api/v1/api/customer_retention_remark_update','api/v1/api/get_crm_detail_post'
     );
 
 /*
