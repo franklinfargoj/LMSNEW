@@ -342,8 +342,12 @@ $lead_sources = $this->config->item('lead_source');
                                 ?>
                             </td>
                             <td align="center">
-                                <?php 
+                                <?php
+                                if(!empty($value['total'])){
                                     echo $value['total'];
+                                }else{
+                                    echo 0;
+                                }
                                 ?>
                             </td>
                             <?php 
@@ -353,11 +357,16 @@ $lead_sources = $this->config->item('lead_source');
                             ?>
                             <td align="center">
                                 <?php
-                                if(in_array($k,array_keys($value['status']))){
-                                        echo $value['status'][$k];
-                                    }else{
+                                if (!empty($value['status'])) {
+                                    if(in_array($k,array_keys($value['status']))){
+                                            echo $value['status'][$k];
+                                    }
+                                    else{
                                         echo 0;
                                     }
+                                }else{
+                                      echo 0;
+                                 }
                                 ?>
                             </td>
                             <?php

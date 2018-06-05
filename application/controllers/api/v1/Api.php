@@ -317,7 +317,9 @@ class Api extends REST_Controller
 
         if (is_array($lead_id)) {
             $result = array('result' => False,
-                'data' => array('wrong product id or category id .'));
+                'data' => array('wrong product id or category id .'),
+                'error'=>$lead_id
+            );
             returnJson($result);
         }
         if($lead_id != false){
