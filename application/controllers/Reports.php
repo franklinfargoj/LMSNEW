@@ -675,8 +675,6 @@ class Reports extends CI_Controller
         $group_by1 = array_pop($group_by);
 
         $generated_leads = $this->Lead->get_leads($action,$table,$select1,$where1,$join=array(),$group_by1,$order_by = '');
-//pe($leads);
-//pe($generated_leads);//die;
         /*pe($this->db->last_query());
        exit;*/
         //pe($unassigned_leads_count);die;
@@ -766,7 +764,6 @@ class Reports extends CI_Controller
                 $arrData['leads'][$index]['zone_name'] = $value->zone_name;
                 $arrData['leads'][$index]['zone_id'] = $value->zone_id;
                 if(!empty($Lead['userId']) && !empty($generatedLead['userId'])){
-
                     $generatedCnt = 0;
                     $status = array();
                     if(isset($generatedLead[$index])){
@@ -780,7 +777,6 @@ class Reports extends CI_Controller
 
                 }
                 if(empty($Lead['userId']) && !empty($generatedLead['userId'])){
-
                     $generatedCnt = 0;
                     if(isset($generatedLead[$index])){
                         $generatedCnt = $generatedLead[$index]['generated'];
@@ -799,7 +795,12 @@ class Reports extends CI_Controller
                     }
                 }
 
-                $arrData['Total'] = $arrData['Total']+$generatedCnt;
+                if(!empty($generatedCnt)){
+                    $arrData['Total'] = $arrData['Total']+$generatedCnt;
+                }else{
+                    $arrData['Total'] = $arrData['Total'];
+                }
+
             }
             if($this->session->userdata('admin_type') == 'BM' && $arrData['view'] == ''){
                 $arrData['leads'] = array($this->session->userdata('branch_id')=> $arrData['leads'][$this->session->userdata('branch_id')]) + $arrData['leads'];

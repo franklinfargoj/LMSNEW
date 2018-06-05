@@ -238,8 +238,8 @@ class Dashboard extends CI_Controller {
                     'total_generated_ytd' => 0);
             } else {
                 $push_generated = array(
-                    'created_by' => $val->DESCR10,
-                    'created_by_name' => $val->DESCR30,
+                    'created_by' => $val['DESCR10'],
+                    'created_by_name' => $val['DESCR30'],
                     'total_generated_mtd' => ($generated_key_value[$val['DESCR10']])?$generated_key_value[$val['DESCR10']]:0,
                     'total_generated_ytd' => ($generated_key_value_year[$val['DESCR10']])?$generated_key_value_year[$val['DESCR10']]:0);
             }
@@ -315,20 +315,20 @@ class Dashboard extends CI_Controller {
         $login_user = get_session();
         $result = get_details($login_user['hrms_id']);
         foreach ($result['list'] as $key => $val) {
-            if (!array_key_exists($val->DESCR10, $generated_key_value_year)) {
+            if (!array_key_exists($val['DESCR10'], $generated_key_value_year)) {
                 $push_generated = array(
-                    'created_by' => $val->DESCR10,
-                    'created_by_name' => $val->DESCR30,
+                    'created_by' => $val['DESCR10'],
+                    'created_by_name' => $val['DESCR30'],
                     'total_generated_mtd' => 0,
                     'total_generated_ytd' => 0);
             } else {
                 $push_generated = array(
-                    'created_by' => $val->DESCR10,
-                    'created_by_name' => $val->DESCR30,
-                    'total_generated_mtd' => ($generated_key_value[$val->DESCR10])?$generated_key_value[$val->DESCR10] : 0,
-                    'total_generated_ytd' => ($generated_key_value_year[$val->DESCR10])?$generated_key_value_year[$val->DESCR10]:0);
+                    'created_by' => $val['DESCR10'],
+                    'created_by_name' => $val['DESCR30'],
+                    'total_generated_mtd' => ($generated_key_value[$val['DESCR10']])?$generated_key_value[$val['DESCR10']] : 0,
+                    'total_generated_ytd' => ($generated_key_value_year[$val['DESCR10']])?$generated_key_value_year[$val['DESCR10']]:0);
             }
-            $final[$val->DESCR10] = $push_generated;
+            $final[$val['DESCR10']] = $push_generated;
         }
         //for converted
         foreach ($final as $id => $value) {

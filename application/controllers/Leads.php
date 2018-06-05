@@ -131,7 +131,7 @@ class Leads extends CI_Controller
                 $lead_data['created_by'] = $login_user['hrms_id'];
                 $lead_data['created_by_name'] = $login_user['full_name'];
 
-                $keys = array('customer_name','contact_no','product_category_id','product_id',
+                $keys = array('customer_name','other_source','contact_no','product_category_id','product_id',
                     'is_own_branch','remark','lead_ticket_range');
                 foreach ($keys as $k => $value){
                     if($value=='customer_name'){
