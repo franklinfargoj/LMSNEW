@@ -986,10 +986,12 @@ input#interest, input#years, input#amount{
     width: 100px;
     margin-right: 10px;
 }
-input#interest + label, input#years + label, input#amount + img{
-	position: static;
-	margin-left:10px !important;
+.emi-right-lable{
+	position: absolute !important;
+    margin-left: 10px !important;
+    left: 270px !important;
 }
+
 input#captext{
 	margin-top: 15px;
 }
@@ -1577,10 +1579,18 @@ table.dataTable.row-border tbody th, table.dataTable.row-border tbody td, table.
 }
 
 .emi-content .range-slider label.error {
-	position: relative;
+	/* position: relative;
 	right: -105px;
 	top: -7px;
-	width: auto;
+	width: auto; */
+	position: relative;
+    float: none;
+    display: inline-block;
+    vertical-align: middle;
+    width: auto;
+    margin: 0;
+    clear: both;
+    right: -90px;
 }
 
 .emi-content .range-slider img{
