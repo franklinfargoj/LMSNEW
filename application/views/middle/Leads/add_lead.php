@@ -173,16 +173,19 @@ $remark_extra = 'style="rows:4 ; cols:80"';
                         $checked = FALSE;
                         $style = "";
                         ?>
+
+                        <?php
+                    }
+                    ?>
+                        <div class="form-control" <?php echo $style;?>>
                         <label>Lead belongs to:<span style="color:red;">*</span> </label>
                         <div class="radio-control">
                             <input type="radio" id="is_own_branch" name="is_own_branch"
                                    value="1" <?php echo set_radio('is_own_branch', '1', TRUE); ?> />
                             <label>Own Branch</label>
                         </div>
-                        <?php
-                    }
-                    ?>
-                    <div class="form-control" <?php echo $style;?>>
+
+                    
                         <div class="radio-control">
                             <input type="radio" name="is_own_branch" id="is_other_branch"
                                    value="0" <?php echo set_radio('is_own_branch', '0',$checked); ?> />
