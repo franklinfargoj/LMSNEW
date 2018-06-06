@@ -982,11 +982,11 @@ input#ticket_range ,input#amount,input#years,input#interest,input#password,input
 	height: 32px;
 	line-height: 14px;
 }
-input#interest, input#years{
-    width: 70px;
+input#interest, input#years, input#amount{
+    width: 100px;
     margin-right: 10px;
 }
-input#interest + label, input#years + label{
+input#interest + label, input#years + label, input#amount + img{
 	position: static;
 	margin-left:10px !important;
 }
