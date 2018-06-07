@@ -149,7 +149,7 @@ define({ "api": [
             "type": "Number",
             "optional": false,
             "field": "BalanceDrop",
-            "description": "<p>current_balance</p>"
+            "description": "<p>((Max balance in last 1 year-Current balance)/Max balance in last 1 year)*100</p>"
           },
           {
             "group": "Success 200",
