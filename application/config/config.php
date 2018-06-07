@@ -469,6 +469,7 @@ $config['csrf_exclude_uris'] = array('api/v1/api/authentication','api/v1/api/add
     'api/v1/api/customer_retention_lead','api/v1/api/customer_retention_list','api/v1/api/customer_retention_detail','api/v1/api/customer_retention_remark_update','api/v1/api/get_crm_detail_post'
     );
 
+
 /*
 |--------------------------------------------------------------------------
 | Output Compression
