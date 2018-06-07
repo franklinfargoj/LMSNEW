@@ -86,28 +86,28 @@
 				</li>
 				<?php }?>
 				<?php if(in_array($this->session->userdata('admin_type'),array('Super admin'))) {?>
-					<li class="<?php echo ($controller == 'rapc' || ($controller == 'rapc' && $method == 'upload')) ? 'active' : ''?>">
+					<li class="<?php echo ($controller == 'rapc' && $method =='index') ? 'active' : ''?>">
 						<a href="<?php echo site_url('rapc')?>">
-							RAPC
+							Processing Center
 						</a>
 					</li>
 				<?php }?>
 				<?php if(in_array($this->session->userdata('admin_type'),array('Super admin'))) {?>
-					<li class="<?php echo ($controller == 'rapc' && $method == 'route') ? 'active' : ''?>">
+					<li class="<?php echo ($controller == 'rapc' && $method == 'mapping_list') ? 'active' : ''?>">
 						<a href="<?php echo site_url('rapc/mapping_list')?>">
 							Lead Routing
 						</a>
 					</li>
 				<?php }?>
 				<?php if(in_array($this->session->userdata('admin_type'),array('Super admin'))) {?>
-				<li class="<?php echo ($controller == 'csvimport' && $method == 'import') ? 'active' : ''?>">
+				<li class="<?php echo ($controller == 'csvimport') ? 'active' : ''?>">
 					<a href="<?php echo site_url('csvimport')?>">
 						User Upload
 					</a>
 				</li>
 				<?php }?>
 				<?php if(in_array($this->session->userdata('admin_type'),array('Super admin'))) {?>
-				<li class="<?php echo ($controller == 'customerretentionimport' && $method == 'import') ? 'active' : ''?>">
+				<li class="<?php echo ($controller == 'customerretentionimport') ? 'active' : ''?>">
 					<a href="<?php echo site_url('customerretentionimport')?>">
 						Customer Retention Upload
 					</a>
@@ -335,21 +335,21 @@
 				<?php }?>
 
                 <?php if(in_array($this->session->userdata('admin_type'),array('Super admin'))) {?>
-                <li>
+                <li class="<?php echo ($controller == 'ccemail') ? 'active' : ''?>">
                     <a href="<?php echo site_url('ccemail')?>">
                         CC Email
                     </a>
                 </li>
                 <?php }?>
                 <?php if(in_array($this->session->userdata('admin_type'),array('Super admin'))) {?>
-                    <li>
+					<li class="<?php echo ($controller == 'crm') ? 'active' : ''?>">
                         <a href="<?php echo site_url('crm')?>">
                             CRM
                         </a>
                     </li>
                 <?php }?>
                 <?php if(in_array($this->session->userdata('admin_type'),array('Super admin'))) {?>
-                    <li>
+					<li class="<?php echo ($controller == 'Reports' && $method == 'import_csv') ? 'active' : ''?>">
                         <a href="<?php echo site_url('Reports/import_csv')?>">
                             Import CSV
                         </a>
