@@ -149,7 +149,7 @@
             "type": "Number",
             "optional": false,
             "field": "BalanceDrop",
-            "description": "<p>((Max balance in last 1 year-Current balance)/Max balance in last 1 year)*100</p>"
+            "description": "<p>((previous_balance-current_balance)/previous_balance)*100</p>"
           },
           {
             "group": "Success 200",

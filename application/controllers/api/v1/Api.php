@@ -3774,7 +3774,7 @@ function customer_retention_lead_post()
 * @apiParam {string} hrms_id  hrms id of user
 * @apiSuccess {string} id  Customer ID
 * @apiSuccess {string} customer  customer name
-* @apiSuccess {Number} BalanceDrop ((Max balance in last 1 year-Current balance)/Max balance in last 1 year)*100
+* @apiSuccess {Number} BalanceDrop ((previous_balance-current_balance)/previous_balance)*100 
 * @apiSuccess {Number} PhoneNumber Contact Number
 * @apiSuccess {date} CallDate Retrun If call date is present
 * @apiGroup  Customer Retention

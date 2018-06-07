@@ -150,13 +150,13 @@ function get_customer_retention_list($para)
 	$hrmsid=$para['hrmsid'];
 	if($list=='pending')
 	{
-		$query = $this->db->query("SELECT id,customer_name as 'Customer Name',((max_balance_in_last_one_year-current_balance)/max_balance_in_last_one_year)*100
+		$query = $this->db->query("SELECT id,customer_name as 'Customer Name',((previous_balance-current_balance)/previous_balance)*100
 		as '%Balance Drop',contact_no as 'Phone number',DATE_FORMAT(call_date, '%D-%M-%Y') as 'call_date' FROM customer_retention 
 		 WHERE TRIM( LEADING  0 FROM hrms_id)='".ltrim($hrmsid, '0')."' AND  call_date IS NULL ORDER BY current_balance desc");
 	}
 	else if($list=='called')
 	{
-		$query = $this->db->query("SELECT id,customer_name as 'Customer Name',((max_balance_in_last_one_year-current_balance)/max_balance_in_last_one_year)*100
+		$query = $this->db->query("SELECT id,customer_name as 'Customer Name',((previous_balance-current_balance)/previous_balance)*100
 		as '%Balance Drop',contact_no as 'Phone number',DATE_FORMAT(call_date, '%D-%M-%Y') as 'call_date' FROM customer_retention 
 		 WHERE TRIM( LEADING  0 FROM hrms_id)='".ltrim($hrmsid, '0')."' AND  call_date IS NOT NULL ORDER BY current_balance desc");
 
