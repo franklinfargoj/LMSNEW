@@ -73,20 +73,33 @@
 							);
 							echo form_label('Map With:<span style="color:red;">*</span>', 'map_with', $attributes);
 
-                        $map[''] = 'Select';
-                        foreach ($this->config->item('map') as $k => $map_value){
-                            $map[$k]=$map_value;
-                        }
+
                         $js = array(
 							        'id'       => 'map_with',
-							        'class'	   => ''
-							        /*'onChange' => 'some_function();'*/
+							        'class'	   => 'getamount',
 							);
 							echo form_dropdown('map_with', $map , set_select('map_with'),$js);
 
 							echo form_error('map_with', '<span class="help-block">', '</span>');
 						?>
 					</div>
+                <div class="form-control" id="map_amount" >
+                    <label>Amount</label>
+                    <div class="radio-control">
+                        <input type="radio" id= "all" name="default_amount" value="all" <?php echo  set_radio('default_amount', 'all',true); ?> />
+                        <label>All</label>
+                    </div>
+                    <div class="radio-control">
+                        <input type="radio" id= "greater_than" name="default_amount" value="greater_than" <?php echo  set_radio('default_amount', 'greater_than'); ?> />
+                        <label>Greater than</label>
+                    </div>
+                </div>
+
+                <div class="form-control" id="amount">
+                    <label>Enter Amount</label>
+                    <input type="number" id="greater_than_amount" name="greater_than_amount" value="0"/>
+                </div>
+
 					<div class="form-control">
 						<label>Default Assign:<span style="color:red;">*</span></label>
 						<div class="radio-control">
@@ -167,7 +180,29 @@
 
 <script type="text/javascript">
 
-	$.validator.addMethod("regx", function(value, element, regexpr) {
+    $('#map_amount').hide();
+    $('#amount').hide();
+
+    $( ".getamount" ).change(function() {
+        var map_with = ($('.getamount option:selected').text()).toLowerCase();
+        if(map_with!='branch' && map_with!='select')
+        {
+            $('#map_amount').show();
+        }
+        else {
+            $('#map_amount').hide();
+            $('#amount').hide();
+        }
+    });
+
+    $('#greater_than').click(function() {
+        $('#amount').show();
+    });
+   $('#all').click(function() {
+       $('#amount').hide();
+   });
+
+    $.validator.addMethod("regx", function(value, element, regexpr) {
         return regexpr.test(value);
     });
 

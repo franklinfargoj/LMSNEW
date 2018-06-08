@@ -60,6 +60,15 @@ class Product extends CI_Controller {
           /*Create Breadcumb*/
           
           $arrData['categorylist'] = $this->getCategoryList();
+
+          //Get map with values
+          $map_with = $this->master->get_all_records(array('id','title'),Tbl_map_with);
+         $map[0] = 'Select';
+         foreach ($map_with as  $map_value){
+             $map[$map_value['title']]=$map_value['title'];
+         }
+         $arrData['map'] = $map;
+
           if($this->input->post()){
                $this->form_validation->set_rules('title','Product name', 'trim|required|callback_alphaNumeric|callback_isTaken');
                $this->form_validation->set_rules('category_id','Product Category', 'required');
@@ -76,6 +85,7 @@ class Product extends CI_Controller {
                          'default_assign' => $this->input->post('default_assign'),
                          'status' => strtolower($this->input->post('status')),
                          'map_with' => $this->input->post('map_with'),
+                        'map_with_amount' => $this->input->post('greater_than_amount'),
                          'turn_around_time' => strtolower($this->input->post('turn_around_time')),
                          'created_by' => loginUserId()
                     );
@@ -120,6 +130,15 @@ class Product extends CI_Controller {
                $this->session->set_flashdata('error','Invalid access');
                redirect('product');
           }
+
+         //Get map with values
+         $map_with = $this->master->get_all_records(array('id','title'),Tbl_map_with);
+         $map[0] = 'Select';
+         foreach ($map_with as  $map_value){
+             $map[$map_value['title']]=$map_value['title'];
+         }
+         $arrData['map'] = $map;
+
           if($this->input->post()){
                $this->form_validation->set_rules('category_id','Product Category', 'trim|required');
                $this->form_validation->set_rules('map_with','Map With', 'required');
@@ -140,6 +159,7 @@ class Product extends CI_Controller {
                          'default_assign' => $this->input->post('default_assign'),
                          'status' => strtolower($this->input->post('status')),
                          'map_with' => $this->input->post('map_with'),
+                        'map_with_amount' => $this->input->post('greater_than_amount'),
                          'turn_around_time' => strtolower($this->input->post('turn_around_time')),
                          'modified_by' => loginUserId(),
                          'modified_on' => date('y-m-d H:i:s')

@@ -118,6 +118,7 @@ define('Tbl_Mail', 'db_mailsetting');
 define('Tbl_cbs', 'db_response_from_cbs');
 define('Tbl_emp_dump', 'employee_dump');
 define('Tbl_analytics_lead_route', 'db_analytics_lead_route');
+define('Tbl_map_with', 'db_map_with_master');
 
 
 
