@@ -149,7 +149,7 @@ define({ "api": [
             "type": "Number",
             "optional": false,
             "field": "BalanceDrop",
-            "description": "<p>current_balance</p>"
+            "description": "<p>((previous_balance-current_balance)/previous_balance)*100</p>"
           },
           {
             "group": "Success 200",
