@@ -14,7 +14,7 @@
 <body>
 <div class="page-title">
     <div class="container clearfix">
-        <h3 class="text-center">Upload Uesrs</h3>
+        <h3 class="text-center">Upload Users</h3>
     </div>
 </div>
 

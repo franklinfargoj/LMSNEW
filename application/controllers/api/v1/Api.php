@@ -312,6 +312,7 @@ class Api extends REST_Controller
             $lead_data['lead_source'] = 'tie_ups';
         }
         $lead_data['other_source'] = $other_source;
+        $lead_data['branch_id'] = trim($lead_data['branch_id']);
         //
         $lead_id = $this->Lead->add_leads($lead_data);
 
@@ -1876,6 +1877,244 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
             returnJson($err);
         }
     }
+    public function authenticationnewios_post()
+    {
+        $params = $this->input->post();
+
+        if (!isset($params['user_id']) || !isset($params['password']) || !isset($params['device_token']) ||
+            !isset($params['device_type']) || ($params['device_type'] == NULL) ||
+            ($params['user_id'] == NULL) || ($params['password'] == NULL || ($params['device_token'] == NULL))) {
+            $err['result'] = false;
+            $err['data'] = "Invalid Request";
+            returnJson($err);
+        }
+
+        //$password = $params['password'];//$password = base64_decode($params['password']);
+        $user_id = $params['user_id'];
+        $password = $params['password'] ;
+        $device_token = $params['device_token'];
+        $device_type = $params['device_type'];
+
+        //$auth_response = call_external_url(HRMS_API_URL_AUTH.'username='.$user_id.'?password='.$password);
+        // $auth_response = call_external_url(HRMS_API_URL_AUTH.'username='.$user_id.'&password='.$password);
+        $where = array('hrms_id' => $user_id, 'password' => md5($password));
+        $auth_response = $this->Login_model->check_login($where,Tbl_emp_dump);
+
+        $records = $auth_response[0];
+
+        //pe($records);die;
+
+        if(!empty($records)) {
+            // if ($auth->DBK_LMS_AUTH->password == 'True') {
+            // $records_response = call_external_url(HRMS_API_URL_GET_RECORD.$result->DBK_LMS_AUTH->username);
+            //$records_response = call_external_url(HRMS_API_URL_GET_RECORD.'emplid='.$auth->DBK_LMS_AUTH->username);
+            //$records_response = call_external_url(HRMS_API_URL_GET_RECORD.'hrms_id='.$auth->DBK_LMS_AUTH->username);
+            //$records = json_decode($records_response);
+
+            $authorisation_key = random_number();
+            /*            $data = array(
+                            'device_token' => $device_token,
+                            'employee_id' => $records->dbk_lms_emp_record1->EMPLID,
+                            'branch_id' => $records->dbk_lms_emp_record1->deptid,
+                            'zone_id' => $records->dbk_lms_emp_record1->dbk_state_id,
+                            'device_type' => $device_type,
+                            'authorisation_key'=>$authorisation_key
+                        );*/
+            $data = array(
+                'device_token' => $device_token,
+                'employee_id' => $records['hrms_id'],
+                'branch_id' => $records['branch_id'],
+                'zone_id' => $records['zone_id'],
+                'device_type' => $device_type,
+                'authorisation_key'=>$authorisation_key
+            );
+
+            $this->Login_model->insert_login_log($data); // login log
+            $fullname = array_map('trim', explode('.', $records['name']));
+
+            if($fullname[0] == ''){
+                $fullname1 = ucwords(strtolower(trim($fullname[1])));
+            }else{
+                $fullname1 = ucwords(strtolower(trim($fullname[0])));
+            }
+
+//            $result['basic_info'] = array(
+//                'hrms_id' => $records->dbk_lms_emp_record1->EMPLID,
+//                'dept_id' => $records->dbk_lms_emp_record1->deptid,
+//                'dept_type_id' => $records->dbk_lms_emp_record1->dbk_dept_type,
+//                'dept_type_name' => $records->dbk_lms_emp_record1->dept_discription,
+//                'branch_id' => $records->dbk_lms_emp_record1->deptid,
+//                'district_id' => $records->dbk_lms_emp_record1->district,
+//                'state_id' => $records->dbk_lms_emp_record1->state,
+//                'zone_id' => $records->dbk_lms_emp_record1->dbk_state_id,
+//                'full_name' => $fullname1,
+//                'supervisor_id' => $records->dbk_lms_emp_record1->supervisor,
+//                'designation_id' => $records->dbk_lms_emp_record1->designation_id,
+//                'designation_name' => $records->dbk_lms_emp_record1->designation_descr,
+//                'mobile' => $records->dbk_lms_emp_record1->phone,
+//                'email_id' => $records->dbk_lms_emp_record1->email,
+//                'designation' => get_designation($records->dbk_lms_emp_record1->designation_id)
+//            );
+            $result['basic_info'] = array(
+                'hrms_id' => $records['hrms_id'],
+                'dept_type_id' => $records['dept_type_id'],
+                'dept_type_name' => $records['dept_type_name'],
+                'branch_id' => $records['branch_id'],
+                'district_id' => $records['district_id'],
+                'state_id' => $records['state_id'],
+                'zone_id' => $records['zone_id'],
+                'full_name' => $fullname1,
+                'supervisor_id' => $records['supervisor_id'],
+                'designation_id' => $records['designation_id'],
+                'designation_name' => $records['designation'],
+                'mobile' => $records['contact_no'],
+                'email_id' => $records['email_id'],
+                'designation' => get_designation($records['designation_id']),
+                //'dept_id' => $records['dept_id']
+            );
+
+            $hrms_id = $records['hrms_id'];
+            $action = 'count';
+            $table = Tbl_Notification . ' as n';
+            $select = array('n.*');
+            $unread_where = array('n.notification_to' => $hrms_id, 'n.is_read' => 0);
+            //$order_by = "n.priority ASC";
+            $leads['unread_notification'] = $this->notification->get_notifications($action, $select, $unread_where, $table, $join = array(), $order_by='');
+
+            $read_where = array('n.notification_to' => $hrms_id, 'n.is_read' => 1);
+            $leads['read_notification'] = $this->notification->get_notifications($action, $select, $read_where, $table, $join = array(), $order_by='');
+
+            // employee
+            if ($result['basic_info']['designation'] == 'EM') {
+                if (isset($result['basic_info']['hrms_id']) && $result['basic_info']['hrms_id'] != '') {
+                    $created_id = $result['basic_info']['hrms_id'];
+
+                    //Parameters buiding for sending to list function.
+                    $action = 'count';
+                    $select = array();
+                    $join = array();
+                    $group_by = array();
+
+                    //For Generated Leads Count
+                    $table = Tbl_Leads;
+
+                    //Month till date
+                    $where = array(Tbl_Leads . '.created_by' => $created_id, 'MONTH(' . Tbl_Leads . '.created_on)' => date('m'),'YEAR('.Tbl_Leads.'.created_on)' => date('Y'));
+                    $leads['generated_mtd'] = $this->Lead->get_leads($action, $table, $select, $where, $join, $group_by, $order_by = array());
+
+                    //Year till date
+                    $where = array(Tbl_Leads . '.created_by' => $created_id);
+                    $yr_start_date=(date('Y')-1).'-04-01 00:00:00';
+                    $yr_end_date=(date('Y')).'-03-31 23:59:59';
+                    $current_month = date('n');
+                    if($current_month >=4){
+                        $yr_start_date=(date('Y')).'-04-01 00:00:00';
+                        $yr_end_date=(date('Y')+1).'-03-31 23:59:59';
+                    }
+                    $where[Tbl_Leads.".created_on >='".$yr_start_date."' AND ".Tbl_Leads.".created_on <='".$yr_end_date."'"] = NULL;
+
+                    $leads['generated_ytd'] = $this->Lead->get_leads($action, $table, $select, $where, $join, $group_by, $order_by = array());
+
+                    //For converted leads Count
+                    $table = Tbl_LeadAssign;
+
+                    //Month till date
+                    $where = array(Tbl_LeadAssign . '.employee_id' => $created_id, Tbl_LeadAssign . '.status' => 'Converted', Tbl_LeadAssign . '.is_deleted' => 0,Tbl_LeadAssign.'.is_updated' => 1, 'MONTH(' . Tbl_LeadAssign . '.created_on)' => date('m'),'YEAR('.Tbl_LeadAssign.'.created_on)' => date('Y'));
+                    $leads['converted_mtd'] = $this->Lead->get_leads($action, $table, $select, $where, $join, $group_by, $order_by = array());
+
+
+                    //Year till date
+                    $where = array(Tbl_LeadAssign . '.employee_id' => $created_id, Tbl_LeadAssign . '.status' => 'Converted', Tbl_LeadAssign . '.is_deleted' => 0,Tbl_LeadAssign.'.is_updated' => 1);
+                    $yr_start_date=(date('Y')-1).'-04-01 00:00:00';
+                    $yr_end_date=(date('Y')).'-03-31 23:59:59';
+                    $current_month = date('n');
+                    if($current_month >=4){
+                        $yr_start_date=(date('Y')).'-04-01 00:00:00';
+                        $yr_end_date=(date('Y')+1).'-03-31 23:59:59';
+                    }
+                    $where[Tbl_LeadAssign.".created_on >='".$yr_start_date."' AND ".Tbl_LeadAssign.".created_on <='".$yr_end_date."'"] = NULL;
+
+                    $leads['converted_ytd'] = $this->Lead->get_leads($action, $table, $select, $where, $join, $group_by, $order_by = array());
+
+                    //For assigned leads Count
+                    $table = Tbl_LeadAssign;
+
+                    //Year till date
+                    $where = array(Tbl_LeadAssign . '.employee_id' => $created_id, Tbl_LeadAssign . '.is_updated' => 1, Tbl_LeadAssign . '.is_deleted' => 0,Tbl_LeadAssign . '.view_status' => 0, 'DATEDIFF( CURDATE( ) , ' . Tbl_LeadAssign . '.created_on) <=' => Elapsed_day);
+                    $yr_start_date=(date('Y')-1).'-04-01 00:00:00';
+                    $yr_end_date=(date('Y')).'-03-31 23:59:59';
+                    $current_month = date('n');
+                    if($current_month >=4){
+                        $yr_start_date=(date('Y')).'-04-01 00:00:00';
+                        $yr_end_date=(date('Y')+1).'-03-31 23:59:59';
+                    }
+                    // $where[Tbl_LeadAssign.".created_on >='".$yr_start_date."' AND ".Tbl_LeadAssign.".created_on <='".$yr_end_date."'"] = NULL;
+
+                    $leads['assigned_leads'] = $this->Lead->get_leads($action, $table, $select, $where, $join, $group_by, $order_by = array());
+                }
+
+            }
+            // BM
+            if ($result['basic_info']['designation'] == 'BM') {
+                if (isset($result['basic_info']['branch_id']) && $result['basic_info']['branch_id'] != '') {
+                    $branch_id = $result['basic_info']['branch_id'];
+                    $type = 'BM';
+                    $final = $this->countnew($type, $branch_id,$result['employees']);
+
+                    $leads['generated_converted'] = $final;
+                    //for assigned lead
+//                    $where_assigned_Array = array('branch_id' => $branch_id, 'is_updated' => 1,
+//                        'YEAR(created_on)' => date('Y'), 'DATEDIFF( CURDATE( ) , created_on) <=' => Elapsed_day);
+//                    $where_assigned_Array = "(status='AO' OR status='NI' AND branch_id =".$branch_id.")
+//                     AND (is_updated = 1 AND is_deleted = 0 AND DATEDIFF( CURDATE( ) , created_on) <=".Elapsed_day.")";
+                    $action = 'count';
+                    $select = array();
+                    $joinbm = array();
+                    $table = Tbl_LeadAssign ;
+
+                    $joinbm[] = array('table' => Tbl_Leads.' as l','on_condition' => 'l.id = '.Tbl_LeadAssign.'.lead_id','type' => '');
+                    $joinbm[] = array('table' => Tbl_Category.' as pc','on_condition' => 'l.product_category_id = pc.id','type' => '');
+                    $where = "(".Tbl_LeadAssign.".status='AO' OR ".Tbl_LeadAssign.".status='NI' OR (".Tbl_LeadAssign.".status = 'DC' AND pc.title = 'Fee Income')) AND ".Tbl_LeadAssign.".branch_id =".$branch_id." AND (".Tbl_LeadAssign.".is_updated = 1 AND ".Tbl_LeadAssign.".is_deleted = 0 AND DATEDIFF( CURDATE( ) , ".Tbl_LeadAssign.".created_on) <=".Elapsed_day.")";
+
+                    //$leads['assigned_leads'] = $this->Lead->get_leads($action, $table, $select, $where, $join, $group_by=array(), $order_by = array());
+                }
+
+                $leads['assigned_leads'] = $this->Lead->get_leads($action, $table, $select, $where, $joinbm, $group_by=array(), $order_by = array());
+                $action = 'count';
+                $select = array();
+                $table = Tbl_Leads;
+                $where = array(Tbl_Leads . '.branch_id' => $result['basic_info']['branch_id'], 'YEAR(' . Tbl_Leads . '.created_on)' => date('Y'));
+                $where['('.Tbl_LeadAssign.'.lead_id IS NULL OR '.Tbl_LeadAssign.'.is_deleted = 1)'] = NULL;
+
+                $join[] = array('table' => Tbl_LeadAssign, 'on_condition' => Tbl_LeadAssign . '.lead_id = ' . Tbl_Leads . '.id', 'type' => 'left');
+                $leads['un_assigned_leads'] = $this->Lead->get_leads($action, $table, $select, $where, $join, $group_by = array(), $order_by = array());
+            }
+            //ZM
+            if ($result['basic_info']['designation'] == 'ZM') {
+                if (isset($result['basic_info']['zone_id']) && $result['basic_info']['zone_id'] != '') {
+                    $zone_id = $result['basic_info']['zone_id'];
+                    $type = 'ZM';
+                    $final = $this->countnew($type, $zone_id,$result['employees']);
+                    $leads['generated_converted'] = $final;
+                }
+            }
+            // GM
+            if ($result['basic_info']['designation'] == 'GM') {
+                $type = 'GM';
+                $final = $this->countnew($type, '', $result['employees']);
+                $leads['generated_converted'] = $final;
+            }
+            $result = array(
+                "result" => True,
+                "data" => ['count' => $leads, 'basic_info' => $result['basic_info'],'authorisation_key'=>$authorisation_key]
+            );
+            returnJson($result);
+        } else {
+            $err['result'] = false;
+            $err['data'] = "Invalid login details.Kindly contact HRMS Admin.";
+            returnJson($err);
+        }
+    }
 
     private function countnew($type, $ids, $result)
     {
@@ -2942,6 +3181,53 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
         returnJson($res);
     }
 
+
+    public function verify_account_ios_post(){
+
+        $params = $this->input->post();
+        if(isset($params['lead_id']) && $params['lead_id'] !='' &&
+            //  isset($params['account_no']) && strlen(trim($params['account_no'])) == 12){
+            isset($params['account_no'])) {
+            //$api_res = $this->verify_cbs_account(trim($params['account_no']));
+            $api_res = $this->verify_cbs_account(trim($params['account_no']),$params['lead_id']);
+
+            $api_res = strip_tags($api_res);
+            $api_res = json_decode($api_res,true);
+
+            if($api_res['status'] != 'False'){
+//                $acc_no = $params['account_no'];
+                $cbs_res = $api_res['data'];
+//                $split_cbs_resp = explode('~',$cbs_res);
+//                $responseData = array(
+//                    'lead_id' => $params['lead_id'],
+//                    //'account_no'=>$acc_no,
+//                    'account_no'=>aes_decode($acc_no),
+//                    'response_data' => $api_res['data'],
+//                    'amount' => $split_cbs_resp[0],
+//                    'customer_name' => $split_cbs_resp[1],
+//                    'customer_contact_no' => $split_cbs_resp[2],
+//                    'email_id' => $split_cbs_resp[3],
+//                );
+//                //This will add entry into cbs response for status (Account Opened)
+//                $this->Lead->insert_lead_data($responseData,Tbl_cbs);
+//                $table = Tbl_Leads;
+//                $where = array('id'=>$params['lead_id']);
+//                $data = array('opened_account_no'=>aes_decode($acc_no));
+//                $this->Lead->update_lead_data($where,$data,$table);
+                $res = array('result' => True,
+                    'data' => array($cbs_res));
+                returnJson($res);
+            }
+            $res = array('result' => False,
+                //'data' => array('Verification Failed'));
+                'data' => array('Failed to added AccountId'));
+            returnJson($res);
+        }
+        $res = array('result' => False,
+            'data' => array('Invalid Request'));
+        returnJson($res);
+    }
+
     public function confirm_cbs_response_post(){
 
         $params = $this->input->post();
@@ -2981,6 +3267,59 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
                 $table = Tbl_Leads;
                 $where = array('id'=>$params['lead_id']);
                 $data = array('opened_account_no'=>aes_decode($acc_no));
+                $this->Lead->update_lead_data($where,$data,$table);
+                $res = array('result' => True,
+                    'data' => array('Successfully Verified.'));
+                returnJson($res);
+            }
+            $res = array('result' => False,
+                'data' => array('Verification Failed'));
+            returnJson($res);
+        }
+        $res = array('result' => False,
+            'data' => array('Invalid Request'));
+        returnJson($res);
+    }
+
+    public function confirm_cbs_response_ios_post(){
+
+        $params = $this->input->post();
+        if(isset($params['lead_id']) && $params['lead_id'] !='' &&
+            //  isset($params['account_no']) && strlen(trim($params['account_no'])) == 12){
+            isset($params['account_no'])) {
+            $whereEx = array('lead_id'=>$params['lead_id']);
+            $is_exsits = $this->Lead->is_cbs_exsits($whereEx);
+            if($is_exsits){
+                $result = array('result' => False,
+                    'data' => array('Record Already Saved'));
+                returnJson($result);
+            }
+
+            //$api_res = $this->verify_cbs_account(trim($params['account_no']));
+            // $api_res = $this->verify_cbs_account(aes_decode(trim($params['account_no'])));
+
+            $api_res = $this->verify_cbs_account((trim($params['account_no'])),$params['lead_id']);
+            $api_res = strip_tags($api_res);
+            $api_res = json_decode($api_res,true);
+            if($api_res['status'] != 'False'){
+                $acc_no = $params['account_no'];
+                $cbs_res = $api_res['data'];
+                $split_cbs_resp = explode('~',$cbs_res);
+                $responseData = array(
+                    'lead_id' => $params['lead_id'],
+                    //'account_no'=>$acc_no,
+                    'account_no'=>($acc_no),
+                    'response_data' => $api_res['data'],
+                    'amount' => $split_cbs_resp[0],
+                    'customer_name' => $split_cbs_resp[1],
+                    'customer_contact_no' => $split_cbs_resp[2],
+                    'email_id' => $split_cbs_resp[3],
+                );
+                //This will add entry into cbs response for status (Account Opened)
+                $this->Lead->insert_lead_data($responseData,Tbl_cbs);
+                $table = Tbl_Leads;
+                $where = array('id'=>$params['lead_id']);
+                $data = array('opened_account_no'=>($acc_no));
                 $this->Lead->update_lead_data($where,$data,$table);
                 $res = array('result' => True,
                     'data' => array('Successfully Verified.'));
@@ -3436,7 +3775,7 @@ function customer_retention_lead_post()
 * @apiParam {string} hrms_id  hrms id of user
 * @apiSuccess {string} id  Customer ID
 * @apiSuccess {string} customer  customer name
-* @apiSuccess {Number} BalanceDrop current_balance
+* @apiSuccess {Number} BalanceDrop ((previous_balance-current_balance)/previous_balance)*100 
 * @apiSuccess {Number} PhoneNumber Contact Number
 * @apiSuccess {date} CallDate Retrun If call date is present
 * @apiGroup  Customer Retention

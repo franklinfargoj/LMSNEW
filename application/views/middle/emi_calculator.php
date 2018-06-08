@@ -25,7 +25,7 @@ $form_attributes = array('class' => 'form', 'method' => 'post', 'accept-charset'
 									<label>Loan Amount:<span style="color:red;">*</span></label>
                                     <input type="text" id="amount" name="amount">
                                    <!--  <label class="value">&#x20B9;</label> -->
-                                    <img class="value" src="<?php echo base_url().ASSETS;?>images/rupees.png" alt="rupees">
+                                    <img class="value emi-right-lable" src="<?php echo base_url().ASSETS;?>images/rupees.png" alt="rupees">
 							    <div id="slider1" class="ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content">
                                     <div id="slider1div" class="ui-slider-range ui-corner-all ui-widget-header ui-slider-range-min"></div><span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default" style="left: 66%;"></span>
 								</div>
@@ -45,7 +45,7 @@ $form_attributes = array('class' => 'form', 'method' => 'post', 'accept-charset'
 							<div class="form-control range-slider">
 								<label>Loan Tenure:<span style="color:red;">*</span></label>
                                 <input id ="years" type="text" name="years">
-                                <label class="value">Years</label>
+                                <label class="value emi-right-lable">Years</label>
 									<div id="slider2" class="ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content">
                                         <div id="slider2div" class="ui-slider-range ui-corner-all ui-widget-header ui-slider-range-min"></div>
                                         <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default" style="left: 66%;"></span>
@@ -64,7 +64,7 @@ $form_attributes = array('class' => 'form', 'method' => 'post', 'accept-charset'
 							<div class="form-control range-slider">
 									<label>Interest Rate:<span style="color:red;">*</span></label>
                                     <input id="interest" type="text" name="interest">
-                                    <label class="value">%</label>
+                                    <label class="value emi-right-lable">%</label>
 									<div id="slider3" class="ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content">
                                         <div id="slider3div" class="ui-slider-range ui-corner-all ui-widget-header ui-slider-range-min"></div>
                                         <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default" style="left: 66%;"></span>

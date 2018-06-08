@@ -41,24 +41,25 @@ function import()
      $account_id = $worksheet->getCellByColumnAndRow(2, $row)->getValue();
      $email_id = $worksheet->getCellByColumnAndRow(3, $row)->getValue();
      $contact_no = $worksheet->getCellByColumnAndRow(4, $row)->getValue();
-     $current_balance = $worksheet->getCellByColumnAndRow(5, $row)->getValue();
-     $max_balance_in_last_one_year = $worksheet->getCellByColumnAndRow(6, $row)->getValue();
-     $transaction_in_3_months = $worksheet->getCellByColumnAndRow(7, $row)->getValue();
-     $products_availed = $worksheet->getCellByColumnAndRow(8, $row)->getValue();
-     $IB_MB = $worksheet->getCellByColumnAndRow(9, $row)->getValue();
-     $debit_card_active_usage = $worksheet->getCellByColumnAndRow(10, $row)->getValue();
+     $previous_balance = $worksheet->getCellByColumnAndRow(5, $row)->getValue();
+     $current_balance = $worksheet->getCellByColumnAndRow(6, $row)->getValue();
+     $max_balance_in_last_one_year = $worksheet->getCellByColumnAndRow(7, $row)->getValue();
+     $transaction_in_3_months = $worksheet->getCellByColumnAndRow(8, $row)->getValue();
+     $products_availed = $worksheet->getCellByColumnAndRow(9, $row)->getValue();
+     $IB_MB = $worksheet->getCellByColumnAndRow(10, $row)->getValue();
+     $debit_card_active_usage = $worksheet->getCellByColumnAndRow(11, $row)->getValue();
 
 
 
-     $internet_banking = $worksheet->getCellByColumnAndRow(11, $row)->getValue();
-     $mobile_banking = $worksheet->getCellByColumnAndRow(12, $row)->getValue();
-     $debit_card = $worksheet->getCellByColumnAndRow(13, $row)->getValue();
-     $neft_rtgs = $worksheet->getCellByColumnAndRow(14, $row)->getValue();
-     $moving_money_dena_to_non_dena = $worksheet->getCellByColumnAndRow(15, $row)->getValue();
-     $three_months_internet_transaction = $worksheet->getCellByColumnAndRow(16, $row)->getValue();
-     $three_months_mobile_transaction = $worksheet->getCellByColumnAndRow(17, $row)->getValue();
-     $transaction_debit_card_POS = $worksheet->getCellByColumnAndRow(18, $row)->getValue();
-     $remarks = $worksheet->getCellByColumnAndRow(19, $row)->getValue();
+     $internet_banking = $worksheet->getCellByColumnAndRow(12, $row)->getValue();
+     $mobile_banking = $worksheet->getCellByColumnAndRow(13, $row)->getValue();
+     $debit_card = $worksheet->getCellByColumnAndRow(14, $row)->getValue();
+     $neft_rtgs = $worksheet->getCellByColumnAndRow(15, $row)->getValue();
+     $moving_money_dena_to_non_dena = $worksheet->getCellByColumnAndRow(16, $row)->getValue();
+     $three_months_internet_transaction = $worksheet->getCellByColumnAndRow(17, $row)->getValue();
+     $three_months_mobile_transaction = $worksheet->getCellByColumnAndRow(18, $row)->getValue();
+     $transaction_debit_card_POS = $worksheet->getCellByColumnAndRow(19, $row)->getValue();
+     $remarks = $worksheet->getCellByColumnAndRow(20, $row)->getValue();
 
 
      $data[] = array(
@@ -67,6 +68,7 @@ function import()
               'account_id'=>$account_id,
               'email_id'=>$email_id,
               'contact_no'=>$contact_no,
+              'previous_balance'=>$previous_balance,
               'current_balance'=>$current_balance,
               'max_balance_in_last_one_year'=>$max_balance_in_last_one_year,
               'transaction_in_3_months'=>$transaction_in_3_months,
