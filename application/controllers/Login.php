@@ -107,7 +107,6 @@ class Login extends CI_Controller {
                     $checkInput = array('hrms_id' => $this->input->post('username'), 'password' => md5($pwd));
                     $auth_response = $this->master->check_login($checkInput,Tbl_emp_dump);
 
-                    //pe($auth_response);die;
                     $login_id = $auth_response[0]['hrms_id'];
 
                     $select = array('hrms_id as DESCR10','name as DESCR30');
@@ -161,7 +160,7 @@ class Login extends CI_Controller {
                             'full_name' => $auth_response[0]['name'],
                             'supervisor_id' =>$auth_response[0]['supervisor_id'],
                             'designation_id' => $auth_response[0]['designation_id'],
-                            'designation_name' => $auth_response[0]['designation'],
+                            'designation_name' => $auth_response[0]['designation_name'],
                             'mobile' => $auth_response[0]['contact_no'],
                             'email_id' => $auth_response[0]['email_id'],
                             'dept_type_id' => $auth_response[0]['dept_type_id'],
@@ -229,7 +228,6 @@ class Login extends CI_Controller {
 
 
      private function set_session($data){
-            //echo "<pre>";print_r($data);die;
              $login_user = array(
                  'admin_id' => $data['hrms_id'],
                  'dept_type_id' => $data['dept_type_id'],
@@ -241,6 +239,7 @@ class Login extends CI_Controller {
                  'admin_name' => $data['full_name'],
                  'supervisor_id' => $data['supervisor_id'],
                  'designation_id' => $data['designation_id'],
+                 'designation_name' => $data['designation_name'],
                  'admin_type' => $data['designation_name'],
                  'mobile' => $data['mobile'],
                  'email_id' => $data['email_id'],
@@ -248,7 +247,6 @@ class Login extends CI_Controller {
                  'authorisation_key' => $data['authorisation_key'],
                  'list'=>$data['list']
              );
-          //pe($login_user);die;
           $this->session->set_userdata($login_user);
      }
 

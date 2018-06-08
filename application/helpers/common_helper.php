@@ -321,11 +321,13 @@ function decode_id($id){
 function get_session(){
     $CI =& get_instance();
     //return $CI->session->userdata();
-
-    $designation = get_designation($CI->session->userdata('designation_id'));
+    //$designation = get_designation($CI->session->userdata('designation_id'));
     if($CI->session->userdata('admin_id') == '1111111'){
         $designation = $CI->session->userdata('admin_type');
+    }else{
+        $designation = $CI->session->userdata('designation_name');
     }
+
     $CI->session->set_userdata('admin_type',$designation);
     $input = array(
         /*'hrms_id' => '312',*/
@@ -814,9 +816,8 @@ function call_external_url($url) {
 }
 
     function get_designation($designation_id){
-
         //$bm=array(520299,530399,540499,550599,560315);
-  	$bm=array(510199,520299,530399,540499,550599,560315);	
+    	$bm=array(510199,520299,530399,540499,550599,560315);
         $zm=array(550502,560602,540402,550503);
         $gm=array(560601,570701,540405,580801);
 
