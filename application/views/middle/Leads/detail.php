@@ -714,6 +714,37 @@
         });
     });
 
+    $('#lead_status').change(function () {
+
+        var current_status = "<?php echo $leads[0]['status']; ?>";
+        var selected_status = $(this).val();
+
+        if(current_status == 'NC'){
+            if(selected_status==='DC'||selected_status==='AO'||
+                selected_status==='Converted'||selected_status==='Sanction'||
+                selected_status==='Closed') {
+                alert('Please select  Interested or Drop/Not interested.');
+                $(this).val('NC');
+            }
+        }else if(current_status == 'FU'){
+            if(selected_status==='Sanction'|| selected_status==='Converted') {
+                alert('Please select  Documents Collected or Drop/Not interested.');
+                //$(this).val('FU');
+            }
+        }else if(current_status == 'DC'){
+            if(selected_status==='Closed') {
+                alert('Please select Converted or Drop/Not interested.');
+                //$(this).val('DC');
+            }
+        }else if(current_status == 'AO'){
+            if(selected_status==='Closed') {
+                alert('Please select Converted.');
+                //$(this).val('DC');
+            }
+        }
+
+    })
+
     $('.verify_account').click(function () {
         var acc_no = $.trim($('#accountNo').val());
 
