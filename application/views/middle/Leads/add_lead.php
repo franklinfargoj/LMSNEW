@@ -432,9 +432,9 @@ $remark_extra = 'style="rows:4 ; cols:80"';
         });
 
         function is_own_branch() {
-            var state = "<?php echo $input['state_id'];?>";
-            var branch = "<?php echo $input['branch_id'];?>";
-            var district = "<?php echo $input['district_id'];?>";
+            var state = "<?php echo trim($input['state_id']);?>";
+            var branch = "<?php echo trim($input['branch_id']);?>";
+            var district = "<?php echo trim($input['district_id']);?>";
             $.ajax({
                 method: "POST",
                 url: base_url + "leads/is_own_branch",
