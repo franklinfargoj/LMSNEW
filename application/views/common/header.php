@@ -11,8 +11,8 @@
 	<div class="container">
 		<div class="logo">
             <a href="<?php echo site_url('dashboard')?>">
-			    <img src="<?php echo base_url().ASSETS;?>images/bcc-internal-logo.png" alt="logo">
-			    <span class="tagline">Outreach</span>
+			    <img src="<?php echo base_url().ASSETS;?>images/bcg-internal-logo.png" alt="logo">
+			    
             </a>
 		</div>
 		

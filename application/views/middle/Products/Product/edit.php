@@ -44,6 +44,27 @@
 							echo form_dropdown('category_id', $options , $productDetail[0]['category_id'],$js);
 						?>
 					</div>
+                <div class="form-control">
+                    <?php
+                    $attributes = array(
+                        'class' => '',
+                        'style' => ''
+                    );
+                    echo form_label('Product Name:<span style="color:red;">*</span>', 'title', $attributes);
+
+                    $data = array(
+                        'type'  => 'text',
+                        'name'  => 'title',
+                        'id'    => 'title',
+                        'class' => '',
+                        'value' => $productDetail[0]['title']
+                    );
+                    echo form_input($data);
+
+                    // Assuming that the 'title' field value was incorrect:
+                    echo form_error('title', '<span class="help-block">', '</span>');
+                    ?>
+                </div>
                     <div class="form-control">
                         <?php
                         $attributes = array(
@@ -51,14 +72,10 @@
                             'style' => ''
                         );
                         echo form_label('Map With:<span style="color:red;">*</span>', 'map_with', $attributes);
-                        $map[''] = 'Select';
-                        foreach ($this->config->item('map') as $k => $map_value){
-                            $map[$k]=$map_value;
-                        }
 
                         $js = array(
                             'id'       => 'map_with',
-                            'class'	   => ''
+                            'class'	   => 'getamount'
                             /*'onChange' => 'some_function();'*/
                         );
                         echo form_dropdown('map_with', $map , $productDetail[0]['map_with'],$js);
@@ -66,27 +83,23 @@
                         echo form_error('map_with', '<span class="help-block">', '</span>');
                         ?>
                     </div>
-					<div class="form-control">
-						<?php 
-							$attributes = array(
-						        'class' => '',
-						        'style' => ''
-							);
-							echo form_label('Product Name:<span style="color:red;">*</span>', 'title', $attributes);
-
-							$data = array(
-						        'type'  => 'text',
-						        'name'  => 'title',
-						        'id'    => 'title',
-						        'class' => '',
-						        'value' => $productDetail[0]['title']
-							);
-							echo form_input($data);
-							
-							// Assuming that the 'title' field value was incorrect:
-							echo form_error('title', '<span class="help-block">', '</span>');
-						?>
-					</div>
+                <?php if(strtolower($productDetail[0]['map_with'])!='branch') { ?>
+                <div class="form-control" id="map_amount" >
+                    <label>Amount</label>
+                    <div class="radio-control">
+                        <input type="radio" id= "all" name="default_amount" value="0" <?php echo  set_radio('default_amount', 'all', ($productDetail[0]['map_with_amount'] == 0) ? true : false); ?> />
+                        <label>All</label>
+                    </div>
+                    <div class="radio-control">
+                        <input type="radio" id= "greater_than" name="default_amount" value="greater_than" <?php echo  set_radio('default_amount', 'greater_than',($productDetail[0]['map_with_amount'] > 0) ? true : false); ?> />
+                        <label>Greater than</label>
+                    </div>
+                </div>
+                <div class="form-control" id="amount">
+                    <label>Enter Amount</label>
+                    <input type="number"  id="greater_than_amount" name="greater_than_amount" value="<?php echo $productDetail[0]['map_with_amount'] ?>"/>
+                </div>
+<?php }  ?>
 					<div class="form-control">
 						<label>Default Assign:<span style="color:red;">*</span></label>
 						<div class="radio-control">
@@ -174,6 +187,45 @@
 <!-- END  EDIT PRODUCT -->
 
 <script type="text/javascript">
+
+ //   $('#map_amount').hide();
+    $('#amount').hide();
+
+     greater_amount = '<?php echo $productDetail[0]['map_with_amount'] ?>';
+
+     if(greater_amount > 0)
+     {
+         $('#amount').show();
+     }
+
+    $( ".getamount" ).change(function() {
+        var map_with = ($('.getamount option:selected').text()).toLowerCase();
+        if((map_with!='branch' && map_with!='select'))
+        {
+            $('#map_amount').show();
+            if($('#greater_than').is(':checked'))
+            {
+                $('#amount').show();
+            }
+        }
+        else {
+
+            $('#map_amount').hide();
+            $('#amount').hide();
+            $('#greater_than_amount').val('0');
+        }
+    });
+
+    $('#greater_than').click(function() {
+        $('#amount').show();
+    });
+    $('#all').click(function() {
+        $('#amount').hide();
+        $('#greater_than_amount').val('0');
+    });
+
+
+
  	$.validator.addMethod("regx", function(value, element, regexpr) {
         return regexpr.test(value);
     });

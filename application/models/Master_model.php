@@ -130,7 +130,7 @@ class Master_model extends CI_Model{
 	 * @return array
 	 */
 	public function view_product($id = null,$where = array(),$order_by = array()){
-		$select = array(Tbl_Products.'.id',Tbl_Products.'.map_with',Tbl_Products.'.title',Tbl_Products.'.default_assign',Tbl_Products.'.created_by',Tbl_Products.'.status',Tbl_Products.'.turn_around_time',Tbl_Category.'.title AS category','category_id');
+		$select = array(Tbl_Products.'.id',Tbl_Products.'.map_with',Tbl_Products.'.map_with_amount',Tbl_Products.'.title',Tbl_Products.'.default_assign',Tbl_Products.'.created_by',Tbl_Products.'.status',Tbl_Products.'.turn_around_time',Tbl_Category.'.title AS category','category_id');
 		$where[Tbl_Products.'.is_deleted'] = 0;
 		if(!empty($id)){
 			$where[Tbl_Products.'.id'] = $id;
@@ -284,7 +284,7 @@ class Master_model extends CI_Model{
 			/*pe($order_by);
 			exit;*/
 		}else{
-			$this->db->order_by($table.'.id','DESC');
+			$this->db->order_by('id','DESC');
 		}
 		$query = $this->db->get();
 		return $query->result_array();
@@ -488,6 +488,19 @@ class Master_model extends CI_Model{
         $this->db->select('id,title,content,slug');
         $this->db->from('db_crm');
         $this->db->where('slug',$slug);
+        $query =  $this->db->get();
+        return $query->result_array();
+    }
+
+    public function get_all_records($select,$from,$where='')
+    {
+        $this->db->select($select);
+        $this->db->from($from);
+        if($where!='')
+        {
+            $this->db->where($where);
+        }
+
         $query =  $this->db->get();
         return $query->result_array();
     }

@@ -1273,6 +1273,13 @@ function convertCurrencyCr($number)
     return $currency;
 }
 
+function pr($data)
+{
+     echo  "<pre>";
+     print_r($data);
+    echo "</pre>";
+}
+
 
 
 

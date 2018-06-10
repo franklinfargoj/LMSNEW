@@ -15,7 +15,7 @@
 <body class="login-page">
 	<div class="login-wrapper">
 		<div class="bank-logo">
-			<div class="logo-area"><img src="<?php echo base_url().ASSETS;?>images/bcc-logo.png" alt="login-logo"></div>
+			<div class="logo-area"><img src="<?php echo base_url().ASSETS;?>images/bcg-logo.png" alt="login-logo"></div>
 			<div class="bottom-content">
 				<p>Future Perspective</p>
 				<h2>Shaping the Future. <br/>Together.</h2>

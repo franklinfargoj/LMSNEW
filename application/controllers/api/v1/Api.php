@@ -312,6 +312,7 @@ class Api extends REST_Controller
             $lead_data['lead_source'] = 'tie_ups';
         }
         $lead_data['other_source'] = $other_source;
+        $lead_data['branch_id'] = trim($lead_data['branch_id']);
         //
         $lead_id = $this->Lead->add_leads($lead_data);
 
