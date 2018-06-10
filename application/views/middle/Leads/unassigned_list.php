@@ -142,11 +142,17 @@ $source = $this->config->item('lead_source');
                             $i = 0;
                             foreach ($unassigned_leads as $key => $value) {
                                 $branch_mapp = get_branch_map($value['mapping'],$this->session->userdata('branch_id'));
-                                $branch_map = $branch_mapp[0]['processing_center'];
+                               $branch_map = $branch_mapp[0]['processing_center'];
                     ?>
                             <tr>
                                 <td  style="text-align:center">
-                                <?php if($value['lead_source'] != 'walkin' || ($value['lead_source'] == 'walkin' && $value['mapping'] == 'BRANCH' || ($value['reroute_from_branch_id'] != '' || $value['reroute_from_branch_id'] != NULL))) {
+
+                                <?php if($value['lead_source'] != 'walkin' ||
+                                    ($value['lead_source'] == 'walkin' && $value['mapping'] == 'BRANCH' ||
+                                    ($value['reroute_from_branch_id'] != '' || $value['reroute_from_branch_id'] != NULL) ||
+                                    ($value['mapping'] != 'BRANCH' || $branch_map == '') ||
+                                    ($value['mapping'] != 'BRANCH' && $value['mapping_amount']!=0 && $value['lead_ticket_range'] <= $value['mapping_amount'] )
+                                    )) {
 
                                     $data = array(
                                         'name' => 'lead_ids[]',
@@ -199,7 +205,11 @@ $source = $this->config->item('lead_source');
                                 </td>
                                 <td>
                                     <a href="<?php echo site_url('leads/lead_life_cycle/'.encode_id($value['id']))?>">Life Cycle</a>
-                                    <?php if($value['lead_source'] == 'walkin' && ($value['mapping'] != 'BRANCH' && $value['mapping'] == $branch_map) && ($value['reroute_from_branch_id'] == '' || $value['reroute_from_branch_id'] == NULL)){?>
+                                    <?php if($value['lead_source'] == 'walkin' &&
+                                        ($value['mapping'] != 'BRANCH' && $value['mapping'] == $branch_map) &&
+                                        ($value['reroute_from_branch_id'] == '' || $value['reroute_from_branch_id'] == NULL) &&
+                                        ($value['mapping'] != 'BRANCH' && $value['mapping'] == $branch_map  && ($value['mapping_amount']==0 || $value['lead_ticket_range'] > $value['mapping_amount']))
+                                    ){?>
                                     <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="javascript:void(0);" class="send_rapc" data="<?php echo encode_id($value['id']);?>">Send To <?php echo $branch_map;?></a>
                                     <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="javascript:void(0);" class="drop_lead" data="<?php echo encode_id($value['id']);?>">Drop </a>
                                     <?php }?>

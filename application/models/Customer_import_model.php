@@ -167,7 +167,7 @@ function get_customer_retention_list($para)
 }
 function get_customer_retention_detail($para)
 {
-	$this->db->select("cr.customer_name,DATE_FORMAT(call_date, '%D-%M-%Y') as 'call_date',cr.contact_no,cd.*");
+	$this->db->select("cr.customer_name,cr.current_balance,cr.max_balance_in_last_one_year,cr.transaction_in_3_months,cr.products_availed,DATE_FORMAT(call_date, '%D-%M-%Y') as 'call_date',cr.contact_no,cd.*");
     $this->db->from('customer_retention_details cd');
     $this->db->join('customer_retention cr','cd.customer_id=cr.id');
     $this->db->where($para);
