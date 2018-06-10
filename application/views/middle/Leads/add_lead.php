@@ -345,7 +345,8 @@ $remark_extra = 'style="rows:4 ; cols:80"';
             rules: {
                 customer_name: {
                     required: true,
-                    lettersonly: true
+                    lettersonly: true,
+                    maxlength: 100
                 },
                 lead_name: {
                     required: true,
@@ -387,7 +388,8 @@ $remark_extra = 'style="rows:4 ; cols:80"';
             messages: {
                 customer_name: {
                     required: "Please enter customer name",
-                    lettersonly: "Only alphabets are allowed."
+                    lettersonly: "Only alphabets are allowed.",
+                    maxlength: "Please enter name less or equal to 100 characters."
                 },
                 lead_name: {
                     required: "Please enter lead name",

@@ -73,7 +73,7 @@ class Leads extends CI_Controller
 
             $this->form_validation->set_error_delimiters('<span class = "help-block">', '</span>');
             //$this->form_validation->set_rules('is_existing_customer', 'Customer', 'required');
-            $this->form_validation->set_rules('customer_name', 'Customer Name', 'required|callback_alpha_dash_space');
+            $this->form_validation->set_rules('customer_name', 'Customer Name', 'required|max_length[100]|callback_alpha_dash_space');
             $this->form_validation->set_rules('contact_no', 'Phone No.', 'required|max_length[10]|min_length[10]|numeric|callback_alpha_not_zero');
             $this->form_validation->set_rules('lead_ticket_range', 'Range.', 'required|numeric');
             $this->form_validation->set_rules('product_category_id', 'Product Category', 'required');
@@ -346,6 +346,7 @@ class Leads extends CI_Controller
             if (isset($_FILES['filename']) && !empty($_FILES['filename']['tmp_name'])) {
                 make_upload_directory('./uploads');
                 $file = upload_excel('./uploads', 'filename');
+
                 if (!is_array($file)) {
                     $msg = notify($file, $type = "danger");
                     $this->session->set_flashdata('error', $msg);
@@ -354,8 +355,8 @@ class Leads extends CI_Controller
                     set_time_limit(0);
                     ini_set('memory_limit', '-1');
                     $keys = ['customer_name', 'contact_no', 'is_own_branch', 'branch_id', 'zone_id', 'state_id', 'district_id', 'product_category_id', 'product_id', 'remark'];
-
                     $excelData = fetch_range_excel_data($file['full_path'], 'A2:J', $keys);
+
                     $validation = $this->validate_leads_data($excelData,$lead_source);
                     if (!empty($validation['insert_array'])) {
                         $insert_count = $this->Lead->insert_uploaded_data(Tbl_Leads, $validation['insert_array']);
@@ -408,7 +409,6 @@ class Leads extends CI_Controller
      */
     private function validate_leads_data($excelData,$lead_source)
     {
-//pe($excelData);die;
         $total_inserted=0; $total_rows = count($excelData);
         $error = $insert_array = $update_array = array();
 
@@ -417,6 +417,7 @@ class Leads extends CI_Controller
             $prod_cat_title = preg_replace('!\s+!', ' ', $value['product_category_id']);
             $whereArray = array('title'=>ucwords(strtolower(trim($prod_cat_title))));
             $prod_category_id = $this->Lead->fetch_product_category_id($whereArray);
+
             if($prod_category_id == false){
                 $error[$key] = 'Category does not exist.';
 
@@ -431,8 +432,11 @@ class Leads extends CI_Controller
                     if(in_array(ucwords(strtolower(trim($prod_title))),$all_product)){
                         $whereArray = array('title' => ucwords(strtolower(trim($prod_title))),'status'=>'active');
                         $prod_id = $this->Lead->fetch_product_id($whereArray);
+
+
                         //$analytic_lead_route = $this->master->view_lead_route();
                         $analytic_lead_route = $this->master->chkRecord($lead_source);
+
                         $value['created_on']=date('Y-m-d H:i:s');
                         if(!empty($analytic_lead_route)) {
                             if ($analytic_lead_route[0]['route_to'] == 1) {
@@ -1565,6 +1569,7 @@ class Leads extends CI_Controller
             $district_extra = 'id="district_id"';
             $state_extra = 'id="state_id"';
             if (!empty($states)) {
+                $options =array();
                 $options[''] = 'Select State';
                 foreach ($states as $key => $value) {
                     $options[$value['code']] = ucwords($value['name']);
@@ -1572,11 +1577,13 @@ class Leads extends CI_Controller
                 $html = '<label>State:<span style="color:red;">*</span></label>';
                 $html .= form_dropdown('state_id', $options, $state_code, $state_extra);
             } else {
+                $options =array();
                 $options[''] = 'Select State';
                 $html = '<label>State:<span style="color:red;">*</span></label>';
                 $html .= form_dropdown('state_id', $options, '', $branch_extra);
             }
             if (!empty($branches)) {
+                $options =array();
                 $options[''] = 'Select Branch';
                 foreach ($branches as $key => $value) {
                     $options[$value['code']] = ucwords($value['name']);
@@ -1584,6 +1591,7 @@ class Leads extends CI_Controller
                 $html1 = '<label>Branch:<span style="color:red;">*</span></label>';
                 $html1 .= form_dropdown('branch_id', $options, $branch_code, $branch_extra);
             } else {
+                $options =array();
                 $options[''] = 'Select Branch';
                 $html1 = '<label>Branch:<span style="color:red;">*</span></label>';
                 $html1 .= form_dropdown('branch_id', $options, '', $branch_extra);

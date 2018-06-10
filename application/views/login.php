@@ -53,8 +53,7 @@
 							        'id'    => 'username',
 							        'class' => '',
 							        'value'  => isset($_COOKIE["member_login"]) ? $_COOKIE["member_login"] : 'HRMS ID',
-							        'autocomplete' => 'off'
-							        
+									'autocomplete' => 'off'
 								);
 								echo form_input($data);
 							?>
@@ -78,6 +77,7 @@
 						<?php 
 								$data = array(
 							        'type'  => 'password',
+								//	'placeholder' => 'Please Enter Password',
 							        'name'  => 'password',
 							        'id'    => 'password',
 							        'class' => '',
@@ -151,8 +151,8 @@
 	            focusInvalid: true, // do not focus the last invalid input
 	            rules: {
 	                username: {
-	                    required: true,
-	                    number: true
+	                    required: true
+	                   // number: true
 	                },
 	                password: {
 	                    required: true
@@ -167,8 +167,8 @@
 
 	            messages: {
 	                username: {
-	                    required: "Please enter HRMS ID",
-	                    number : "HRMS ID should contain only number"
+	                    required: "Please enter HRMS ID"
+	                    //number : "HRMS ID should contain only number"
 	                },
 	                password: {
 	                    required: "Please enter password"
