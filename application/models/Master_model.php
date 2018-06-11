@@ -504,4 +504,75 @@ class Master_model extends CI_Model{
         $query =  $this->db->get();
         return $query->result_array();
     }
+
+    /**
+     * view_record_master_map
+     * @author Franklin Fargoj
+     * @access public
+     * @param $data
+     * @return array
+     */
+    public function view_record_master_map($id = null,$order_by = array())
+    {
+        $select = array('id','title','description','created_by','is_deleted','status');
+        $where['is_deleted'] = 0;
+        if(!empty($id)){
+            $where['id'] = $id;
+        }
+        $join = array();
+        return $this->view($select,$where,'db_map_with_master',$join,$order_by,$limit = 0);
+    }
+
+    /**
+     * add_record_map
+     * @author Franklin Fargoj
+     * @access public
+     * @param $data
+     * @return int
+     */
+    public function add_record_map($data){
+        return $this->insert('db_map_with_master',$data);
+    }
+
+    /**
+     * delete_record
+     * @author Franklin Fargoj
+     * @access public
+     * @param $id
+     * @return int
+     */
+    public function delete_record($id){
+        $where[] = $id;
+        $data['is_deleted'] = 1;
+        return $this->soft_delete($where,'db_map_with_master',$data);
+    }
+
+    /**
+     * view_record
+     * @author Franklin Fargoj
+     * @access public
+     * @param $id,$order_by
+     * @return array
+     */
+    public function view_record($id = null,$order_by = array()){
+        $select = array('id','title','description','created_by','status');
+        $where['is_deleted'] = 0;
+        if(!empty($id)){
+            $where['id'] = $id;
+        }
+        $join = array();
+        return $this->view($select,$where,'db_map_with_master',$join,$order_by,$limit = 0);
+    }
+
+    /**
+     * edit_record
+     * @author Franklin Fargoj
+     * @access public
+     * @param $id,$data
+     * @return int
+     */
+    public function edit_record($id,$data){
+        $where['id'] = $id;
+        return $this->update($where,'db_map_with_master',$data);
+    }
 }
