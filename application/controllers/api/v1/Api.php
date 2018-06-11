@@ -949,6 +949,22 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
             $lead_source = $params['lead_source'];
             $branch_id = $params['branch_id'];
             $unassigned_leads = $this->Lead->unassigned_leads_api($lead_source, $branch_id);
+
+            foreach($unassigned_leads as $key => $field)
+            {
+                $branch_mapp = get_branch_map($field['map_with'],$params['branch_id']);
+                $branch_map = $branch_mapp[0]['processing_center'];
+
+                if($field['map_with'] != 'BRANCH' && $field['map_with'] == $branch_map  && ($field['map_with_amount']==0 || $field['lead_ticket_range'] > $field['map_with_amount']))
+                {
+                    $unassigned_leads[$key]['map_with'] = $branch_map;
+                }
+                else
+                {
+                    $unassigned_leads[$key]['map_with'] = 'BRANCH';
+                }
+            }
+
             $res = array('result' => True,
                 'data' => $unassigned_leads);
             returnJson($res);
@@ -1048,12 +1064,12 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
             $join[] = array('table' => Tbl_Category . ' as c', 'on_condition' => 'l.product_category_id = c.id', 'type' => '');
 
             if ($type == 'generated') {
-                $select = array('l.id', 'l.customer_name', 'l.lead_identification','l.lead_ticket_range','l.reroute_from_branch_id','l.opened_account_no', 'l.lead_source', 'l.contact_no', 'l.product_id','l.created_by_branch_id', 'p.title AS product_title','p.map_with', 'c.title AS category_title', 'l.product_category_id', 'la.status','la.desc_for_drop', 'l.remark');
+                $select = array('l.id','l.branch_id', 'l.customer_name', 'l.lead_identification','l.lead_ticket_range','l.reroute_from_branch_id','l.opened_account_no', 'l.lead_source', 'l.contact_no', 'l.product_id','l.created_by_branch_id', 'p.title AS product_title','p.map_with','p.map_with_amount', 'c.title AS category_title', 'l.product_category_id', 'la.status','la.desc_for_drop', 'l.remark');
                 $join[] = array('table' => Tbl_LeadAssign . ' as la', 'on_condition' => 'la.lead_id = l.id', 'type' => 'left');
             }
 
             if ($type == 'converted') {
-                $select = array('l.id', 'l.customer_name', 'l.lead_identification','l.lead_ticket_range','l.reroute_from_branch_id','l.opened_account_no', 'l.lead_source', 'l.contact_no', 'l.product_id', 'l.created_by_branch_id','p.title AS product_title','p.map_with', 'c.title AS category_title', 'l.product_category_id', 'la.status','la.desc_for_drop', 'l.remark');
+                $select = array('l.id','l.branch_id', 'l.customer_name', 'l.lead_identification','l.lead_ticket_range','l.reroute_from_branch_id','l.opened_account_no', 'l.lead_source', 'l.contact_no', 'l.product_id', 'l.created_by_branch_id','p.title AS product_title','p.map_with','p.map_with_amount', 'c.title AS category_title', 'l.product_category_id', 'la.status','la.desc_for_drop', 'l.remark');
                 $where['la.is_deleted'] = 0;
                 $where['la.is_updated'] = 1;
                 $join[] = array('table' => Tbl_LeadAssign . ' as la', 'on_condition' => 'la.lead_id = l.id', 'type' => '');
@@ -1061,7 +1077,7 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
 
             if ($type == 'assigned') {
                 //SELECT COLUMNS
-                $select = array('l.id', 'l.remark', 'l.customer_name', 'l.lead_identification','l.lead_ticket_range','l.reroute_from_branch_id','l.opened_account_no', 'l.lead_source', 'l.contact_no', 'l.product_id','l.created_by_branch_id', 'p.title AS product_title','p.map_with'/*,'l.interested_product_id','p1.title AS interested_product_title'*/, 'c.title AS category_title', 'l.product_category_id', 'la.status', 'la.employee_id', 'la.employee_name','la.desc_for_drop', 'r.remind_on', 'r.reminder_text', 'l.remark','la.reason_for_drop');
+                $select = array('l.id','l.branch_id', 'l.remark', 'l.customer_name', 'l.lead_identification','l.lead_ticket_range','l.reroute_from_branch_id','l.opened_account_no', 'l.lead_source', 'l.contact_no', 'l.product_id','l.created_by_branch_id', 'p.title AS product_title','p.map_with','p.map_with_amount'/*,'l.interested_product_id','p1.title AS interested_product_title'*/, 'c.title AS category_title', 'l.product_category_id', 'la.status', 'la.employee_id', 'la.employee_name','la.desc_for_drop', 'r.remind_on', 'r.reminder_text', 'l.remark','la.reason_for_drop');
 
                 $where['la.is_deleted'] = 0;
                 $where['la.is_updated'] = 1;
@@ -1083,6 +1099,23 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
             }
 
             $arrData['leads'][0]['created_by_branch']= $generatedBY;
+
+            foreach($arrData['leads'] as $key => $field)
+            {
+                $branch_mapp = get_branch_map($field['map_with'],$field['branch_id']);
+                $branch_map = $branch_mapp[0]['processing_center'];
+
+                if($field['map_with'] != 'BRANCH' && $field['map_with'] == $branch_map  && ($field['map_with_amount']==0 || $field['lead_ticket_range'] > $field['map_with_amount']))
+                {
+                    $arrData['leads'][$key]['map_with'] = $branch_map;
+                }
+                else
+                {
+                    $arrData['leads'][$key]['map_with'] = 'BRANCH';
+                }
+            }
+
+
             $res = array('result' => True,
                 'data' => $arrData['leads']);
             returnJson($res);
