@@ -372,24 +372,35 @@
                             $exclude_status_bm = array('Converted','Closed','AO','DC');
                             if(($type == 'assigned') && (in_array($this->session->userdata('admin_type'),array('BM')) &&
                                 !in_array($leads[0]['status'],$exclude_status_bm))
-                            ){?>
+                            )
+                            {?>
 
                             <div class="form-control">
                                 <label>Do you want to reassign this lead ?</label>
                             </div>
-                                <div class="form-control">
-                                <div class="radio-control">
-                                    <input type="radio" id="is_own_branch" name="is_own_branch"
-                                           value="1" <?php echo set_radio('is_own_branch', '1'); ?> />
-                                    <label>Other Employee</label>
-                                </div>
-                                <div class="radio-control">
+
+                             <div class="form-control">
+
+                                 <div class="radio-control">
+                                     <input type="radio" name="is_own_branch" id="is_own" checked
+                                            value="1" <?php echo set_radio('is_own_branch', '0'); ?> />
+                                     <label>No</label>
+                                 </div>
+
+                                 <div class="radio-control">
                                     <input type="radio" name="is_own_branch" id="is_other_branch"
                                            value="0" <?php echo set_radio('is_own_branch', '0'); ?> />
                                     <label>Other Branch</label>
-                                </div>
+                                 </div>
+
+                                 <div class="radio-control">
+                                     <input type="radio" id="is_own_branch" name="is_own_branch"
+                                            value="1" <?php echo set_radio('is_own_branch', '1'); ?> />
+                                     <label>Other Employee</label>
+                                 </div>
+
                                 <?php echo form_error('is_own_branch'); ?>
-                            </div>
+                             </div>
                                 <div class="form-control" id="reroute">
                                     <!--                                    <label>Reroute To:</label>-->
                                     <select name="reroute_to" id="reroute_to" style="visibility: hidden">
@@ -416,7 +427,7 @@
                                     <?php echo form_error('branch_id'); ?>
                                 </div>
 
-                            <?php }?>
+                            <?php  }?>
                         </div>
                         <div class="form-control form-submit clearfix">
                             <?php
@@ -677,6 +688,16 @@
         $("#reroute").css('visibility', 'visible');
         $("#reroute_to").css('visibility', 'visible');
     });
+
+    $('#is_own').click(function () {
+        $("#state").css('visibility', 'hidden');
+        $("#branch").css('visibility', 'hidden');
+        $("#district").css('visibility', 'hidden');
+        $("#reroute").css('visibility', 'hidden');
+        $("#reroute_to").css('visibility', 'hidden');
+    });
+
+
     $('#state_id').change(function () {
         var state_code = $('#state_id').val();
         $.ajax({
