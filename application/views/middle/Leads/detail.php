@@ -384,7 +384,7 @@
                                  <div class="radio-control">
                                      <input type="radio" name="is_own_branch" id="is_own" checked
                                             value="1" <?php echo set_radio('is_own_branch', '0'); ?> />
-                                     <label>No</label>
+                                     <label>None</label>
                                  </div>
 
                                  <div class="radio-control">
