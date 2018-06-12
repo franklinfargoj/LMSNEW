@@ -1811,7 +1811,7 @@ class Leads extends CI_Controller
 
         $order_by = 'lead.created_on DESC';
         $arrData['generated_leads'] = $this->Lead->get_leads($action,$table,$select,$where,$join,$group_by=array(),$order_by);
-
+//echo $this->db->last_query();exit;
         $middle = "Leads/view/lead_generated";
         load_view($middle,$arrData);
     }
