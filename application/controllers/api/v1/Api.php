@@ -1854,6 +1854,9 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
                 if (isset($result['basic_info']['branch_id']) && $result['basic_info']['branch_id'] != '') {
                     $branch_id = $result['basic_info']['branch_id'];
                     $type = 'BM';
+                    $select = array('hrms_id as DESCR10','name as DESCR30');
+                    $where = array('supervisor_id' => $records['hrms_id']);
+                    $result['employees'] = $this->Master_model->employees_with_supervisor($select,$where);
                     $final = $this->countnew($type, $branch_id,$result['employees']);
 
                     $leads['generated_converted'] = $final;
@@ -1889,6 +1892,9 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
                 if (isset($result['basic_info']['zone_id']) && $result['basic_info']['zone_id'] != '') {
                     $zone_id = $result['basic_info']['zone_id'];
                     $type = 'ZM';
+                    $select = array('hrms_id as DESCR10','name as DESCR30');
+                    $where = array('supervisor_id' => $records['hrms_id']);
+                    $result['employees'] = $this->Master_model->employees_with_supervisor($select,$where);
                     $final = $this->countnew($type, $zone_id,$result['employees']);
                     $leads['generated_converted'] = $final;
                 }
@@ -1896,6 +1902,9 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
             // GM
             if ($result['basic_info']['designation'] == 'GM') {
                 $type = 'GM';
+                $select = array('hrms_id as DESCR10','name as DESCR30');
+                $where = array('supervisor_id' => $records['hrms_id']);
+                $result['employees'] = $this->Master_model->employees_with_supervisor($select,$where);
                 $final = $this->countnew($type, '', $result['employees']);
                 $leads['generated_converted'] = $final;
             }
@@ -1932,7 +1941,6 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
         // $auth_response = call_external_url(HRMS_API_URL_AUTH.'username='.$user_id.'&password='.$password);
         $where = array('hrms_id' => $user_id, 'password' => md5($password));
         $auth_response = $this->Login_model->check_login($where,Tbl_emp_dump);
-
         $records = $auth_response[0];
 
         //pe($records);die;
@@ -2092,6 +2100,11 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
                 if (isset($result['basic_info']['branch_id']) && $result['basic_info']['branch_id'] != '') {
                     $branch_id = $result['basic_info']['branch_id'];
                     $type = 'BM';
+
+                    $select = array('hrms_id as DESCR10','name as DESCR30');
+                    $where = array('supervisor_id' => $records['hrms_id']);
+                    $result['employees'] = $this->Master_model->employees_with_supervisor($select,$where);
+
                     $final = $this->countnew($type, $branch_id,$result['employees']);
 
                     $leads['generated_converted'] = $final;
@@ -2127,6 +2140,10 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
                 if (isset($result['basic_info']['zone_id']) && $result['basic_info']['zone_id'] != '') {
                     $zone_id = $result['basic_info']['zone_id'];
                     $type = 'ZM';
+                    $select = array('hrms_id as DESCR10','name as DESCR30');
+                    $where = array('supervisor_id' => $records['hrms_id']);
+                    $result['employees'] = $this->Master_model->employees_with_supervisor($select,$where);
+
                     $final = $this->countnew($type, $zone_id,$result['employees']);
                     $leads['generated_converted'] = $final;
                 }
@@ -2134,6 +2151,10 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
             // GM
             if ($result['basic_info']['designation'] == 'GM') {
                 $type = 'GM';
+                $select = array('hrms_id as DESCR10','name as DESCR30');
+                $where = array('supervisor_id' => $records['hrms_id']);
+                $result['employees'] = $this->Master_model->employees_with_supervisor($select,$where);
+
                 $final = $this->countnew($type, '', $result['employees']);
                 $leads['generated_converted'] = $final;
             }
