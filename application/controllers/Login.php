@@ -42,7 +42,7 @@ class Login extends CI_Controller {
         //Get tickers title    
         if($this->input->post()){
 //            echo"hi";
-//            pe($this->session->all_userdata());die;
+      //     pr($this->input->post());die;
             $this->form_validation->set_rules('username','Username', 'trim|required');
             $this->form_validation->set_rules('password','Password', 'trim|required');
             $this->form_validation->set_rules('captext','Security code', 'trim|required|callback_check_captcha');
@@ -64,7 +64,6 @@ class Login extends CI_Controller {
                         'hrms_id' => $this->input->post('username'),
                         'password' => md5($pwd)
                     );
-
                     $loginData = $this->master->check_login($checkInput);
                     if($loginData){
                         $authorisation_key= random_number();

@@ -225,27 +225,30 @@
 
 				  });
 			$('#form-sub').click(function () {
-				var newpwd = $('#password').val();
-                            if(window.btoa){
-                             var enc_salt = window.btoa(window.btoa(newpwd))+'/'+"<?php echo get_salt();?>";
-                               }else{
-                            var enc_salt = $.base64.encode($.base64.encode(newpwd))+'/'+"<?php echo get_salt();?>";
-                         }
-                $.ajax({
-                method: "POST",
-                url: base_url + "login/aes",
-                data: {
-                    '<?php echo $this->security->get_csrf_token_name(); ?>': '<?php echo $this->security->get_csrf_hash(); ?>',
-                    'auth' : enc_salt
-                }
-            }).success(function (resp) {
-              var rre = JSON.parse(resp);
-              var aes = rre['aes'];
-              $('#password').val(aes);
-              $('#login-form').submit();
-            });
 
-				
+               if($('#login-form').valid()) {
+                   var newpwd = $('#password').val();
+                   if (window.btoa) {
+                       var enc_salt = window.btoa(window.btoa(newpwd)) + '/' + "<?php echo get_salt();?>";
+                   } else {
+                       var enc_salt = $.base64.encode($.base64.encode(newpwd)) + '/' + "<?php echo get_salt();?>";
+                   }
+                   $.ajax({
+                       method: "POST",
+                       url: base_url + "login/aes",
+                       data: {
+                           '<?php echo $this->security->get_csrf_token_name(); ?>': '<?php echo $this->security->get_csrf_hash(); ?>',
+                           'auth': enc_salt
+                       }
+                   }).success(function (resp) {
+                       console.log(resp);
+                       var rre = JSON.parse(resp);
+                       var aes = rre['aes'];
+                       $('#password').val(aes);
+                       $('#login-form').submit();
+                   });
+               }
+
 			});
 
 
