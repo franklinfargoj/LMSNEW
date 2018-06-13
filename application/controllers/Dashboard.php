@@ -491,6 +491,7 @@ class Dashboard extends CI_Controller {
 
             }
         }
+
         $result['breadcrumb'] = $this->make_bread->output();
         load_view($middle,$result);
 

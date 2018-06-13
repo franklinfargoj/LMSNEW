@@ -117,7 +117,7 @@ class Leads extends CI_Controller
                 $lead_data['district_id'] = $lead_data['created_by_district_id'] = $login_user['district_id'];
                 $lead_data['zone_id'] = $lead_data['created_by_zone_id'] = $login_user['zone_id'];
                 $branch_id = $login_user['branch_id'];
-
+                //pe($login_user);die;
 
                 if($this->input->post('is_own_branch') == '0'){
                     $lead_data['state_id'] = $this->input->post('state_id');
@@ -166,7 +166,7 @@ class Leads extends CI_Controller
                 }*/
             //   $lead_data['other_source'] = $other_source;
 
-                //pe($lead_data);die;
+               // pe($lead_data);die;
                 $lead_id = $this->Lead->add_leads($lead_data);
                // pe($lead_id);die;
                 if($lead_id != false){
@@ -512,6 +512,7 @@ class Leads extends CI_Controller
           $arrData['breadcrumb'] = $this->make_bread->output();
         /*Create Breadcumb*/
         $unassigned_leads = $this->Lead->unassigned_leads($lead_source,'');
+        //echo $this->db->last_query();exit;
         //pe($unassigned_leads);die;
 
         $arrData['unassigned_leads'] = $unassigned_leads;
@@ -617,11 +618,12 @@ class Leads extends CI_Controller
                 //Breadcumb creation for Lead Performance Source wise
                 $this->make_bread->add('Lead Performance', 'dashboard/leads_performance/'.$type.'/'.$param, 0);   
                 $this->make_bread->add($lead_source, 'dashboard/leads_status/'.$type.'/'.$param.'/'.$lead_source, 0);   
-                $this->make_bread->add(ucwords($lead_status[$status]),'', 0);   
+                $this->make_bread->add(ucwords($lead_status[$status]),'', 0);
             }else{
                 //Breadcumb creation for Assigned List
-                $this->make_bread->add(ucwords($type).' Leads', '', 0);   
+                $this->make_bread->add(ucwords($type).' Leads', '', 0);
             }
+
         }
         if(($type == 'generated') && ($status != null)){
             //Breadcumb creation for Generated Leads Status wise
@@ -1356,7 +1358,7 @@ class Leads extends CI_Controller
         }
 
         //$join[] = array('table' => Tbl_Reminder.' as r','on_condition' => 'la.lead_id = r.lead_id AND r.is_cancelled = "No"','type' => 'left');
-        $arrData['leads'] = $this->Lead->get_leads($action,$table,$select,$where,$join,$group_by = array(),$order_by);
+        $arrData['leads'] = $this->Lead->get_leads($action,$table,$select,$where,$join,$group_by = array(),$order_by);//echo $this->db->last_query();exit;
         $arrData['lead_sources'] = $this->Lead->get_enum(Tbl_Leads,'lead_source');
         return $arrData;
     }
