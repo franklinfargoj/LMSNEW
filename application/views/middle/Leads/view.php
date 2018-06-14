@@ -59,7 +59,7 @@ $param5 = isset($param) ? encode_id($param).'/' : '';
             </div>
 
 
-            <table id="sample_3" class="display lead-table">
+            <table id="sample_3" class="display lead-table" >
                 <thead>
                     <tr class="top-header">
                         <th></th>

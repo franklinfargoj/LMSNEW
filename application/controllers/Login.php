@@ -166,7 +166,7 @@ class Login extends CI_Controller {
                             'dept_type_name' => $auth_response[0]['dept_type_name'],
                             'dept_id' => $auth_response[0]['dept_id'],
                             'list'=>$records_response
-                        ); //pe($result);die;
+                        ); //pe($auth_response);die;
 
                         $this->set_session($result);
 
