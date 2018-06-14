@@ -55,10 +55,7 @@
                     );
                     echo form_label('Description:<span style="color:red;">*</span>', 'description_text', $attributes);
                     ?>
-                    <textarea name = "description_text" rows="7" cols="80" style="width: 810px; height: 200px">
-                                <?php echo $mapDetail[0]['description'];?>
-                            </textarea>
-
+                    <textarea name = "description_text" rows="6" cols="56"> <?php echo $mapDetail[0]['description'];?></textarea>
                     <?php echo form_error('description_text', '<span class="help-block">', '</span>');?>
                 </div>
                 <div class="form-control">

@@ -54,24 +54,9 @@
                         'style' => ''
                     );
                     echo form_label('Description:<span style="color:red;">*</span>', 'description_text', $attributes);
-
-                    $data = array(
-                        'type'  => 'text',
-                        'name'  => 'description_text',
-                        'id'    => 'description_text',
-                        'class' => 'form-control',
-                        'value' => set_value('description_text')
-
-                    );
-                    echo form_input($data);
-
-                    // Assuming that the 'title' field value was incorrect:
-                    echo form_error('title', '<span class="help-block">', '</span>');
                     ?>
+                    <textarea name = "description_text" id="description_text" rows="6" cols="56"></textarea>
                 </div>
-
-
-
 
                 <div class="form-control">
                     <label>Status:<span style="color:red;">*</span></label>
