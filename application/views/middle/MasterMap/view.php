@@ -26,6 +26,7 @@
                 <tr class="top-header">
                     <th></th>
                     <th style="text-align:left"><input type="text" name="customername" placeholder="Search Title"></th>
+                    <th></th>
                     <th style="text-align:left">
                         <select name="status">
                             <option value="">Select status</option>
@@ -33,7 +34,6 @@
                             <option value="Inactive">Inactive</option>
                         </select>
                     </th>
-                    <th></th>
                     <th></th>
                 </tr>
                 <tr>
