@@ -1358,7 +1358,8 @@ class Leads extends CI_Controller
         }
 
         //$join[] = array('table' => Tbl_Reminder.' as r','on_condition' => 'la.lead_id = r.lead_id AND r.is_cancelled = "No"','type' => 'left');
-        $arrData['leads'] = $this->Lead->get_leads($action,$table,$select,$where,$join,$group_by = array(),$order_by);//echo $this->db->last_query();exit;
+        $arrData['leads'] = $this->Lead->get_leads($action,$table,$select,$where,$join,$group_by = array(),$order_by);
+        //echo $this->db->last_query();exit;
         $arrData['lead_sources'] = $this->Lead->get_enum(Tbl_Leads,'lead_source');
         return $arrData;
     }
