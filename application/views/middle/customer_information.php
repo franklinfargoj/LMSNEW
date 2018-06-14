@@ -175,7 +175,6 @@
                                             <textarea name="remark" col="40" rows="10"><?php echo $customerinfo[0]['remarks']; ?></textarea>
                                         </div>
                                         <button type="submit" name="Submit" value="Submit" class="full-btn">
-
                                             <img src="http://localhost:/LMSNEW/assets2/images/right-nav.png" alt="left-nav" class="right-btn-img">
                                             <span class="btn-txt">Submit</span>
                                             <img src="http://localhost:/LMSNEW/assets2/images/left-nav.png" alt="left-nav" class="left-btn-img">
