@@ -3066,7 +3066,11 @@ class Reports extends CI_Controller
         $total_rows = count($excelData);
         $error = $insert_array = $update_array = array();
 
+        $excel_branches = $excel_districts = $excel_states = $excel_zones = [];
+
         foreach ($excelData as $key => $value){
+            //pr($value);
+
             if($lead_source == 'branch') {
                 $parent_table = 'db_district';
                 $prod_cat_title = preg_replace('!\s+!', ' ', $value['district_code']);
@@ -3074,10 +3078,11 @@ class Reports extends CI_Controller
                 $prod_code = $this->Reports->fetch_code($whereArray,$parent_table);
                 $table_name = 'db_branch';
                 $wherenewArray = array('code' => ucwords(strtolower(trim($value['code']))));
-                $code = $this->Reports->check_code($wherenewArray,$table_name);
+                    $code = $this->Reports->check_code($wherenewArray,$table_name);
                 if ($prod_code == false) {
                     $error[$key] = 'Code does not exist.';
-                } else if ($code == false) {
+                } else if ($code == false || in_array($value['branch_name'],$excel_branches) ||
+                    in_array($value['branch_code'],array_keys($excel_branches))) {
                     $error[$key] = 'Duplicate Code.';
                 } else if ($value['code'] == '' || $value['name'] == '' || $value['district_code'] == '') {
                     $error[$key] = 'Parameter is missing.';
@@ -3100,7 +3105,8 @@ class Reports extends CI_Controller
                 $code = $this->Reports->check_code($wherenewArray,$table_name);
                 if ($prod_code == false) {
                     $error[$key] = 'Code does not exist.';
-                } else if ($code == false) {
+                } else if ($code == false || in_array($value['district_name'],$excel_districts) ||
+                    in_array($value['district_code'],array_keys($excel_districts))) {
                     $error[$key] = 'Duplicate Code.';
                 } else if ($value['code'] == '' || $value['name'] == '' || $value['state_code'] == '') {
                     $error[$key] = 'Parameter is missing.';
@@ -3122,7 +3128,8 @@ class Reports extends CI_Controller
                 $code = $this->Reports->check_code($wherenewArray,$table_name);
                 if ($prod_code == false) {
                     $error[$key] = 'Code does not exist.';
-                } else if ($code == false) {
+                } else if ($code == false || in_array($value['state_name'],$excel_states) ||
+                    in_array($value['state_code'],array_keys($excel_states))) {
                     $error[$key] = 'Duplicate Code.';
                 } else if ($value['code'] == '' || $value['name'] == '' || $value['zone_code'] == '') {
                     $error[$key] = 'Parameter is missing.';
@@ -3138,7 +3145,8 @@ class Reports extends CI_Controller
                 $table_name = 'db_zone';
                 $wherenewArray = array('code' => ucwords(strtolower(trim($value['code']))));
                 $code = $this->Reports->check_code($wherenewArray,$table_name);
-                 if ($code == false) {
+                 if ($code == false || in_array($value['zone_name'],$excel_zones) ||
+                     in_array($value['zone_code'],array_keys($excel_zones))) {
                     $error[$key] = 'Duplicate Code.';
                  } else if ($value['code'] == '' || $value['name'] == '') {
                     $error[$key] = 'Parameter is missing.';
@@ -3168,7 +3176,11 @@ class Reports extends CI_Controller
                 $wherenewArray = array('code' => ucwords(strtolower(trim($value['branch_code']))),
                     'name' => ucwords(strtolower(trim($value['branch_name']))));
                 $b_code = $this->Reports->check_code($wherenewArray,'db_branch');
-                if ($z_code == false || $s_code == false || $d_code == false || $b_code == false) {
+                if ($z_code == false || $s_code == false || $d_code == false || $b_code == false ||
+                    in_array($value['zone_name'],$excel_zones) || in_array($value['state_name'],$excel_states) ||
+                    in_array($value['district_name'],$excel_districts) ||in_array($value['branch_name'],$excel_branches) ||
+                    in_array($value['zone_code'],array_keys($excel_zones)) || in_array($value['state_code'],array_keys($excel_states)) ||
+                    in_array($value['district_code'],array_keys($excel_districts)) ||in_array($value['branch_code'],array_keys($excel_branches))) {
                     $error[$key] = 'Duplicate Code.';
                 } else if ($value['branch_code'] == '' || $value['branch_name'] == ''||
                     $value['district_code'] == '' || $value['district_name'] == ''||
@@ -3190,6 +3202,11 @@ class Reports extends CI_Controller
                     $total_inserted++;
                 }
             }
+
+            $excel_branches[$value['branch_code']] = $value['branch_name'];
+            $excel_districts[$value['district_code']] = $value['district_name'];
+            $excel_states[$value['state_code']] = $value['state_name'];
+            $excel_zones[$value['zone_code']] = $value['zone_name'];
         }
 
         if(!empty($error))
