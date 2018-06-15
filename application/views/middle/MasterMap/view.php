@@ -14,7 +14,7 @@
         <div class="container">
             <div class="lead-top clearfix">
                 <div class="float-left">
-                    <span class="total-lead">Total Tickers</span>
+                    <span class="total-lead">Total Map</span>
                     <span class="lead-num"> : <?php echo count($maplist);?></span>
                 </div>
                 <div class="float-right">
