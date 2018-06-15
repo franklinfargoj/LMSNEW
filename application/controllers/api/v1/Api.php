@@ -1765,7 +1765,7 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
                 'designation_name' => $records['designation'],
                 'mobile' => $records['contact_no'],
                 'email_id' => $records['email_id'],
-                'designation' => $records['designation_name'],
+                'designation' => $records['designation_name']
                 //'dept_id' => $records['dept_id']
             );
 
@@ -2011,7 +2011,7 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
                 'designation_name' => $records['designation'],
                 'mobile' => $records['contact_no'],
                 'email_id' => $records['email_id'],
-                'designation' => $records['designation_name'],
+                'designation' => $records['designation_name']
                 //'dept_id' => $records['dept_id']
             );
 
@@ -2556,6 +2556,7 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
 
             $records = $records_response[0];
 
+
             $result['basic_info'] = array(
                 'hrms_id' => $records['hrms_id'],
                 'dept_id' => $records['dept_id'],
@@ -2571,7 +2572,8 @@ $arrData['unassigned_leads_count'] = $this->Lead->unassigned_status_count($selec
                 'designation_name' => $records['designation'],
                 'mobile' => $records['contact_no'],
                 'email_id' => $records['email_id'],
-                'designation' => get_designation($records['designation_id'])
+                'designation' => $records['designation_name']
+                //'designation' => get_designation($records['designation_id'])
             );
 
 
