@@ -93,20 +93,13 @@
 					</li>
 				<?php }?>
 
-
-
 				<?php if(in_array($this->session->userdata('admin_type'),array('Super admin'))) {?>
-				<li>
-					    <a href="<?php echo site_url('MapWithMaster')?>">
+				<li class="<?php echo ($controller == 'MapWithMaster') ? 'active' : ''?>">
+					<a href="<?php echo site_url('MapWithMaster')?>">
 							Map
-						</a>
+					</a>
 				</li>
 				<?php }?>
-
-
-
-
-
 
 				<?php if(in_array($this->session->userdata('admin_type'),array('Super admin'))) {?>
 					<li class="<?php echo ($controller == 'rapc' && $method == 'mapping_list') ? 'active' : ''?>">
