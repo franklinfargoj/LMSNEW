@@ -318,7 +318,8 @@ class Api extends REST_Controller
 
         if (is_array($lead_id)) {
             $result = array('result' => False,
-                'data' => array('wrong product id or category id .'),
+                //'data' => array('wrong product id or category id .'),
+                'data' => array('Branch not found'),
                 'error'=>$lead_id
             );
             returnJson($result);
