@@ -1126,7 +1126,8 @@ table.dataTable .top-header th{padding: 0 18px;}
 .dataTables_length{display: none;}
 .dataTables_filter{display: none;}
 .top-header input,.top-header select{background-color: #007b5d; border: 1px solid #ffffff; padding: 5px; color: #ffffff;width: 100%;}
-table#sample_3 {table-layout: inherit;}
+table#sample_3 {table-layout: fixed;width:100%!important;}
+table#sample_3 tbody {word-wrap: break-word;}
 .dataTables_info{display: none;}
 .dataTables_paginate a {
 	border: 1px solid #e7e7e7 !important;

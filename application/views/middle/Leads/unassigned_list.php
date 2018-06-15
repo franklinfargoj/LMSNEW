@@ -150,7 +150,7 @@ $source = $this->config->item('lead_source');
                                 <?php if($value['lead_source'] != 'walkin' ||
                                     ($value['lead_source'] == 'walkin' && $value['mapping'] == 'BRANCH' ||
                                     ($value['reroute_from_branch_id'] != '' || $value['reroute_from_branch_id'] != NULL) ||
-                                    ($value['mapping'] != 'BRANCH' || $branch_map == '') ||
+                                    ($value['mapping'] != 'BRANCH' && $branch_map == '') ||
                                     ($value['mapping'] != 'BRANCH' && $value['mapping_amount']!=0 && $value['lead_ticket_range'] <= $value['mapping_amount'] )
                                     )) {
 
