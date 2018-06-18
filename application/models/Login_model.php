@@ -69,9 +69,9 @@ class Login_model extends CI_Model{
 	 * @param $where,$data
 	 * @return int
 	 */
-	public function reset_password($where,$data){
+	public function reset_password($where,$data,$table=Tbl_Admin){
 		$this->db->where($where)
-				 ->update(Tbl_Admin,$data);
+				 ->update($table,$data);
 		return $this->db->affected_rows();
 
 	}

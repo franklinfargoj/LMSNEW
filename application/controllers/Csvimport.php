@@ -67,6 +67,7 @@ function import()
               'dept_type_id'=>$getData[14],
               'dept_type_name'=>$getData[15],
               'supervisor_id'=>$getData[16],
+              'password'=> md5($this->config->item('emp_password'))
               // 'is_old'=>$getData[0],
 
               );
@@ -82,7 +83,7 @@ function import()
       }
       if($res)
       {
-        $this->session->set_flashdata('success', 'File Uploaded Successfully');
+        $this->session->set_flashdata('success', 'File Uploaded Successfully! Default password is '.$this->config->item('emp_password'));
         redirect ('/csvimport');
       }
       else

@@ -18,9 +18,9 @@ class Change_password extends CI_Controller {
 		parent::__construct();
           is_logged_in();     //check login
         $admin = ucwords(strtolower($this->session->userdata('admin_type')));
-        if ($admin != 'Super Admin'){
+     /*   if ($admin != 'Super Admin'){
             redirect('dashboard');
-        }
+        }*/
 
           $this->load->model('Login_model','master');
 	}
@@ -60,11 +60,21 @@ class Change_password extends CI_Controller {
                /*Create Breadcumb*/
 
                $where = array('hrms_id' => loginUserId());
-               $get_admin_details = $this->master->get_admin_details($where);
+
+              $admin = ucwords(strtolower($this->session->userdata('admin_type')));
+              if ($admin == 'Super Admin'){
+                  $get_details = $this->master->get_admin_details($where);
+                  $update_table = Tbl_Admin;
+              }else
+              {
+                  $get_details = $this->master->check_login($where,Tbl_emp_dump);
+                  $update_table = Tbl_emp_dump;
+              }
+
                $this->form_validation->set_rules('current_pwd','Current Password', 'trim|required');
                $this->form_validation->set_rules('new_pwd','New Password', 'trim|required|matches[re_pwd]');
                $this->form_validation->set_rules('re_pwd','Re-type New Password', 'trim|required');
-               if($this->input->post('current_pwd') != '' && md5($this->input->post('current_pwd')) != $get_admin_details[0]['password']){
+               if($this->input->post('current_pwd') != '' && md5($this->input->post('current_pwd')) != $get_details[0]['password']){
                     $this->session->set_flashdata('error', 'Current password entered is wrong');
                     redirect('change_password');
                }
@@ -76,7 +86,8 @@ class Change_password extends CI_Controller {
                     $checkInput = array(
                          'password'      => md5($this->input->post('new_pwd'))
                     );
-                    $updateFlag = $this->master->reset_password($where,$checkInput);
+
+                    $updateFlag = $this->master->reset_password($where,$checkInput,$update_table);
                     if($updateFlag){
                          $this->session->set_flashdata('success','Password reset successfully');
                          redirect('change_password');
