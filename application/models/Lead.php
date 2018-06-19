@@ -698,7 +698,55 @@ class Lead  extends CI_Model
     }
 
 
+    /**
+     * get_product_cat_name
+     * Retreives product title from db_master_product_category table
+     * @author Franklin Fargoj
+     * @access public
+     * @param $product_category_id
+     * @return value
+     */
+    public function get_product_cat_name($product_category_id){
+        $this->db->select('title');
+        $this->db->from('db_master_product_category');
+        $this->db->where('id',$product_category_id);
+        $result = $this->db->get()->result();
+        return $result;
+    }
 
+
+    public function listMasters($action,$table,$select,$where,$join,$group_by,$order_by,$limit=''){
+
+        $this->db->select($select,TRUE);
+        $this->db->from($table);
+        if(!empty($join)){
+            foreach ($join as $key => $value) {
+                $this->db->join($value['table'],$value['on_condition'],$value['type']);
+            }
+        }
+        if(!empty($where)){
+            $this->db->where($where);
+        }
+        if(!empty($group_by)){
+            $this->db->group_by($group_by);
+        }
+        if(!empty($order_by)){
+            $this->db->order_by($order_by);
+        }
+        if(!empty($limit)){
+            $this->db->limit($limit);
+        }
+        //pe($this->db);die;
+        $query = $this->db->get();
+//       pe($this->db->last_query());die;
+        if($query !== FALSE && $query->num_rows() > 0) {
+            return $query->result_array();
+            //echo 'm in if';
+
+        }
+        //pe($query->result_array());exit;
+
+    }
 /*    public function lists_testing($table,$select,$where,$join,$group_by,$order_by,$limit=''){
 
         $this->db->select($select,TRUE);
@@ -730,6 +778,8 @@ class Lead  extends CI_Model
             return $query->result_array();
         }
     }*/
+
+
 
 
 }

@@ -21,8 +21,6 @@ function load_view($middle = "home",$arrData = array(), $template = "main"){
     $CI->load->view("layout/".$template,$arrData);
 }
 
-
-
 /**
  *
  * Global function to print array and die
@@ -985,7 +983,7 @@ if (!function_exists('check_authorisation')){
         }return false;
     }
 }
-if (!function_exists('verify_account')){
+/*if (!function_exists('verify_account')){
     function verify_account($acc_no){
         if($acc_no !=''){
             $url = FINACLE_ACCOUNT_RECORD.'/'.$acc_no;
@@ -993,7 +991,7 @@ if (!function_exists('verify_account')){
             return $response;
         }
     }
-}
+}*/
 if (!function_exists('isTaken')){
     function isTaken($title='',$table='',$where=''){
         if($title !='' && $table !='' && $where !=''){
@@ -1280,6 +1278,85 @@ function pr($data)
     echo "</pre>";
     exit;
 }
+
+if(!function_exists('designation_by_hrms_id_key_value')){
+    function designation_by_hrms_id_key_value($id = null){
+
+        $CI = & get_instance();
+        $CI->load->model('Master_model','master');
+        $select=array('designation','hrms_id');
+        if($id == null){
+            $where = null;
+        }else {
+            $where['hrms_id'] = $id;
+        }
+        $data = $CI->master->designation_by_hrms_id($select,$where);
+        $lstArray = array();
+        foreach($data as $value){
+            $lstArray[$value['hrms_id']] = $value['designation'];
+        }
+        return $lstArray;
+    }
+}
+
+if(!function_exists('branchNameKeyValue')){
+    function branchNameKeyValue(){
+        $CI = & get_instance();
+        $CI->load->model('Master_model','master');
+        $select=array('name','code');
+        $where=null;
+        $data = $CI->master->get_branchname($select,$where);
+        $lstArray = array();
+        foreach($data as $value){
+            $lstArray[$value['code']] = $value['name'];
+        }
+
+        return $lstArray;
+    }
+}
+
+if(!function_exists('zonenameKeyValue')){
+    function zonenameKeyValue($id=null){
+        $CI = & get_instance();
+        $CI->load->model('Master_model','master');
+        $select=array('name','code');
+        if($id == null){
+            $where = null;
+        }else {
+            $where['code'] = $id;
+        }
+        $data = $CI->master->get_zonename($select,$where);
+
+        $lstArray = array();
+        foreach($data as $value){
+            $lstArray[$value['code']] = $value['name'];
+        }
+
+        return $lstArray;
+    }
+}
+
+if(!function_exists('zoneIdKeyValue')){
+    function zoneIdKeyValue($id=null){
+        $CI = & get_instance();
+        $CI->load->model('Master_model','master');
+        $select=array('zone_id','branch_id');
+        $table = Tbl_emp_dump;
+        if($id == null){
+            $where = null;
+        }else {
+            $where['branch_id'] = $id;
+        }
+        $data = $CI->master->get_zoneid($select,$join=array(),$where,$table);
+        $lstArray = array();
+        foreach($data as $value){
+            $lstArray[$value['branch_id']] = $value['zone_id'];
+        }
+
+        return $lstArray;
+    }
+}
+
 
 
 

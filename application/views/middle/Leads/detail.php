@@ -281,38 +281,55 @@
                                         </span>
                                     </div>
                                         <?php }?>
-                                    <?php if($this->session->userdata('admin_type')=='EM' && in_array($leads[0]['status'],array('AO'))){?>
-                                        <div class="form-control accountOpen" >
-                                    <?php }else{?>
-                                        <div class="form-control accountOpen" style="display:none">
-                                    <?php }?>
 
+                                <?php if($this->session->userdata('admin_type')=='EM' && in_array($leads[0]['status'],array('AO'))){?>
+                                    <div class="form-control accountOpen" >
+                                <?php }else{?>
+                                    <div class="form-control accountOpen" style="display:none">
+                                <?php }?>
 
+                                <?php if(empty($leads[0]['opened_account_no']) ) { ?>
                                     <label>Add account</label>
-                                    <?php
+                                <?php } ?>
+
+                                <?php if(empty($leads[0]['opened_account_no']) ) {
+
                                     $data = array(
-                                        'type'  => 'text',
-                                        'name'  => 'accountNo',
-                                        'id'    => 'accountNo',
+                                        'type' => 'text',
+                                        'name' => 'accountNo',
+                                        'id' => 'accountNo',
                                         'class' => '',
                                         'maxlength' => '12',
                                         'value' => ''
                                     );
                                     echo form_input($data);
-                                    ?>
-                                </div>
-                                <?php if($this->session->userdata('admin_type')=='EM' && in_array($leads[0]['status'],array('AO'))){?>
-                                            <div class="form-control form-submit clearfix accountOpen">
-                                    <?php }else{?>
-                                    <div class="form-control form-submit clearfix accountOpen" style="display:none">
-                                        <?php }?>
 
-                                    <a href="javascript:void(0);" class="float-right verify_account">
-                                        <img src="<?php echo base_url().ASSETS;?>images/left-nav.png" alt="left-nav">
-                                        <span>Add</span>
-                                        <img src="<?php echo base_url().ASSETS;?>images/right-nav.png" alt="right-nav">
-                                    </a>
+                                }
+                                ?>
+
+                                    </div>
+
+                                <?php if($this->session->userdata('admin_type')=='EM' && in_array($leads[0]['status'],array('AO'))){?>
+                                        <div class="form-control form-submit clearfix accountOpen">
+                                <?php }else{?>
+                                    <div class="form-control form-submit clearfix accountOpen" style="display:none">
+                                <?php }?>
+
+
+                                <?php if(empty($leads[0]['opened_account_no']) ) { ?>
+                                <a href="javascript:void(0);" class="float-right verify_account">
+                                     <img src="<?php echo base_url().ASSETS;?>images/left-nav.png" alt="left-nav">
+                                     <span>Add</span>
+                                     <img src="<?php echo base_url().ASSETS;?>images/right-nav.png" alt="right-nav">
+                                </a>
+                                <?php } ?>
+
+
                                 </div>
+
+
+
+
                                 <div class="form-control lead_identified">
                                     <?php
                                     if($this->session->userdata('admin_type')=='EM' || $this->session->userdata('admin_type')=='BM'){
@@ -566,6 +583,28 @@
             }
         }
 
+
+        $('#detail_form').on('submit', function(){
+
+            if($('#is_other_branch').is(':checked')) {
+                $('#state_id').rules('add', {required: true, messages: { required: "Please select state"}});
+                $('#district_id').rules('add', {required: true, messages: { required: "Please select city"}});
+                $('#branch_id').rules('add', {required: true, messages: { required: "Please select branch"}});
+            }else {
+                $('#state_id').rules('remove');
+                $('#district_id').rules('remove');
+                $('#branch_id').rules('remove');
+            }
+
+            if($('#is_own_branch').is(':checked')) {
+                $('#reroute_to').rules('add', {required: true, messages: { required: "Please select other employee"}});
+            }else {
+                $('#reroute_to').rules('remove');
+            }
+        })
+
+
+
         //Validation
         $.validator.addMethod("regx", function(value, element, regexpr) {
             return regexpr.test(value);
@@ -600,7 +639,7 @@
                         }
                     }
                 },
-                state_id: {
+             /*   state_id: {
                     required: true
                 },
                 district_id: {
@@ -608,7 +647,7 @@
                 },
                 branch_id: {
                     required: true
-                },
+                },*/
                 reason:{
                     required:true
                 },
@@ -635,7 +674,7 @@
                 lead_identification : {
                     required: "Please select lead identification"
                 },
-                district_id: {
+                /*district_id: {
                     required: "Please select district"
                 },
                 state_id: {
@@ -643,7 +682,7 @@
                 },
                 branch_id: {
                     required: "Please select branch"
-                },
+                },*/
                 reason:{
                     required:"Please enter reason for drop"
                 },
@@ -735,35 +774,83 @@
         });
     });
 
+
+
     $('#lead_status').change(function () {
 
         var current_status = "<?php echo $leads[0]['status']; ?>";
         var selected_status = $(this).val();
+        var product_category_id ="<?php echo $leads[0]['product_category_id']; ?>";
+        var product_category;
+        var designation_name= "<?php echo $this->session->userdata('designation_name'); ?>";
 
         if(current_status == 'NC'){
-            if(selected_status==='DC'||selected_status==='AO'||
-                selected_status==='Converted'||selected_status==='Sanction'||
-                selected_status==='Closed') {
+            if(selected_status==='DC'||selected_status==='AO'|| selected_status==='Converted'||
+                selected_status==='Sanction'||selected_status==='Closed') {
                 alert('Please select  Interested or Drop/Not interested.');
                 $(this).val('NC');
             }
         }else if(current_status == 'FU'){
-            if(selected_status==='Sanction'|| selected_status==='Converted') {
+            if(selected_status==='Sanction'|| selected_status==='Converted' ||selected_status==='AO'||
+                selected_status==='Closed') {
                 alert('Please select  Documents Collected or Drop/Not interested.');
-                //$(this).val('FU');
+                $(this).val('FU');
             }
         }else if(current_status == 'DC'){
-            if(selected_status==='Closed') {
-                alert('Please select Converted or Drop/Not interested.');
-                //$(this).val('DC');
+            $.ajax({
+                method: "POST",
+                url: base_url + 'leads/product_category_name',
+                async : false,
+                data: {
+                    '<?php echo $this->security->get_csrf_token_name(); ?>': '<?php echo $this->security->get_csrf_hash(); ?>',
+                    product_category_id: product_category_id },
+                    success: function(result){
+                        result = JSON.parse(result);
+                        product_category =result[0].title;
+                }
+            });
+
+            if(designation_name =='BM'){
+                if(product_category == 'Advances'){
+                    if( selected_status==='AO'||selected_status==='Converted'||selected_status==='Closed') {
+                        alert('Please select  Sanction or Drop/Not interested.');
+                        $(this).val('DC');
+                    }
+                }else if(product_category == 'Fee Income'){
+                    if( selected_status==='Closed') {
+                        alert('Please select  Converted or Drop/Not interested.');
+                        $(this).val('DC');
+                    }
+                }else {
+                    if(selected_status==='Converted'||selected_status==='Closed'){
+                        alert('Please select  Account opened or Drop/Not interested.');
+                        $(this).val('DC');
+                    }
+                }
+            }else if(designation_name =='EM'){
+                if(product_category == 'Advances'){
+                    if( selected_status==='AO') {
+                        alert('Please select Sanction or Drop/Not interested.');
+                        $(this).val('DC');
+                    }
+                }else if(product_category == 'Fee Income'){
+                    if( selected_status==='NI') {
+                        alert('Drop/Not interested not allowed');
+                        $(this).val('DC');
+                    }
+                }
             }
         }else if(current_status == 'AO'){
             if(selected_status==='Closed') {
                 alert('Please select Converted.');
-                //$(this).val('DC');
+                $(this).val('AO');
+            }
+        }else if(current_status == 'Sanction'){
+            if(selected_status==='Converted'||selected_status==='NI'||selected_status=== 'Closed') {
+                alert('Please select Account opened.');
+                $(this).val('Sanction');
             }
         }
-
     })
 
     $('.verify_account').click(function () {
