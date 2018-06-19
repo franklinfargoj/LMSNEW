@@ -2,7 +2,7 @@
 $lead_type = $this->config->item('lead_type');
 $lead_status = $this->config->item('lead_status');
 $lead_sources = $this->config->item('lead_source');
-//pe($status_flow);die;
+
 ?>
 <!-- BEGIN PAGE LEVEL STYLES -->
 <link href="<?php echo base_url().ASSETS;?>css/jquery.dataTables.min.css" rel="stylesheet">
@@ -45,11 +45,11 @@ $lead_sources = $this->config->item('lead_source');
             <div class="form-control">
                 <label>Start Date:<span style="color:red;">*</span></label>
                 <?php
-                if(isset($start_date)){
+           /*     if(isset($start_date)){
                     $start_date = date('d-m-Y',strtotime($start_date));
                 }else{
                     $start_date = '';
-                }
+                }*/$d = new DateTime('first day of this month'); $start_date = date('d-m-Y',strtotime($d->format('d-m-Y')));
                 $data = array(
                     'type'  => 'text',
                     'name'  => 'start_date',
@@ -112,11 +112,12 @@ $lead_sources = $this->config->item('lead_source');
             <div class="form-control endDate">
                 <label>End Date:<span style="color:red;">*</span></label>
                 <?php
-                if(isset($end_date)){
+                /*if(isset($end_date)){
                     $end_date = date('d-m-Y',strtotime($end_date));
                 }else{
                     $end_date = '';
-                }
+                }*/
+                $end_date = date('d-m-Y',strtotime(date('d-m-Y')));
                 $data = array(
                     'type'  => 'text',
                     'name'  => 'end_date',
@@ -128,36 +129,8 @@ $lead_sources = $this->config->item('lead_source');
                 echo form_input($data);
                 ?>
             </div>
-<!--            <div class="form-control productlist">-->
-<!--                --><?php
-//                $attributes = array(
-//                    'class' => '',
-//                    'style' => ''
-//                );
-//                echo form_label('Product:<span style="color:red;">*</span>', 'product_id', $attributes);
-//                ?>
-<!--                --><?php
-//                if(isset($product_list)){
-//                    $options = $product_list;
-//                    $js = array(
-//                        'id'       => 'product_id',
-//                        'class'    => ''
-//                    );
-//                    if(isset($product_id)){
-//                        $product_id = $product_id;
-//                    }else{
-//                        $product_id = '';
-//                    }
-//                    echo form_dropdown('product_id', $options ,$product_id,$js);
-//                }else{
-//                    ?>
-<!--                    <select name="product_id">-->
-<!--                        <option value="">All</option>-->
-<!--                    </select>-->
-<!--                    --><?php
-//                }
-//                ?>
-<!--            </div>-->
+
+
 
             <div class="form-control form-submit clearfix">
                 <button type="submit" name="Submit" value="Submit" class="full-btn float-right">
