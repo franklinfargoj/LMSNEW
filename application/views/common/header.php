@@ -42,7 +42,7 @@
 						Home
 					</a>
 				</li>
-				<?php if(in_array($this->session->userdata('admin_type'),array('EM','BM','ZM','GM'))) {?>
+				<?php if(in_array($this->session->userdata('admin_type'),array('EM','BM','ZM','GM','ED'))) {?>
 				<li class="<?php echo ($controller == 'leads' && $method == 'add') ? 'active' : ''?>">
 					<a href="<?php echo site_url('leads/add')?>">
 						Add Lead 
@@ -178,7 +178,7 @@
 				</li>
 				<?php }?>
 
-				<?php if(in_array($this->session->userdata('admin_type'),array('EM','BM','ZM','GM'))) {?>
+				<?php if(in_array($this->session->userdata('admin_type'),array('EM','BM','ZM','GM','ED'))) {?>
 				<li class="<?php echo (($controller == 'dashboard') && ($method == 'emi_calculator' || $method == 'fd_calculator' || $method == 'rd_calculator')) ? 'active' : ''?>" id="cal-droped">
 					<a href="#" >
 						Calculator 	&#9662;
@@ -213,7 +213,7 @@
 				</li> -->
 				<?php }?>
 				
-				<?php if(in_array($this->session->userdata('admin_type'),array('BM','ZM','GM','Super admin'))) {?>
+				<?php if(in_array($this->session->userdata('admin_type'),array('BM','ZM','GM','ED','Super admin'))) {?>
 					<li class="<?php echo ($controller == 'reports') ? 'active' : ''?>" id="cal-droped1">
 						<a href="#">
 							Reports &#9662;
@@ -319,7 +319,7 @@
 					</li>
 				<?php }?>
 
-				<?php if(in_array($this->session->userdata('admin_type'),array('EM','BM','ZM','GM'))) {?>
+				<?php if(in_array($this->session->userdata('admin_type'),array('EM','BM','ZM','GM','ED'))) {?>
 					<li class="<?php echo (($controller == 'leads') && ($method == 'generated')) ? 'active' : ''?>">
 						<a href="<?php echo site_url('leads/generated')?>">
 							Lead Generated
@@ -327,7 +327,7 @@
 					</li>
 				<?php }?>
 
-				<?php if(in_array($this->session->userdata('admin_type'),array('EM','BM','ZM','GM'))) {?>
+				<?php if(in_array($this->session->userdata('admin_type'),array('EM','BM','ZM','GM','ED'))) {?>
 				<li class="<?php echo ($controller == 'product_guide') ? 'active' : ''?>">
 					<a href="<?php echo site_url('product_guide/view')?>">
 						Product Guide

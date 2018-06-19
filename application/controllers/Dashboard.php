@@ -116,6 +116,10 @@ class Dashboard extends CI_Controller {
                     $arrData['leads'] = $this->gm_view();
                     $middle = "Leads/view/gm_view";
                     break;
+                case 'ED':
+                    $arrData['leads'] = $this->gm_view();
+                    $middle = "Leads/view/gm_view";
+                    break;
             }
 
         }

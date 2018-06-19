@@ -5,10 +5,11 @@
 
 <div class="page-title">
     <div class="container clearfix">
-<?php if($this->session->userdata('designation_id')=='580801'){?>
+<?php
+if($this->session->userdata('designation_name')=='ED'){?>
         <h3 class="text-center">Executive Director</h3>
 <?php }else{?>
-<h3 class="text-center">General Manager</h3>
+        <h3 class="text-center">General Manager</h3>
 <?php }?>
     </div>
 </div>
