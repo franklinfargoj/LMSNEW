@@ -492,7 +492,6 @@ function get_details($hrms_id = ''){
         $where = array('hrms_id' => $hrms_id);
         $login_details = $CI->Login_model->check_login($where,Tbl_emp_dump);
         $login_id = $login_details[0]['hrms_id'];
-
 //        $select = array('hrms_id','dept_type_id','dept_type_name','branch_id','district_id','state_id','zone_id',
 //            'name','supervisor_id','designation_id','designation','contact_no','email_id','branch_name','zone_name');
         $select = array('hrms_id as DESCR10','name as DESCR30');
@@ -511,6 +510,7 @@ function get_details($hrms_id = ''){
             'full_name' => $login_details[0]['name'],
             'supervisor_id' => $login_details[0]['supervisor_id'],
             'designation_id' => $login_details[0]['designation_id'],
+            'designation' => $login_details[0]['designation_name'],
             'designation_name' => $login_details[0]['designation'],
             'mobile' => $login_details[0]['contact_no'],
             'email_id' => $login_details[0]['email_id']
@@ -813,7 +813,7 @@ function call_external_url($url) {
     return($result);
 }
 
-    function get_designation($designation_id){
+/*    function get_designation($designation_id){
         //$bm=array(520299,530399,540499,550599,560315);
     	$bm=array(510199,520299,530399,540499,550599,560315);
         $zm=array(550502,560602,540402,550503);
@@ -830,7 +830,7 @@ function call_external_url($url) {
             $designation = 'EM';
         }
         return $designation;
-    }
+    }*/
 
 
 function fix_keys($array) {
