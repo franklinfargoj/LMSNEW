@@ -16,7 +16,7 @@
 		<div class="header">
 			<div class="container">
 				<div class="logo">
-					<img src="<?php echo base_url().ASSETS;?>images/logo.png">
+					<img src="<?php echo base_url().ASSETS;?>images/bcg-logo.png">
 				</div>
 				<div class="right-nav">
 					<div class="log-in">
