@@ -589,6 +589,7 @@
             if($('#lead_status').val() == 'NI'){
                 $('#drop_desc').rules('add', {required: true, messages: { required: "Please enter drop description"}});
                 $('#reason').rules('add', {required: true, messages: { required: "Please enter reason for drop"}});
+                return true;
             } else {
                 $('#drop_desc').rules('remove');
                 $('#reason').rules('remove');
