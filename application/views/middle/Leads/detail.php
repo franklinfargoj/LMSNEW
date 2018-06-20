@@ -237,17 +237,18 @@
                                 </div>
                                 <div class="form-control reason" style="display:none">
                                     <label>Description:<span style="color:red;">*</span></label>
-                                    <textarea rows="4" cols="80" name="drop_desc"><?php if(!empty($leads[0]['drop_desc'])) echo $leads[0]['reminder_text'];?></textarea>
+                                    <textarea rows="4" cols="80" id="drop_desc" name="drop_desc"><?php if(!empty($leads[0]['drop_desc'])) echo $leads[0]['reminder_text'];?></textarea>
                                 </div>
                                 <div class="form-control followUp" style="display:none">
                                     <label>Next Followup Date:<span style="color:red;">*</span></label>
                                     <?php
-                                        if(!empty($leads[0]['remind_on'])){
-                                            $value = date('d-m-Y',strtotime($leads[0]['remind_on']));
+
+                                    if(!empty($leads[0]['remind_on'])){
+                                        $value = date('d-m-Y',strtotime($leads[0]['remind_on']));
                                         }else{
                                             $value = set_value('remind_on');
                                         }
-                                        $data = array(
+                                    $data = array(
                                             'type'  => 'text',
                                             'name'  => 'remind_on',
                                             'id'    => 'remind_on',
@@ -583,8 +584,15 @@
             }
         }
 
-
+        // franklin fargoj
         $('#detail_form').on('submit', function(){
+            if($('#lead_status').val() == 'NI'){
+                $('#drop_desc').rules('add', {required: true, messages: { required: "Please enter drop description"}});
+                $('#reason').rules('add', {required: true, messages: { required: "Please enter reason for drop"}});
+            } else {
+                $('#drop_desc').rules('remove');
+                $('#reason').rules('remove');
+            }
 
             if($('#is_other_branch').is(':checked')) {
                 $('#state_id').rules('add', {required: true, messages: { required: "Please select state"}});
@@ -601,9 +609,8 @@
             }else {
                 $('#reroute_to').rules('remove');
             }
+
         })
-
-
 
         //Validation
         $.validator.addMethod("regx", function(value, element, regexpr) {
@@ -648,18 +655,18 @@
                 branch_id: {
                     required: true
                 },*/
-                reason:{
+               /* reason:{
                     required:true
-                },
+                },*/
                 reminder_text:{
                     required:true
                 },
                 is_verified:{
                     required:true
                 },
-                drop_desc:{
+                /*drop_desc:{
                     required:true
-                }
+                }*/
             },
             messages: {
                 product_category_id: {
@@ -683,18 +690,18 @@
                 branch_id: {
                     required: "Please select branch"
                 },*/
-                reason:{
+               /* reason:{
                     required:"Please enter reason for drop"
-                },
+                },*/
                 reminder_text:{
                     required:"Please enter Followup remarks"
                 },
                 is_verified:{
                     required:"Please Select "
                 },
-                drop_desc:{
+                /*drop_desc:{
                     required:"Please enter drop description"
-                }
+                }*/
             }
         });
     });
@@ -775,7 +782,7 @@
     });
 
 
-
+    // franklin fargoj
     $('#lead_status').change(function () {
 
         var current_status = "<?php echo $leads[0]['status']; ?>";
@@ -838,6 +845,11 @@
                         alert('Drop/Not interested not allowed');
                         $(this).val('DC');
                     }
+                }else{
+                   if(selected_status==='NI'){
+                       alert('Drop/Not interested not allowed');
+                       $(this).val('DC');
+                   }
                 }
             }
         }else if(current_status == 'AO'){
@@ -846,9 +858,11 @@
                 $(this).val('AO');
             }
         }else if(current_status == 'Sanction'){
-            if(selected_status==='Converted'||selected_status==='NI'||selected_status=== 'Closed') {
-                alert('Please select Account opened.');
-                $(this).val('Sanction');
+            if(designation_name =='BM'){
+                if(selected_status==='Converted'||selected_status=== 'Closed') {
+                    alert('Please select Account opened or Drop/Not interested.');
+                    $(this).val('Sanction');
+                }
             }
         }
     })
